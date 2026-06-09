@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Klubik — Marketing sportif pour clubs amateurs</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Filtre SVG pour l'effet verre liquide -->
+  <svg style="display:none" aria-hidden="true">
+    <filter id="glass-distortion" x="-10%" y="-10%" width="120%" height="120%" filterUnits="objectBoundingBox">
+      <feTurbulence type="fractalNoise" baseFrequency="0.002 0.008" numOctaves="2" seed="5" result="turbulence"/>
+      <feComponentTransfer in="turbulence" result="mapped">
+        <feFuncR type="gamma" amplitude="1" exponent="10" offset="0.5"/>
+        <feFuncG type="gamma" amplitude="0" exponent="1" offset="0"/>
+        <feFuncB type="gamma" amplitude="0" exponent="1" offset="0.5"/>
+      </feComponentTransfer>
+      <feGaussianBlur in="turbulence" stdDeviation="2" result="softMap"/>
+      <feDisplacementMap in="SourceGraphic" in2="softMap" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+
+  <!-- ══════════════ NAVBAR ══════════════ -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <img src="assets/images/logo.png" alt="Klubik — Marketing sportif pour clubs amateurs" class="logo-img" />
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#why">Pourquoi nous</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#packs">Packs</a></li>
+        <li><a href="#contact" class="nav-cta">Démarrer un projet</a></li>
+      </ul>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <section class="hero">
+
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-dot"></span>
+        Agence de marketing sportif
+      </div>
+      <h1 class="hero-title">
+        On aide les clubs<br class="mob-br"> amateurs<br class="desk-br"> à avoir<br class="mob-br"> une<br class="desk-br"> image plus <em>professionnelle</em>.
+      </h1>
+      <p class="hero-sub">
+        Logos, maillots, réseaux sociaux et supports de communication : tout ce qu'il faut pour valoriser votre club tout au long de la saison.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-blue hero-cta-main">Parlez-nous de votre club →</a>
+        <a href="#services" class="btn-ghost">Voir nos services</a>
+      </div>
+      <div class="hero-tags">
+        <span>🤾 Handball</span>
+        <span>⚽ Football</span>
+        <span>🏀 Basket</span>
+        <span>🏉 Rugby</span>
+        <span>+ Tous les sports</span>
+      </div>
+    </div>
+
+    <div class="hero-right">
+
+      <!-- Card : Maillot — top left -->
+      <div class="hcard hcard--jersey" data-delay="0">
+        <div class="jersey-shape">
+          <div class="jersey-number">10</div>
+          <div class="jersey-name">MARTIN</div>
+        </div>
+        <div class="hcard-label">
+          <span class="dot dot--blue"></span>
+          Design de maillot
+        </div>
+      </div>
+
+      <!-- Card : Score match — top right -->
+      <div class="hcard hcard--match" data-delay="100">
+        <div class="match-top">FIN DE MATCH · J18</div>
+        <div class="match-row">
+          <div class="match-club">
+            <div class="team-badge">FCR</div>
+            <span class="team-nm">FC Rivière</span>
+          </div>
+          <div class="match-score-wrap">
+            <span class="ms">2</span><span class="ms-sep">—</span><span class="ms">1</span>
+          </div>
+          <div class="match-club">
+            <div class="team-badge team-badge--away">ACM</div>
+            <span class="team-nm">AC Montclair</span>
+          </div>
+        </div>
+        <div class="match-result">VICTOIRE !</div>
+        <div class="hcard-label">
+          <span class="dot dot--blue"></span>
+          Visuels réseaux sociaux
+        </div>
+      </div>
+
+      <!-- Card : Identité — centre -->
+      <div class="hcard hcard--brand" data-delay="200">
+        <div class="brand-demo">
+          <div class="brand-logo-circle">K</div>
+          <div class="brand-palette">
+            <span style="background:#1353F4"></span>
+            <span style="background:#0A0A0A"></span>
+            <span style="background:#E8EDFF"></span>
+            <span style="background:#F5F5F5"></span>
+          </div>
+          <div class="brand-typo">
+            <span class="brand-t1">Aa</span>
+            <span class="brand-t2">Klubik FC</span>
+          </div>
+        </div>
+        <div class="hcard-label">
+          <span class="dot dot--blue"></span>
+          Charte graphique
+        </div>
+      </div>
+
+      <!-- Card : Templates Instagram — bas gauche -->
+      <div class="hcard hcard--template" data-delay="150">
+        <div class="tpl-grid">
+          <div class="tpl-cell tpl-blue"><span>MATCH</span></div>
+          <div class="tpl-cell tpl-dark"><span>3—0</span></div>
+          <div class="tpl-cell tpl-light"><span>JOUEUR<br/>DU MOIS</span></div>
+          <div class="tpl-cell tpl-outline"><span>📅 EVENT</span></div>
+        </div>
+        <div class="hcard-label">
+          <span class="dot dot--blue"></span>
+          Templates Instagram
+        </div>
+      </div>
+
+      <!-- Card : Dossier sponsoring — bas droit -->
+      <div class="hcard hcard--sponsor" data-delay="180">
+        <div class="sponsor-doc">
+          <div class="doc-header">Dossier<br/>partenaires</div>
+          <div class="doc-lines">
+            <div class="doc-line long"></div>
+            <div class="doc-line medium"></div>
+            <div class="doc-line short"></div>
+          </div>
+          <div class="doc-logos">
+            <div class="sponsor-logo-sm"></div>
+            <div class="sponsor-logo-sm"></div>
+            <div class="sponsor-logo-sm"></div>
+          </div>
+        </div>
+        <div class="hcard-label">
+          <span class="dot dot--blue"></span>
+          Dossier sponsoring
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════ VIDÉO HERO ══════════════ -->
+  <div class="hero-video-wrap">
+    <video
+      class="hero-video"
+      src="assets/images/hero kubo.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      aria-hidden="true"
+    ></video>
+  </div>
+
+  <!-- ══════════════ SERVICES ══════════════ -->
+  <section id="services" class="services reveal-section">
+    <div class="container">
+
+      <!-- En-tête gauche avec soulignement SVG -->
+      <div class="feat-header">
+        <span class="eyebrow">Nos services</span>
+        <h2>Tout ce dont votre club a besoin,<br/>
+          <span class="feat-underline">au même endroit.
+            <svg viewBox="0 0 200 10" preserveAspectRatio="none" fill="none" aria-hidden="true">
+              <path d="M2 7 Q100 1 198 7" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </h2>
+        <p class="section-sub">Des solutions concrètes et accessibles pour soigner l'image de votre club, mieux communiquer et gagner en professionnalisme.</p>
+      </div>
+
+      <!-- Carte blanche avec la grille -->
+      <div class="feat-card reveal-item">
+        <div class="feat-grid">
+
+          <div class="sfeat">
+            <h3>
+              <span class="sfeat-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></span>
+              Identité visuelle
+            </h3>
+            <ul>
+              <li>Création ou refonte de logo</li>
+              <li>Charte graphique complète</li>
+              <li>Palette de couleurs & typographies</li>
+            </ul>
+          </div>
+
+          <div class="sfeat">
+            <h3>
+              <span class="sfeat-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+              Design de maillots
+            </h3>
+            <ul>
+              <li>Maillots domicile & extérieur</li>
+              <li>Design gardiens inclus</li>
+              <li>Fichiers prêts pour l'impression</li>
+            </ul>
+          </div>
+
+          <div class="sfeat">
+            <h3>
+              <span class="sfeat-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></span>
+              Supports de communication
+            </h3>
+            <ul>
+              <li>Affiches & flyers</li>
+              <li>Kakémonos & banderoles</li>
+              <li>Visuels partenaires</li>
+            </ul>
+          </div>
+
+          <div class="sfeat">
+            <h3>
+              <span class="sfeat-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></span>
+              Templates Canva
+            </h3>
+            <ul>
+              <li>Modèles prêts à l'emploi</li>
+              <li>Aux couleurs de votre club</li>
+              <li>Modifiables sans graphiste</li>
+            </ul>
+          </div>
+
+          <div class="sfeat sfeat--desktop">
+            <h3>
+              <span class="sfeat-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></span>
+              Réseaux sociaux
+            </h3>
+            <ul>
+              <li>Templates stories & posts</li>
+              <li>Visuels aux couleurs du club</li>
+              <li>Pack publication prêt à l'emploi</li>
+            </ul>
+          </div>
+
+          <div class="sfeat sfeat--desktop">
+            <h3>
+              <span class="sfeat-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+              Formation Canva
+              <span class="sfeat-soon">À venir</span>
+            </h3>
+            <ul>
+              <li>Prise en main de Canva</li>
+              <li>Créer vos propres visuels</li>
+              <li>Support de formation inclus</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <a href="#contact" class="btn-blue feat-cta">Démarrer un projet →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════ POUR QUI ══════════════ -->
+  <section id="pour-qui" class="pour-qui reveal-section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Pour qui ?</span>
+        <h2>Fait pour les clubs qui veulent<br/>passer au niveau supérieur.</h2>
+        <p class="section-sub">Peu importe le sport ou la taille du club — si vous voulez une meilleure image, on est là.</p>
+      </div>
+
+      <!-- Système orbital (desktop uniquement) -->
+      <div class="orbital-scene" id="orbitalScene" aria-hidden="true">
+        <div class="orbital-ring"></div>
+        <div class="orbital-core">
+          <div class="orbital-ping"></div>
+          <div class="orbital-ping orbital-ping--2"></div>
+          <div class="orbital-core-inner"></div>
+        </div>
+
+        <div class="onode" data-oid="0">
+          <div class="onode-btn"><span>⚽</span></div>
+          <div class="onode-label">Clubs amateurs</div>
+          <div class="onode-popup">
+            <h4>Clubs amateurs</h4>
+            <p>Football, basket, rugby — toutes les disciplines et toutes les divisions amateur.</p>
+          </div>
+        </div>
+        <div class="onode" data-oid="1">
+          <div class="onode-btn"><span>🏆</span></div>
+          <div class="onode-label">Équipes fanion</div>
+          <div class="onode-popup">
+            <h4>Équipes fanion</h4>
+            <p>La vitrine du club. Votre équipe première mérite une identité forte et reconnaissable.</p>
+          </div>
+        </div>
+        <div class="onode" data-oid="2">
+          <div class="onode-btn"><span>👦</span></div>
+          <div class="onode-label">Sections jeunes</div>
+          <div class="onode-popup">
+            <h4>Sections jeunes</h4>
+            <p>Valoriser les jeunes joueurs et les parents avec une communication soignée et motivante.</p>
+          </div>
+        </div>
+        <div class="onode" data-oid="3">
+          <div class="onode-btn"><span>🤝</span></div>
+          <div class="onode-label">Associations sportives</div>
+          <div class="onode-popup">
+            <h4>Associations sportives</h4>
+            <p>Multi-sports, gym, arts martiaux — on s'adapte à toutes les pratiques et structures.</p>
+          </div>
+        </div>
+        <div class="onode" data-oid="4">
+          <div class="onode-btn"><span>🏟️</span></div>
+          <div class="onode-label">Tournois &amp; compétitions</div>
+          <div class="onode-popup">
+            <h4>Tournois &amp; compétitions</h4>
+            <p>Habillage visuel d'événements locaux pour attirer des équipes et des sponsors.</p>
+          </div>
+        </div>
+        <div class="onode" data-oid="5">
+          <div class="onode-btn"><span>🎓</span></div>
+          <div class="onode-label">Clubs étudiants</div>
+          <div class="onode-popup">
+            <h4>Clubs étudiants</h4>
+            <p>BDE, sections sportives universitaires — une image pro pour un budget adapté.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grille de secours (mobile) -->
+      <div class="audience-grid">
+        <div class="acard reveal-item">
+          <span class="acard-emoji">⚽</span>
+          <h3>Clubs amateurs</h3>
+          <p>Football, basket, rugby — toutes les disciplines et toutes les divisions amateur.</p>
+        </div>
+        <div class="acard reveal-item">
+          <span class="acard-emoji">🏆</span>
+          <h3>Équipes fanion</h3>
+          <p>La vitrine du club. Votre équipe première mérite une identité forte et reconnaissable.</p>
+        </div>
+        <div class="acard reveal-item">
+          <span class="acard-emoji">👦</span>
+          <h3>Sections jeunes</h3>
+          <p>Valoriser les jeunes joueurs et les parents avec une communication soignée et motivante.</p>
+        </div>
+        <div class="acard reveal-item">
+          <span class="acard-emoji">🤝</span>
+          <h3>Associations sportives</h3>
+          <p>Multi-sports, gym, arts martiaux — on s'adapte à toutes les pratiques et structures.</p>
+        </div>
+        <div class="acard reveal-item">
+          <span class="acard-emoji">🏟️</span>
+          <h3>Tournois &amp; compétitions</h3>
+          <p>Habillage visuel d'événements locaux pour attirer des équipes et des sponsors.</p>
+        </div>
+        <div class="acard reveal-item">
+          <span class="acard-emoji">🎓</span>
+          <h3>Clubs étudiants</h3>
+          <p>BDE, sections sportives universitaires — une image pro pour un budget adapté.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ WHY KLUBIK ══════════════ -->
+  <section id="why" class="why reveal-section">
+    <div class="container">
+      <div class="why-grid">
+        <div class="why-left reveal-item">
+          <span class="eyebrow">Pourquoi Klubik ?</span>
+          <h2>Les clubs amateurs méritent mieux que des visuels génériques.</h2>
+          <p>Les outils existent — Canva, Instagram, Adobe — mais sans accompagnement, difficile de se démarquer et d'avoir une vraie cohérence. Klubik construit cette image à votre place.</p>
+          <a href="#contact" class="btn-blue">Discutons de votre projet →</a>
+        </div>
+        <div class="why-right">
+          <div class="why-item reveal-item">
+            <div class="why-num">01</div>
+            <div class="why-text">
+              <h4>La culture du sport amateur</h4>
+              <p>On comprend vos contraintes : les horaires d'entraînement, les journées de match, les saisons et les budgets serrés. On parle votre langue.</p>
+            </div>
+          </div>
+          <div class="why-item reveal-item">
+            <div class="why-num">02</div>
+            <div class="why-text">
+              <h4>Pensé pour les bénévoles et dirigeants</h4>
+              <p>Pas besoin d'avoir un graphiste dans le club. Tout est conçu pour être simple à utiliser, même sans compétences techniques.</p>
+            </div>
+          </div>
+          <div class="why-item reveal-item">
+            <div class="why-num">03</div>
+            <div class="why-text">
+              <h4>Une image pro sans le prix d'une grande agence</h4>
+              <p>Des livrables de qualité professionnelle, à des prix pensés pour les budgets des clubs amateurs.</p>
+            </div>
+          </div>
+          <div class="why-item reveal-item">
+            <div class="why-num">04</div>
+            <div class="why-text">
+              <h4>Des fichiers faciles à utiliser</h4>
+              <p>On livre des templates modifiables sur Canva avec des explications adaptées, pour que votre club reste autonome au quotidien.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ PORTFOLIO ══════════════ -->
+  <!-- ══════════════ PORTFOLIO ══════════════ -->
+  <section id="portfolio" class="portfolio reveal-section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Portfolio</span>
+        <h2>Ce que l'on crée<br/>pour les clubs.</h2>
+        <p class="section-sub">Aperçu de nos créations — chaque projet est unique et pensé pour le club.</p>
+      </div>
+      <div class="portfolio-placeholder reveal-item">
+        <div class="portfolio-placeholder-icon">
+          <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M5 2h14M5 22h14M6 2v4l5 5-5 5v4M18 2v4l-5 5 5 5v4"/></svg>
+        </div>
+        <p class="portfolio-placeholder-title">Les visuels arrivent bientôt</p>
+        <p class="portfolio-placeholder-sub">Nos premières réalisations seront publiées ici prochainement. En attendant, n'hésitez pas à nous contacter pour discuter de votre projet.</p>
+        <a href="#contact" class="btn-blue">Parlons de votre club →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ PROCESS ══════════════ -->
+  <section id="process" class="process reveal-section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Notre méthode</span>
+        <h2>Simple, efficace, sans friction.</h2>
+        <p class="section-sub">Pas de réunions interminables ni de devis incompréhensibles. On va à l'essentiel.</p>
+      </div>
+
+      <div class="process-steps">
+        <div class="pstep reveal-item">
+          <div class="pstep-num">1</div>
+          <div class="pstep-bar"></div>
+          <h4>Échange initial</h4>
+          <p>On discute de votre club, vos besoins, vos ambitions. Gratuit, sans engagement, en 30 minutes.</p>
+        </div>
+        <div class="pstep reveal-item">
+          <div class="pstep-num">2</div>
+          <div class="pstep-bar"></div>
+          <h4>Proposition</h4>
+          <p>On vous envoie une proposition claire avec les livrables, les délais et le tarif. Pas de surprises.</p>
+        </div>
+        <div class="pstep reveal-item">
+          <div class="pstep-num">3</div>
+          <div class="pstep-bar"></div>
+          <h4>Création</h4>
+          <p>On crée, vous validez. Des allers-retours rapides pour affiner jusqu'à ce que ce soit parfait.</p>
+        </div>
+        <div class="pstep reveal-item">
+          <div class="pstep-num">4</div>
+          <div class="pstep-bar"></div>
+          <h4>Livraison</h4>
+          <p>Fichiers finaux, explications claires et suivi si besoin. Votre club est prêt à rayonner.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ PACKS ══════════════ -->
+  <section id="packs" class="packs reveal-section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Nos packs</span>
+        <h2>Une offre pour chaque<br/>ambition de club.</h2>
+        <p class="section-sub">Des offres pensées pour les clubs amateurs, selon leur niveau de besoin et leur budget.</p>
+      </div>
+
+      <!-- ─── Packs essentiels : Klubik + Klubik+ ─── -->
+      <div class="packs-row packs-row--secondary">
+
+        <!-- Pack Klubik -->
+        <div class="pack-card reveal-item">
+          <div class="pack-top">
+            <h3 class="pack-name">Klubik</h3>
+            <span class="pack-price">299<sup>€</sup></span>
+          </div>
+          <p class="pack-desc">Des visuels prêts à utiliser chaque semaine sans passer par un graphiste.</p>
+          <ul class="pack-list">
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pack Canva</li>
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Calendrier de contenu 1 mois</li>
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Formation Canva</li>
+          </ul>
+          <div class="pack-insight">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            La solution idéale pour les clubs qui veulent mieux communiquer rapidement.
+          </div>
+          <a href="https://buy.stripe.com/28E28qbmB2d7b0kgBw2go01" class="pack-cta" target="_blank" rel="noopener">Choisir Klubik →</a>
+          <p class="pack-secure">🔒 Paiement sécurisé par Stripe</p>
+        </div>
+
+        <!-- Pack Klubik+ — recommandé -->
+        <div class="pack-card pack-card--featured reveal-item">
+          <div class="pack-badge">Le plus populaire</div>
+          <div class="pack-top">
+            <h3 class="pack-name">Klubik<sup class="plus">+</sup></h3>
+            <span class="pack-price">599<sup>€</sup></span>
+          </div>
+          <p class="pack-desc">Une solution complète pour structurer la communication du club sur toute l'année.</p>
+          <ul class="pack-list">
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pack Canva</li>
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Calendrier de contenu 12 mois</li>
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Formation Canva</li>
+          </ul>
+          <div class="pack-insight">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Le pack recommandé pour les clubs qui veulent devenir autonomes.
+          </div>
+          <a href="https://buy.stripe.com/28EfZgeyNbNH0lGad82go04" class="pack-cta pack-cta--white" target="_blank" rel="noopener">Choisir Klubik+ →</a>
+          <p class="pack-secure pack-secure--white">🔒 Paiement sécurisé par Stripe</p>
+        </div>
+
+      </div>
+
+      <!-- ─── Séparateur "Aller plus loin" ─── -->
+      <div class="packs-separator reveal-item">
+        <h3 class="packs-separator-title">Pour aller plus loin</h3>
+        <p class="packs-separator-sub">Pour les clubs qui souhaitent construire une véritable image de marque autour de leur projet sportif.</p>
+      </div>
+
+      <!-- ─── Packs avancés : Terrain + Identité + Saison ─── -->
+      <div class="packs-row packs-row--main">
+
+        <!-- Pack Terrain -->
+        <div class="pack-card reveal-item">
+          <div class="pack-top">
+            <h3 class="pack-name">Terrain</h3>
+            <span class="pack-price">799<sup>€</sup></span>
+          </div>
+          <p class="pack-desc">Le point de départ de l'identité visuelle d'un club.</p>
+          <ul class="pack-list">
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Design maillot</li>
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pack Klubik</li>
+          </ul>
+          <div class="pack-insight">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Le maillot est souvent la première image que les supporters, partenaires et joueurs voient du club.
+          </div>
+          <a href="https://buy.stripe.com/5kQ6oG62h2d7c4o3OK2go05" class="pack-cta" target="_blank" rel="noopener">Choisir Terrain →</a>
+          <p class="pack-secure">🔒 Paiement sécurisé par Stripe</p>
+        </div>
+
+        <!-- Pack Identité — accent -->
+        <div class="pack-card pack-card--accent reveal-item">
+          <div class="pack-badge pack-badge--accent">Le plus avantageux</div>
+          <div class="pack-top">
+            <h3 class="pack-name">Identité</h3>
+            <span class="pack-price">1 690<sup>€</sup></span>
+          </div>
+          <p class="pack-desc">Construire une identité de marque cohérente et professionnelle autour du club.</p>
+          <ul class="pack-list">
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Design maillot</li>
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Logo</li>
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pack Klubik+</li>
+          </ul>
+          <div class="pack-insight">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Pour les clubs qui veulent franchir un cap dans leur image.
+          </div>
+          <a href="https://buy.stripe.com/dRmfZg2Q56tngkE9942go02" class="pack-cta" target="_blank" rel="noopener">Choisir Identité →</a>
+          <p class="pack-secure">🔒 Paiement sécurisé par Stripe</p>
+        </div>
+
+        <!-- Pack Saison -->
+        <div class="pack-card reveal-item">
+          <div class="pack-top">
+            <h3 class="pack-name">Saison</h3>
+            <span class="pack-price">1 990<sup>€</sup></span>
+          </div>
+          <p class="pack-desc">L'offre la plus complète pour structurer l'image du club.</p>
+          <ul class="pack-list">
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Design maillot</li>
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Logo</li>
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pack Klubik+</li>
+            <li><svg class="pack-check" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Bonus exclusifs</li>
+          </ul>
+          <div class="pack-insight">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Une solution pensée pour accompagner durablement le développement du club.
+          </div>
+          <a href="https://buy.stripe.com/00waEW76l8Bvecw2KG2go03" class="pack-cta" target="_blank" rel="noopener">Choisir Saison →</a>
+          <p class="pack-secure">🔒 Paiement sécurisé par Stripe</p>
+        </div>
+
+      </div>
+
+      <!-- ─── Les Klubikités ─── -->
+      <div class="klubikites reveal-item">
+        <div class="klubikites-header">
+          <div>
+            <h3 class="klubikites-title">Les Klubikités</h3>
+            <p class="klubikites-sub">Des options à la carte pour aller plus loin.</p>
+          </div>
+          <a href="#contact" class="btn-ghost klubikites-cta">Demander un devis</a>
+        </div>
+        <div class="klubikites-grid">
+          <div class="kitem">
+            <span class="kitem-name">Logo</span>
+            <span class="kitem-sub">Création ou refonte complète</span>
+            <span class="kitem-price">990€</span>
+          </div>
+          <div class="kitem">
+            <span class="kitem-name">Design maillot</span>
+            <span class="kitem-sub">Maillot domicile ou extérieur</span>
+            <span class="kitem-price">690€</span>
+          </div>
+          <div class="kitem">
+            <span class="kitem-name">Calendrier de contenu 1 mois</span>
+            <span class="kitem-sub">Idées de publications, planning et recommandations</span>
+            <span class="kitem-price">99€</span>
+          </div>
+          <div class="kitem">
+            <span class="kitem-name">Calendrier de contenu 6 mois</span>
+            <span class="kitem-sub">Planning structuré sur une demi-saison</span>
+            <span class="kitem-price">249€</span>
+          </div>
+          <div class="kitem">
+            <span class="kitem-name">Calendrier de contenu 12 mois</span>
+            <span class="kitem-sub">Calendrier complet sur toute la saison</span>
+            <span class="kitem-price">399€</span>
+          </div>
+          <div class="kitem">
+            <span class="kitem-name">Shooting photo</span>
+            <span class="kitem-sub">Déplacement, durée, nombre de joueurs et localisation selon le projet.</span>
+            <span class="kitem-price kitem-price--devis">Sur devis</span>
+          </div>
+          <div class="kitem">
+            <span class="kitem-name">Design spécial</span>
+            <span class="kitem-sub">N'hésitez pas à nous faire part de votre projet pour qu'on puisse vous aider à avancer.</span>
+            <span class="kitem-price kitem-price--devis">Sur devis</span>
+          </div>
+          <div class="kitem">
+            <span class="kitem-name">Site internet</span>
+            <span class="kitem-price kitem-price--soon">À venir</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════ CONTACT ══════════════ -->
+  <section id="contact" class="contact reveal-section">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-left reveal-item">
+          <span class="eyebrow">Contact</span>
+          <h2>Votre club mérite une image à la hauteur.</h2>
+          <p>Partagez-nous votre projet. On revient vers vous rapidement avec des idées concrètes.</p>
+          <a href="https://wa.me/33695971715?text=Bonjour,%20je%20souhaite%20échanger%20avec%20Klubik%20concernant%20mon%20club." class="btn-blue contact-wa-btn" target="_blank" rel="noopener">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.862L.057 23.267a.75.75 0 0 0 .921.921l5.344-1.469A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.907 0-3.698-.512-5.238-1.407l-.374-.22-3.873 1.065 1.086-3.768-.239-.389A9.946 9.946 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Écrire sur WhatsApp
+          </a>
+          <div class="contact-reach">
+            <a href="tel:+33695971715" class="reach-item">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.4a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.44 16z"/></svg>
+              +33 6 95 97 17 15
+            </a>
+            <a href="mailto:contact.klubik@gmail.com" class="reach-item">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              contact.klubik@gmail.com
+            </a>
+            <a href="https://instagram.com/klubik.fr" class="reach-item">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+              @klubik.fr
+            </a>
+          </div>
+        </div>
+
+        <form class="contact-form reveal-item" id="contactForm">
+          <div class="field-row">
+            <div class="field">
+              <label>Prénom & Nom</label>
+              <input type="text" name="name" placeholder="Jean Dupont" required />
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input type="email" name="email" placeholder="jean@monclub.fr" required />
+            </div>
+          </div>
+          <div class="field">
+            <label>Votre club</label>
+            <input type="text" name="club" placeholder="FC Exemple — Football / Catégorie séniors" required />
+          </div>
+          <div class="field">
+            <label>Votre besoin</label>
+            <select name="service" required>
+              <option value="">— Quel pack vous intéresse ?</option>
+              <option>Pack Klubik</option>
+              <option>Pack Klubik+</option>
+              <option>Pack Terrain</option>
+              <option>Pack Identité</option>
+              <option>Pack Saison</option>
+              <option>Klubikités (à la carte)</option>
+              <option>Pas encore décidé</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Message</label>
+            <textarea name="message" rows="4" placeholder="Décrivez votre club, ce dont vous avez besoin, et quand vous souhaitez démarrer…" required></textarea>
+          </div>
+          <button type="submit" class="btn-blue btn-submit">Envoyer →</button>
+          <p class="form-hint">Réponse sous 48h ouvrées.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ FOOTER ══════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <img src="assets/images/logo.png" alt="Klubik" class="logo-img logo-img--footer" />
+        </a>
+        <p>Le marketing sportif pensé pour les clubs amateurs.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Services</h5>
+          <ul>
+            <li><a href="#services">Identité visuelle</a></li>
+            <li><a href="#services">Design maillots</a></li>
+            <li><a href="#services">Réseaux sociaux</a></li>
+            <li><a href="#services">Supports de communication</a></li>
+            <li><a href="#services">Templates Canva</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Agence</h5>
+          <ul>
+            <li><a href="#why">Pourquoi Klubik</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#process">Notre méthode</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Klubik. Tous droits réservés.</p>
+      <div class="footer-legal">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="cgv.html">CGV</a>
+        <a href="cgu.html">CGU</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════════ BOUTON FLOTTANT WHATSAPP ══════════════ -->
+  <a href="https://wa.me/33695971715?text=Bonjour,%20je%20souhaite%20échanger%20avec%20Klubik%20concernant%20mon%20club." class="wa-float" target="_blank" rel="noopener" aria-label="Nous contacter sur WhatsApp">
+    <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.862L.057 23.267a.75.75 0 0 0 .921.921l5.344-1.469A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.907 0-3.698-.512-5.238-1.407l-.374-.22-3.873 1.065 1.086-3.768-.239-.389A9.946 9.946 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+    <span>Parler de mon club</span>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>

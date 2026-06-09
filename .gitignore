@@ -1,0 +1,17 @@
+# Variables d'environnement — ne jamais committer
+.env
+.env.local
+.env*.local
+
+# Systèmes d'exploitation
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
