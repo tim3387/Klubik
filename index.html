@@ -4,6 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Klubik — Marketing sportif pour clubs amateurs</title>
+  <meta name="description" content="Klubik est une agence de marketing sportif pour clubs amateurs : logos, maillots, templates Canva et supports de communication. Une image professionnelle à prix accessible." />
+  <link rel="canonical" href="https://klubik.fr/" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://klubik.fr/" />
+  <meta property="og:title" content="Klubik — Marketing sportif pour clubs amateurs" />
+  <meta property="og:description" content="Logos, maillots, templates Canva et supports de communication pour clubs amateurs. Une image pro à prix accessible." />
+  <meta property="og:image" content="https://klubik.fr/assets/images/og-image.jpg" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Klubik — Marketing sportif pour clubs amateurs" />
+  <meta name="twitter:description" content="Logos, maillots, templates Canva et supports de communication pour clubs amateurs." />
+  <meta name="twitter:image" content="https://klubik.fr/assets/images/og-image.jpg" />
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,7 +42,7 @@
   <nav id="navbar">
     <div class="nav-inner">
       <a href="#" class="logo">
-        <img src="assets/images/logo.png" alt="Klubik — Marketing sportif pour clubs amateurs" class="logo-img" />
+        <img src="assets/images/logo.png" alt="Klubik — Marketing sportif pour clubs amateurs" class="logo-img" width="120" height="40" />
       </a>
       <ul class="nav-links" id="navLinks">
         <li><a href="#why">Pourquoi nous</a></li>
@@ -37,11 +50,13 @@
         <li><a href="#packs">Packs</a></li>
         <li><a href="#contact" class="nav-cta">Démarrer un projet</a></li>
       </ul>
-      <button class="burger" id="burger" aria-label="Menu">
+      <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
         <span></span><span></span>
       </button>
     </div>
   </nav>
+
+  <main>
 
   <!-- ══════════════ HERO ══════════════ -->
   <section class="hero">
@@ -170,7 +185,7 @@
   <div class="hero-video-wrap">
     <video
       class="hero-video"
-      src="assets/images/hero kubo.mp4"
+      src="assets/images/hero-kubo.mp4"
       autoplay
       muted
       loop
@@ -300,7 +315,7 @@
         </div>
 
         <div class="onode" data-oid="0">
-          <div class="onode-btn"><span>⚽</span></div>
+          <div class="onode-btn"><i data-lucide="shield"></i></div>
           <div class="onode-label">Clubs amateurs</div>
           <div class="onode-popup">
             <h4>Clubs amateurs</h4>
@@ -308,7 +323,7 @@
           </div>
         </div>
         <div class="onode" data-oid="1">
-          <div class="onode-btn"><span>🏆</span></div>
+          <div class="onode-btn"><i data-lucide="flag"></i></div>
           <div class="onode-label">Équipes fanion</div>
           <div class="onode-popup">
             <h4>Équipes fanion</h4>
@@ -316,7 +331,7 @@
           </div>
         </div>
         <div class="onode" data-oid="2">
-          <div class="onode-btn"><span>👦</span></div>
+          <div class="onode-btn"><i data-lucide="users"></i></div>
           <div class="onode-label">Sections jeunes</div>
           <div class="onode-popup">
             <h4>Sections jeunes</h4>
@@ -324,7 +339,7 @@
           </div>
         </div>
         <div class="onode" data-oid="3">
-          <div class="onode-btn"><span>🤝</span></div>
+          <div class="onode-btn"><i data-lucide="handshake"></i></div>
           <div class="onode-label">Associations sportives</div>
           <div class="onode-popup">
             <h4>Associations sportives</h4>
@@ -332,7 +347,7 @@
           </div>
         </div>
         <div class="onode" data-oid="4">
-          <div class="onode-btn"><span>🏟️</span></div>
+          <div class="onode-btn"><i data-lucide="trophy"></i></div>
           <div class="onode-label">Tournois &amp; compétitions</div>
           <div class="onode-popup">
             <h4>Tournois &amp; compétitions</h4>
@@ -340,7 +355,7 @@
           </div>
         </div>
         <div class="onode" data-oid="5">
-          <div class="onode-btn"><span>🎓</span></div>
+          <div class="onode-btn"><i data-lucide="graduation-cap"></i></div>
           <div class="onode-label">Clubs étudiants</div>
           <div class="onode-popup">
             <h4>Clubs étudiants</h4>
@@ -352,32 +367,32 @@
       <!-- Grille de secours (mobile) -->
       <div class="audience-grid">
         <div class="acard reveal-item">
-          <span class="acard-emoji">⚽</span>
+          <i data-lucide="shield" class="acard-icon"></i>
           <h3>Clubs amateurs</h3>
           <p>Football, basket, rugby — toutes les disciplines et toutes les divisions amateur.</p>
         </div>
         <div class="acard reveal-item">
-          <span class="acard-emoji">🏆</span>
+          <i data-lucide="flag" class="acard-icon"></i>
           <h3>Équipes fanion</h3>
           <p>La vitrine du club. Votre équipe première mérite une identité forte et reconnaissable.</p>
         </div>
         <div class="acard reveal-item">
-          <span class="acard-emoji">👦</span>
+          <i data-lucide="users" class="acard-icon"></i>
           <h3>Sections jeunes</h3>
           <p>Valoriser les jeunes joueurs et les parents avec une communication soignée et motivante.</p>
         </div>
         <div class="acard reveal-item">
-          <span class="acard-emoji">🤝</span>
+          <i data-lucide="handshake" class="acard-icon"></i>
           <h3>Associations sportives</h3>
           <p>Multi-sports, gym, arts martiaux — on s'adapte à toutes les pratiques et structures.</p>
         </div>
         <div class="acard reveal-item">
-          <span class="acard-emoji">🏟️</span>
+          <i data-lucide="trophy" class="acard-icon"></i>
           <h3>Tournois &amp; compétitions</h3>
           <p>Habillage visuel d'événements locaux pour attirer des équipes et des sponsors.</p>
         </div>
         <div class="acard reveal-item">
-          <span class="acard-emoji">🎓</span>
+          <i data-lucide="graduation-cap" class="acard-icon"></i>
           <h3>Clubs étudiants</h3>
           <p>BDE, sections sportives universitaires — une image pro pour un budget adapté.</p>
         </div>
@@ -515,7 +530,7 @@
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             La solution idéale pour les clubs qui veulent mieux communiquer rapidement.
           </div>
-          <a href="https://buy.stripe.com/28E28qbmB2d7b0kgBw2go01" class="pack-cta" target="_blank" rel="noopener">Choisir Klubik →</a>
+          <a href="https://buy.stripe.com/28E28qbmB2d7b0kgBw2go01" class="pack-cta" target="_blank" rel="noopener nofollow">Choisir Klubik →</a>
           <p class="pack-secure">🔒 Paiement sécurisé par Stripe</p>
         </div>
 
@@ -536,7 +551,7 @@
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             Le pack recommandé pour les clubs qui veulent devenir autonomes.
           </div>
-          <a href="https://buy.stripe.com/28EfZgeyNbNH0lGad82go04" class="pack-cta pack-cta--white" target="_blank" rel="noopener">Choisir Klubik+ →</a>
+          <a href="https://buy.stripe.com/28EfZgeyNbNH0lGad82go04" class="pack-cta pack-cta--white" target="_blank" rel="noopener nofollow">Choisir Klubik+ →</a>
           <p class="pack-secure pack-secure--white">🔒 Paiement sécurisé par Stripe</p>
         </div>
 
@@ -566,7 +581,7 @@
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             Le maillot est souvent la première image que les supporters, partenaires et joueurs voient du club.
           </div>
-          <a href="https://buy.stripe.com/5kQ6oG62h2d7c4o3OK2go05" class="pack-cta" target="_blank" rel="noopener">Choisir Terrain →</a>
+          <a href="https://buy.stripe.com/5kQ6oG62h2d7c4o3OK2go05" class="pack-cta" target="_blank" rel="noopener nofollow">Choisir Terrain →</a>
           <p class="pack-secure">🔒 Paiement sécurisé par Stripe</p>
         </div>
 
@@ -587,7 +602,7 @@
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             Pour les clubs qui veulent franchir un cap dans leur image.
           </div>
-          <a href="https://buy.stripe.com/dRmfZg2Q56tngkE9942go02" class="pack-cta" target="_blank" rel="noopener">Choisir Identité →</a>
+          <a href="https://buy.stripe.com/dRmfZg2Q56tngkE9942go02" class="pack-cta" target="_blank" rel="noopener nofollow">Choisir Identité →</a>
           <p class="pack-secure">🔒 Paiement sécurisé par Stripe</p>
         </div>
 
@@ -608,7 +623,7 @@
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             Une solution pensée pour accompagner durablement le développement du club.
           </div>
-          <a href="https://buy.stripe.com/00waEW76l8Bvecw2KG2go03" class="pack-cta" target="_blank" rel="noopener">Choisir Saison →</a>
+          <a href="https://buy.stripe.com/00waEW76l8Bvecw2KG2go03" class="pack-cta" target="_blank" rel="noopener nofollow">Choisir Saison →</a>
           <p class="pack-secure">🔒 Paiement sécurisé par Stripe</p>
         </div>
 
@@ -700,21 +715,21 @@
         <form class="contact-form reveal-item" id="contactForm">
           <div class="field-row">
             <div class="field">
-              <label>Prénom & Nom</label>
-              <input type="text" name="name" placeholder="Jean Dupont" required />
+              <label for="name">Prénom & Nom</label>
+              <input type="text" id="name" name="name" placeholder="Jean Dupont" required />
             </div>
             <div class="field">
-              <label>Email</label>
-              <input type="email" name="email" placeholder="jean@monclub.fr" required />
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="jean@monclub.fr" required />
             </div>
           </div>
           <div class="field">
-            <label>Votre club</label>
-            <input type="text" name="club" placeholder="FC Exemple — Football / Catégorie séniors" required />
+            <label for="club">Votre club</label>
+            <input type="text" id="club" name="club" placeholder="FC Exemple — Football / Catégorie séniors" required />
           </div>
           <div class="field">
-            <label>Votre besoin</label>
-            <select name="service" required>
+            <label for="service">Votre besoin</label>
+            <select id="service" name="service" required>
               <option value="">— Quel pack vous intéresse ?</option>
               <option>Pack Klubik</option>
               <option>Pack Klubik+</option>
@@ -726,8 +741,8 @@
             </select>
           </div>
           <div class="field">
-            <label>Message</label>
-            <textarea name="message" rows="4" placeholder="Décrivez votre club, ce dont vous avez besoin, et quand vous souhaitez démarrer…" required></textarea>
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="4" placeholder="Décrivez votre club, ce dont vous avez besoin, et quand vous souhaitez démarrer…" required></textarea>
           </div>
           <button type="submit" class="btn-blue btn-submit">Envoyer →</button>
           <p class="form-hint">Réponse sous 48h ouvrées.</p>
@@ -736,12 +751,14 @@
     </div>
   </section>
 
+  </main>
+
   <!-- ══════════════ FOOTER ══════════════ -->
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">
         <a href="#" class="logo">
-          <img src="assets/images/logo.png" alt="Klubik" class="logo-img logo-img--footer" />
+          <img src="assets/images/logo.png" alt="Klubik" class="logo-img logo-img--footer" width="100" height="33" loading="lazy" />
         </a>
         <p>Le marketing sportif pensé pour les clubs amateurs.</p>
       </div>
@@ -783,6 +800,29 @@
     <span>Parler de mon club</span>
   </a>
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["Organization", "LocalBusiness"],
+    "name": "Klubik",
+    "url": "https://klubik.fr",
+    "logo": "https://klubik.fr/assets/images/logo.png",
+    "description": "Agence de marketing sportif pour clubs amateurs : logos, maillots, templates Canva et supports de communication.",
+    "telephone": "+33695971715",
+    "email": "contact.klubik@gmail.com",
+    "sameAs": ["https://instagram.com/klubik.fr"],
+    "serviceType": "Marketing sportif",
+    "areaServed": { "@type": "Country", "name": "France" },
+    "offers": [
+      { "@type": "Offer", "name": "Pack Klubik", "price": "299", "priceCurrency": "EUR" },
+      { "@type": "Offer", "name": "Pack Klubik+", "price": "599", "priceCurrency": "EUR" },
+      { "@type": "Offer", "name": "Pack Terrain", "price": "799", "priceCurrency": "EUR" },
+      { "@type": "Offer", "name": "Pack Identité", "price": "1690", "priceCurrency": "EUR" },
+      { "@type": "Offer", "name": "Pack Saison", "price": "1990", "priceCurrency": "EUR" }
+    ]
+  }
+  </script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

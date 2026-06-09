@@ -2,6 +2,9 @@
    KLUBIK — script.js
 ═══════════════════════════════════════════════════════ */
 
+// Initialise les icônes Lucide
+lucide.createIcons();
+
 // ─── Navbar scroll ───────────────────────────────────
 const navbar = document.getElementById('navbar');
 let lastScroll = 0;
@@ -21,6 +24,8 @@ burger.addEventListener('click', () => {
   menuOpen = !menuOpen;
   navLinks.classList.toggle('open', menuOpen);
   document.body.style.overflow = menuOpen ? 'hidden' : '';
+  burger.setAttribute('aria-expanded', menuOpen ? 'true' : 'false');
+  burger.setAttribute('aria-label', menuOpen ? 'Fermer le menu' : 'Ouvrir le menu');
 
   const [s1, s2] = burger.querySelectorAll('span');
   if (menuOpen) {
