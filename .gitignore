@@ -15,3 +15,7 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Données clubs — contiennent des infos personnelles, ne pas committer
+klubik_*.csv
+clubs_*.csv
