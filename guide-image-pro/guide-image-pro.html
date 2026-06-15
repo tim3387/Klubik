@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Klubik — Guide Image Pro pour les Clubs Amateurs</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PDBNFLX6NJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PDBNFLX6NJ');
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --blue:       #1353F4;
+      --blue-dark:  #0C3ECC;
+      --blue-light: #EEF3FF;
+      --ink:        #1A1A1A;
+      --muted:      #6B7280;
+      --border:     #E8EAED;
+      --surface:    #F8F9FC;
+      --green:      #059669;
+      --green-light:#ECFDF5;
+      --red:        #DC2626;
+      --red-light:  #FEF2F2;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: #E5E7EB;
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    @media screen { body { padding: 40px 0; } }
+
+    /* ── PAGE ── */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      background: #fff;
+      margin: 0 auto 24px;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+    }
+
+    /* ── COUVERTURE ── */
+    .cover {
+      background: var(--blue);
+      color: #fff;
+      width: 100%;
+      min-height: 297mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 56px 56px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: 'K';
+      position: absolute;
+      right: -30px; top: -60px;
+      font-size: 500px; font-weight: 900;
+      line-height: 1;
+      color: rgba(255,255,255,.06);
+      pointer-events: none;
+    }
+    .cover::after {
+      content: 'K';
+      position: absolute;
+      left: -60px; bottom: -100px;
+      font-size: 300px; font-weight: 900;
+      line-height: 1;
+      color: rgba(255,255,255,.04);
+      pointer-events: none;
+    }
+    .cover-top { position: relative; z-index: 1; }
+    .cover-logo {
+      font-size: 13px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 4px;
+      opacity: .5; margin-bottom: 64px;
+    }
+    .cover-eyebrow {
+      display: inline-block;
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2px;
+      opacity: .6;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.15);
+      padding: 4px 12px; border-radius: 4px;
+      margin-bottom: 24px;
+    }
+    .cover h1 {
+      font-size: 44px; font-weight: 900;
+      line-height: 1.05; letter-spacing: -1.5px;
+      margin-bottom: 24px; max-width: 460px;
+    }
+    .cover h1 span { color: rgba(255,255,255,.45); }
+    .cover-sub {
+      font-size: 14px; opacity: .6;
+      line-height: 1.75; max-width: 380px;
+      margin-bottom: 48px;
+    }
+    .cover-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .cover-pill {
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 11px; font-weight: 600;
+    }
+    .cover-bottom {
+      position: relative; z-index: 1;
+      border-top: 1px solid rgba(255,255,255,.12);
+      padding-top: 20px;
+      display: flex; justify-content: space-between;
+      align-items: center;
+    }
+    .cover-bottom-label {
+      font-size: 10px; opacity: .35;
+      text-transform: uppercase; letter-spacing: 1.5px;
+    }
+    .cover-bottom-url {
+      font-size: 11px; font-weight: 700;
+      opacity: .5; text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    /* ── INTRO PAGE ── */
+    .intro-page {
+      width: 100%;
+      min-height: 297mm;
+      display: flex;
+      flex-direction: column;
+    }
+    .intro-hero {
+      background: var(--ink);
+      color: #fff;
+      padding: 48px 56px 40px;
+      flex-shrink: 0;
+    }
+    .intro-hero h2 {
+      font-size: 26px; font-weight: 900;
+      letter-spacing: -.5px; margin-bottom: 16px;
+    }
+    .intro-hero p {
+      font-size: 13px; line-height: 1.75;
+      opacity: .7; max-width: 500px;
+    }
+    .intro-body { padding: 36px 56px; flex: 1; }
+    .intro-quote {
+      background: var(--blue-light);
+      border-left: 4px solid var(--blue);
+      padding: 20px 24px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 28px;
+    }
+    .intro-quote p {
+      font-size: 15px; font-weight: 700;
+      color: var(--blue); line-height: 1.5;
+    }
+    .intro-para {
+      font-size: 13px; line-height: 1.8;
+      color: var(--ink); margin-bottom: 20px;
+    }
+    .intro-toc-title {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--muted); margin-bottom: 16px;
+      margin-top: 28px;
+    }
+    .intro-toc {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .toc-item {
+      display: flex; align-items: center; gap: 16px;
+      color: var(--ink);
+      padding: 14px 16px;
+      background: var(--surface); border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .toc-num {
+      width: 36px; height: 36px;
+      background: var(--blue);
+      color: #fff; border-radius: 50%;
+      font-size: 15px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .toc-label { font-weight: 700; font-size: 14px; line-height: 1.3; }
+    .toc-sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .toc-page {
+      margin-left: auto; flex-shrink: 0;
+      font-size: 18px; font-weight: 900;
+      color: var(--blue); opacity: .35;
+    }
+
+    /* ── CHAPTER INTRO ── */
+    .chapter-page {
+      background: var(--ink);
+      color: #fff;
+      width: 100%;
+      min-height: 297mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 56px;
+      position: relative;
+      overflow: hidden;
+    }
+    .chapter-page::before {
+      content: 'K';
+      position: absolute;
+      right: -40px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 420px; font-weight: 900;
+      line-height: 1;
+      color: rgba(19,83,244,.12);
+      pointer-events: none;
+    }
+    .chapter-bg-num {
+      position: absolute;
+      right: 48px; bottom: 40px;
+      font-size: 140px; font-weight: 900;
+      color: rgba(255,255,255,.03);
+      line-height: 1; letter-spacing: -8px;
+    }
+    .chapter-label {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2.5px;
+      color: var(--blue); margin-bottom: 20px;
+    }
+    .chapter-page h2 {
+      font-size: 34px; font-weight: 900;
+      line-height: 1.1; letter-spacing: -1px;
+      margin-bottom: 24px; max-width: 480px;
+      position: relative; z-index: 1;
+    }
+    .chapter-page p {
+      font-size: 14px; line-height: 1.75;
+      opacity: .6; max-width: 440px;
+      position: relative; z-index: 1;
+    }
+
+    /* ── CONTENT PAGES ── */
+    .content-page {
+      width: 100%;
+      min-height: 297mm;
+      padding: 44px 56px;
+    }
+    .page-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 28px; padding-bottom: 14px;
+      border-bottom: 2px solid var(--blue-light);
+    }
+    .page-chapter {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--muted);
+    }
+    .page-sep {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--border);
+    }
+    .page-title {
+      font-size: 13px; font-weight: 800;
+      color: var(--blue);
+    }
+    .page-num {
+      display: none;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .section-title {
+      font-size: 17px; font-weight: 900;
+      color: var(--ink); margin-bottom: 10px;
+      margin-top: 24px; letter-spacing: -.3px;
+    }
+    .section-title:first-of-type { margin-top: 0; }
+
+    .body-text {
+      font-size: 13px; line-height: 1.75;
+      color: var(--ink); margin-bottom: 16px;
+    }
+
+    /* ── HIGHLIGHT ── */
+    .highlight-blue {
+      background: var(--blue);
+      color: #fff; border-radius: 10px;
+      padding: 18px 22px; margin-bottom: 18px;
+      font-size: 14px; font-weight: 700; line-height: 1.5;
+    }
+    .highlight-soft {
+      background: var(--blue-light);
+      border-left: 4px solid var(--blue);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px; margin-bottom: 16px;
+      font-size: 13px; line-height: 1.65; color: var(--ink);
+    }
+
+    /* ── STATS ── */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--surface); border-radius: 10px;
+      padding: 18px 14px; text-align: center;
+      border: 1px solid var(--border);
+    }
+    .stat-num {
+      font-size: 34px; font-weight: 900;
+      color: var(--blue); line-height: 1; margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 11px; color: var(--muted); line-height: 1.4;
+    }
+
+    /* ── SCENARIO ── */
+    .scenario {
+      border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden; margin-bottom: 18px;
+    }
+    .scenario-head {
+      background: var(--surface); padding: 8px 16px;
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--muted); border-bottom: 1px solid var(--border);
+    }
+    .scenario-body {
+      padding: 14px 16px;
+      font-size: 13px; line-height: 1.65;
+      font-style: italic; color: var(--ink);
+    }
+
+    /* ── PILLARS ── */
+    .pillar-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 14px;
+    }
+    .pillar-num-big {
+      width: 40px; height: 40px;
+      background: var(--blue); color: #fff;
+      border-radius: 10px; font-size: 18px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .pillar-title-big {
+      font-size: 20px; font-weight: 900;
+      color: var(--ink); letter-spacing: -.3px;
+    }
+    .pillar-subtitle {
+      font-size: 11px; color: var(--blue); font-weight: 600;
+    }
+
+    /* ── DO / DON'T ── */
+    .do-dont {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; margin-bottom: 18px;
+    }
+    .do-box { background: var(--green-light); border: 1px solid #A7F3D0; border-radius: 8px; padding: 14px 16px; }
+    .dont-box { background: var(--red-light); border: 1px solid #FECACA; border-radius: 8px; padding: 14px 16px; }
+    .do-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green); margin-bottom: 8px; }
+    .dont-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--red); margin-bottom: 8px; }
+    .check-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .check-list li { font-size: 12px; line-height: 1.5; padding-left: 16px; position: relative; }
+    .do-box .check-list li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+    .dont-box .check-list li::before { content: '✗'; position: absolute; left: 0; color: var(--red); font-weight: 700; }
+
+    /* ── SUPPORTS ── */
+    .support-grid {
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 18px;
+    }
+    .support-item {
+      display: grid; grid-template-columns: 44px 1fr;
+      gap: 14px; align-items: start;
+      padding: 14px 16px;
+      border: 1px solid var(--border); border-radius: 8px;
+    }
+    .support-icon {
+      width: 44px; height: 44px;
+      background: var(--blue-light); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .support-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+    .support-text { font-size: 12px; line-height: 1.55; color: var(--muted); }
+    .sponsor-tag {
+      display: inline-block;
+      background: var(--blue); color: #fff;
+      font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .5px;
+      padding: 2px 7px; border-radius: 3px; margin-top: 5px;
+    }
+
+    /* ── AVANT / APRÈS ── */
+    .aa-cols {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-bottom: 18px;
+    }
+    .aa-card { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+    .aa-head { padding: 10px 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .aa-head.av { background: var(--red-light); color: var(--red); }
+    .aa-head.ap { background: var(--green-light); color: var(--green); }
+    .aa-visual {
+      height: 160px; display: flex; align-items: center;
+      justify-content: center; flex-direction: column;
+      gap: 6px;
+    }
+    .aa-visual.av { background: #F9FAFB; }
+    .aa-visual.ap { background: #F0FDF4; }
+    .aa-visual-label { font-size: 11px; color: var(--muted); font-style: italic; }
+    .aa-visual-sub { font-size: 10px; color: var(--border); }
+    .aa-list { padding: 12px 16px; list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .aa-list li { font-size: 12px; line-height: 1.45; padding-left: 16px; position: relative; }
+    .aa-list.av li::before { content: '✗'; position: absolute; left: 0; color: var(--red); font-weight: 700; font-size: 10px; }
+    .aa-list.ap li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; font-size: 10px; }
+    .aa-result { padding: 10px 16px; font-size: 12px; font-weight: 600; line-height: 1.45; border-top: 1px solid var(--border); }
+    .aa-result.av { background: var(--red-light); color: var(--red); }
+    .aa-result.ap { background: var(--green-light); color: var(--green); }
+
+    /* ── SOLUTION ── */
+    .solution-wrap { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 18px; }
+    .solution-top {
+      background: var(--blue); color: #fff;
+      padding: 20px 24px;
+    }
+    .solution-top h3 { font-size: 17px; font-weight: 900; margin-bottom: 4px; }
+    .solution-top p { font-size: 12px; opacity: .65; }
+    .solution-row {
+      display: grid; grid-template-columns: 32px 1fr;
+      gap: 14px; padding: 14px 20px; align-items: start;
+      border-bottom: 1px solid var(--border);
+    }
+    .solution-row:last-child { border-bottom: none; }
+    .sol-check {
+      width: 26px; height: 26px;
+      background: var(--blue-light); color: var(--blue);
+      border-radius: 50%; font-size: 13px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .sol-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+    .sol-text { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* ── CTA PAGE ── */
+    .cta-page {
+      background: var(--blue); color: #fff;
+      width: 100%; min-height: 297mm;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center; padding: 56px;
+      position: relative; overflow: hidden;
+    }
+    .cta-page::before {
+      content: 'K'; position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 600px; font-weight: 900;
+      line-height: 1;
+      color: rgba(255,255,255,.04);
+      pointer-events: none;
+    }
+    .cta-eyebrow {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2px;
+      opacity: .5; margin-bottom: 24px;
+      position: relative; z-index: 1;
+    }
+    .cta-page h2 {
+      font-size: 34px; font-weight: 900;
+      letter-spacing: -1px; line-height: 1.1;
+      margin-bottom: 18px; max-width: 440px;
+      position: relative; z-index: 1;
+    }
+    .cta-page > p {
+      font-size: 14px; opacity: .6; line-height: 1.75;
+      margin-bottom: 48px; max-width: 380px;
+      position: relative; z-index: 1;
+    }
+    .cta-contacts {
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 48px; position: relative; z-index: 1; width: 100%; max-width: 360px;
+    }
+    .cta-contact {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 8px; padding: 12px 18px;
+      font-size: 13px; font-weight: 600;
+    }
+    .cta-contact-icon { font-size: 16px; width: 24px; text-align: center; }
+    .cta-tagline {
+      font-size: 11px; opacity: .35;
+      text-transform: uppercase; letter-spacing: 2px;
+      position: relative; z-index: 1;
+    }
+
+    /* ── FOOTER DE PAGE ── */
+    .page-footer {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      background: #fff;
+      z-index: 10;
+    }
+    .page-footer--dark {
+      color: rgba(255,255,255,.35);
+      border-top-color: rgba(255,255,255,.1);
+      background: transparent;
+    }
+    .content-page { padding-bottom: 60px; }
+    .chapter-page { padding-bottom: 60px; }
+    .cta-page { padding-bottom: 60px; }
+
+    /* ── LUCIDE ICONS ── */
+    [data-lucide] { display: block; }
+    .icon-box [data-lucide]    { width: 18px; height: 18px; color: var(--blue); }
+    .icon-box-sm [data-lucide] { width: 14px; height: 14px; color: var(--blue); }
+    .support-icon [data-lucide] { width: 22px; height: 22px; color: var(--blue); }
+    .feature-icon [data-lucide] { width: 22px; height: 22px; color: var(--blue); margin: 0 auto; }
+    .cta-contact-icon [data-lucide] { width: 16px; height: 16px; color: rgba(255,255,255,.85); }
+    .aa-placeholder [data-lucide] { width: 36px; height: 36px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .page { margin: 0; box-shadow: none; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+    @page { size: A4 portrait; margin: 0; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     PAGE 1 — COUVERTURE
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="cover">
+    <div class="cover-top">
+      <div class="cover-logo">Klubik</div>
+      <div class="cover-eyebrow">Guide pratique · Clubs amateurs</div>
+      <h1>Comment <span>une image<br>professionnelle</span><br>fait de votre club<br>un aimant<br>à sponsors</h1>
+      <p class="cover-sub">
+        Tout ce qu'il faut savoir pour donner à votre club l'image qui inspire confiance, attire des partenaires et génère de nouveaux revenus.
+      </p>
+      <div class="cover-pills">
+        <div class="cover-pill">4 piliers du design pro</div>
+        <div class="cover-pill">5 templates indispensables</div>
+        <div class="cover-pill">Avant / Après concret</div>
+      </div>
+    </div>
+    <div class="cover-bottom">
+      <span class="cover-bottom-label">Saison 2025 / 2026</span>
+      <span class="cover-bottom-url">klubik.pro</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 2 — INTRODUCTION
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="intro-page">
+    <div class="intro-hero">
+      <h2>Votre club mérite mieux<br>qu'un logo pixellisé</h2>
+      <p>Vous passez des heures à entraîner vos joueurs, gérer votre association, organiser vos matchs. Mais quand vient le moment de convaincre un sponsor, l'image que vous renvoyez ne suit pas.</p>
+    </div>
+    <div class="intro-body">
+      <div class="intro-quote">
+        <p>Un sponsor ne choisit pas le club avec le plus d'abonnés. Il choisit le club qui lui inspire le plus confiance. Et cette confiance, elle se joue en 3 secondes — sur l'image.</p>
+      </div>
+      <p class="intro-para">Ce guide a été conçu pour vous aider à franchir ce cap. Pas besoin d'être graphiste, pas besoin d'un budget colossal. Juste les bons outils, les bonnes bases, et une méthode simple à appliquer avec votre club.</p>
+      <p class="intro-para">En quelques pages, vous allez comprendre pourquoi l'identité visuelle est votre meilleur argument commercial — et comment la mettre en place dès aujourd'hui.</p>
+
+      <div class="intro-toc-title">Au programme</div>
+      <div class="intro-toc">
+        <div class="toc-item">
+          <div class="toc-num">1</div>
+          <div>
+            <div class="toc-label">Ce que les sponsors regardent vraiment</div>
+            <div class="toc-sub">La logique de la première impression</div>
+          </div>
+          <div class="toc-page">1</div>
+        </div>
+        <div class="toc-item">
+          <div class="toc-num">2</div>
+          <div>
+            <div class="toc-label">Les 4 piliers d'une image professionnelle</div>
+            <div class="toc-sub">Logo, couleurs, typographie, templates</div>
+          </div>
+          <div class="toc-page">3</div>
+        </div>
+        <div class="toc-item">
+          <div class="toc-num">3</div>
+          <div>
+            <div class="toc-label">Les supports qui font la différence</div>
+            <div class="toc-sub">Les 5 visuels à avoir absolument</div>
+          </div>
+          <div class="toc-page">7</div>
+        </div>
+        <div class="toc-item">
+          <div class="toc-num">4</div>
+          <div>
+            <div class="toc-label">Avant / Après</div>
+            <div class="toc-sub">La transformation d'un club fictif</div>
+          </div>
+          <div class="toc-page">9</div>
+        </div>
+        <div class="toc-item">
+          <div class="toc-num">5</div>
+          <div>
+            <div class="toc-label">La solution Klubik</div>
+            <div class="toc-sub">Vos packs clé en main</div>
+          </div>
+          <div class="toc-page">12</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 3 — CHAPITRE 1 INTRO
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="chapter-page">
+    <div class="chapter-label">Partie 01</div>
+    <h2>Ce que les sponsors<br>regardent vraiment</h2>
+    <p>Avant votre offre, avant vos chiffres, avant votre nombre d'abonnés — il y a votre image. Voici pourquoi elle est votre premier argument commercial.</p>
+    <div class="chapter-bg-num">01</div>
+  </div>
+  <div class="page-footer page-footer--dark">Page 1 sur 14</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 4 — PARTIE 1 CONTENU
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="content-page">
+    <div class="page-header">
+      <span class="page-chapter">Partie 01</span>
+      <div class="page-sep"></div>
+      <span class="page-title">Ce que les sponsors regardent vraiment</span>
+      <span class="page-num">04</span>
+    </div>
+
+    <div class="section-title">La première impression se joue en 3 secondes</div>
+    <div class="scenario">
+      <div class="scenario-head">Imaginez cette situation</div>
+      <div class="scenario-body">
+        Un chef d'entreprise local reçoit deux propositions de sponsoring dans la même semaine. La première vient d'un club avec un logo flou, des posts Instagram mal cadrés et un document Word pour présenter les contreparties. La seconde vient d'un club avec une identité visuelle cohérente, des visuels de matchs propres et un book de sponsoring professionnel.<br><br>
+        Les deux clubs ont 200 abonnés Instagram et jouent en Régional 3. Lequel choisit-il ?
+      </div>
+    </div>
+
+    <div class="highlight-blue">
+      La réponse est évidente. Et injuste. Mais c'est la réalité du sponsoring amateur en 2025.
+    </div>
+
+    <div class="section-title">Ce que les sponsors évaluent (sans vous le dire)</div>
+    <p class="body-text">Quand un sponsor reçoit une proposition, il n'évalue pas votre nombre d'abonnés en premier. Il évalue inconsciemment trois choses :</p>
+
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:36px 1fr;gap:12px;padding:12px 16px;border:1px solid var(--border);border-radius:8px;align-items:start;">
+        <div class="icon-box" style="width:36px;height:36px;background:var(--blue-light);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i data-lucide="shield-check"></i></div>
+        <div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Le sérieux</div><div style="font-size:12px;color:var(--muted);">Est-ce que ce club est bien organisé ? Peut-on leur faire confiance pour représenter notre marque ?</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:36px 1fr;gap:12px;padding:12px 16px;border:1px solid var(--border);border-radius:8px;align-items:start;">
+        <div class="icon-box" style="width:36px;height:36px;background:var(--blue-light);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i data-lucide="target"></i></div>
+        <div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">La cohérence</div><div style="font-size:12px;color:var(--muted);">Est-ce que leur image reflète des valeurs professionnelles ? Sont-ils consistants dans leur communication ?</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:36px 1fr;gap:12px;padding:12px 16px;border:1px solid var(--border);border-radius:8px;align-items:start;">
+        <div class="icon-box" style="width:36px;height:36px;background:var(--blue-light);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i data-lucide="eye"></i></div>
+        <div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">La visibilité potentielle</div><div style="font-size:12px;color:var(--muted);">À quoi ressemblera mon logo sur leurs supports ? Serai-je bien mis en valeur ?</div></div>
+      </div>
+    </div>
+
+    <div class="highlight-soft">
+      Une image professionnelle répond à ces trois questions avant même que vous ayez ouvert la bouche.
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">90%</div>
+        <div class="stat-label">des clubs amateurs communiquent sur les réseaux</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5%</div>
+        <div class="stat-label">seulement monétisent leur présence digitale</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">+30%</div>
+        <div class="stat-label">d'engagement sponsor pour les clubs avec un contenu cohérent</div>
+      </div>
+    </div>
+
+    <p class="body-text" style="color:var(--muted);font-size:12px;">L'écart entre 90% et 5% ? En grande partie, c'est une question d'image.</p>
+  </div>
+  <div class="page-footer">Page 2 sur 14</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 5 — CHAPITRE 2 INTRO
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="chapter-page">
+    <div class="chapter-label">Partie 02</div>
+    <h2>Les 4 piliers d'une<br>image professionnelle</h2>
+    <p>Logo, couleurs, typographie, templates. Ces quatre éléments forment la base de votre identité visuelle. Maîtrisez-les et votre club changera de dimension.</p>
+    <div class="chapter-bg-num">02</div>
+  </div>
+  <div class="page-footer page-footer--dark">Page 3 sur 14</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 6 — PILIER 1 : LOGO
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="content-page">
+    <div class="page-header">
+      <span class="page-chapter">Partie 02</span>
+      <div class="page-sep"></div>
+      <span class="page-title">Les 4 piliers d'une image professionnelle</span>
+      <span class="page-num">06</span>
+    </div>
+
+    <div class="pillar-header">
+      <div class="pillar-num-big">1</div>
+      <div>
+        <div class="pillar-title-big">Le logo</div>
+        <div class="pillar-subtitle">Votre première carte de visite</div>
+      </div>
+    </div>
+
+    <p class="body-text">Votre logo est la première chose que voit un sponsor sur vos réseaux, vos documents, votre book de sponsoring. Avant même de lire votre proposition, il a formé une opinion basée sur votre logo.</p>
+
+    <div class="highlight-soft">
+      Un bon logo n'a pas besoin d'être complexe. Il doit être lisible, mémorable et déclinable sur tous les supports.
+    </div>
+
+    <div class="section-title" style="margin-top:20px;">Les 3 critères d'un logo efficace</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px;">
+      <div style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;">
+        <div style="width:28px;height:28px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;">A</div>
+        <div><strong style="font-size:13px;">Lisible à toutes les tailles</strong><br><span style="font-size:12px;color:var(--muted);">Sur un écran de téléphone comme sur une banderole de 3 mètres. Si votre logo devient illisible en petit, c'est un problème.</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;">
+        <div style="width:28px;height:28px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;">B</div>
+        <div><strong style="font-size:13px;">Déclinable</strong><br><span style="font-size:12px;color:var(--muted);">En couleur, en noir et blanc, sur fond clair et sur fond foncé. Vous aurez besoin de toutes ces versions.</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;">
+        <div style="width:28px;height:28px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;">C</div>
+        <div><strong style="font-size:13px;">Au format vectoriel</strong><br><span style="font-size:12px;color:var(--muted);">Un fichier SVG ou AI ne pixellise jamais, quelle que soit la taille. Le PNG s'utilise pour le web, mais le vecteur reste la référence.</span></div>
+      </div>
+    </div>
+
+    <div class="do-dont">
+      <div class="do-box">
+        <div class="do-label">À faire</div>
+        <ul class="check-list">
+          <li>Logo au format vectoriel (SVG / AI)</li>
+          <li>Version fond clair + fond foncé</li>
+          <li>Version horizontale + icône seule</li>
+          <li>Couleurs exactes notées (code hex)</li>
+        </ul>
+      </div>
+      <div class="dont-box">
+        <div class="dont-label">À éviter</div>
+        <ul class="check-list">
+          <li>Logo créé sur un générateur gratuit</li>
+          <li>Trop de détails, illisible en petit</li>
+          <li>Logo pixellisé (.jpg de mauvaise qualité)</li>
+          <li>Couleurs qui varient d'un support à l'autre</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight-blue">
+      Votre logo est la fondation. Tout le reste — vos visuels, vos templates, votre book sponsor — repose dessus. Investir dans un bon logo, c'est investir dans chaque publication future.
+    </div>
+  </div>
+  <div class="page-footer">Page 4 sur 14</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 7 — PILIER 2 & 3 : COULEURS + TYPO
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="content-page">
+    <div class="page-header">
+      <span class="page-chapter">Partie 02</span>
+      <div class="page-sep"></div>
+      <span class="page-title">Les 4 piliers d'une image professionnelle</span>
+      <span class="page-num">07</span>
+    </div>
+
+    <div class="pillar-header">
+      <div class="pillar-num-big">2</div>
+      <div>
+        <div class="pillar-title-big">Les couleurs</div>
+        <div class="pillar-subtitle">L'identité de votre club</div>
+      </div>
+    </div>
+
+    <p class="body-text">Vos couleurs, ce sont celles de votre club depuis toujours. Mais les utilisez-vous de manière cohérente sur tous vos supports ?</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px;">
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;text-align:center;">
+        <div style="height:50px;background:var(--blue);"></div>
+        <div style="padding:8px;font-size:11px;"><strong>Couleur principale</strong><br><span style="color:var(--muted);font-size:10px;">Couleurs du club</span></div>
+      </div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;text-align:center;">
+        <div style="height:50px;background:var(--blue-light);"></div>
+        <div style="padding:8px;font-size:11px;"><strong>Couleur secondaire</strong><br><span style="color:var(--muted);font-size:10px;">Pour les accents</span></div>
+      </div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;text-align:center;">
+        <div style="height:50px;background:var(--ink);"></div>
+        <div style="padding:8px;font-size:11px;"><strong>Couleur neutre</strong><br><span style="color:var(--muted);font-size:10px;">Textes et fonds</span></div>
+      </div>
+    </div>
+
+    <div class="highlight-soft">
+      Le secret : notez les codes couleur exacts (#RRGGBB) et utilisez-les systématiquement. Pas "un bleu qui ressemble à peu près", mais exactement le même bleu à chaque fois.
+    </div>
+
+    <div class="pillar-header" style="margin-top:24px;">
+      <div class="pillar-num-big">3</div>
+      <div>
+        <div class="pillar-title-big">La typographie</div>
+        <div class="pillar-subtitle">La cohérence qui rassure</div>
+      </div>
+    </div>
+
+    <p class="body-text">Les polices d'écriture, c'est souvent le détail le plus négligé. Et pourtant, c'est ce qui fait la différence entre un visuel "amateur" et un visuel professionnel.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+      <div style="border:1px solid var(--border);border-radius:8px;padding:16px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;">Police titres</div>
+        <div style="font-size:22px;font-weight:900;color:var(--ink);margin-bottom:6px;">JOUR DE MATCH</div>
+        <div style="font-size:11px;color:var(--muted);">Percutante, impactante. Elle reflète l'énergie du sport.</div>
+      </div>
+      <div style="border:1px solid var(--border);border-radius:8px;padding:16px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;">Police textes</div>
+        <div style="font-size:14px;font-weight:400;color:var(--ink);margin-bottom:6px;">Résultat du match :<br>Victoire 3 – 1</div>
+        <div style="font-size:11px;color:var(--muted);">Sobre et lisible, même en petit.</div>
+      </div>
+    </div>
+
+    <div class="do-dont">
+      <div class="do-box">
+        <div class="do-label">La règle d'or</div>
+        <ul class="check-list">
+          <li>2 polices maximum</li>
+          <li>1 pour les titres, 1 pour les textes</li>
+          <li>Disponibles sur Canva gratuitement</li>
+          <li>Cohérentes sur tous vos visuels</li>
+        </ul>
+      </div>
+      <div class="dont-box">
+        <div class="dont-label">L'erreur classique</div>
+        <ul class="check-list">
+          <li>3, 4 ou 5 polices différentes</li>
+          <li>Comic Sans, Papyrus ou similaires</li>
+          <li>Police illisible sur fond coloré</li>
+          <li>Changer de police à chaque post</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">Page 5 sur 14</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 8 — PILIER 4 : TEMPLATES
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="content-page">
+    <div class="page-header">
+      <span class="page-chapter">Partie 02</span>
+      <div class="page-sep"></div>
+      <span class="page-title">Les 4 piliers d'une image professionnelle</span>
+      <span class="page-num">08</span>
+    </div>
+
+    <div class="pillar-header">
+      <div class="pillar-num-big">4</div>
+      <div>
+        <div class="pillar-title-big">Les templates</div>
+        <div class="pillar-subtitle">Le multiplicateur de cohérence</div>
+      </div>
+    </div>
+
+    <p class="body-text">C'est là que tout s'assemble. Un template, c'est un modèle visuel prêt à l'emploi que vous adaptez en quelques clics. Vous remplacez le texte, la photo, et vous publiez.</p>
+
+    <div class="highlight-blue">
+      Avec des templates Canva, n'importe qui dans votre club peut créer des visuels professionnels en moins de 5 minutes — sans compétences en design, sans logiciel complexe, sans risquer de "casser" votre identité visuelle.
+    </div>
+
+    <div class="section-title" style="margin-top:22px;">Pourquoi les templates changent tout</div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px;">
+      <div style="display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;">
+        <div class="icon-box-sm" style="width:28px;height:28px;background:var(--blue-light);border-radius:6px;display:flex;align-items:center;justify-content:center;"><i data-lucide="zap"></i></div>
+        <div><strong style="font-size:13px;">Rapidité</strong><br><span style="font-size:12px;color:var(--muted);">Un visuel de résultat en 2 minutes au lieu de 20. Vous rentrez d'un match à 22h, c'est publié avant 22h30.</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;">
+        <div class="icon-box-sm" style="width:28px;height:28px;background:var(--blue-light);border-radius:6px;display:flex;align-items:center;justify-content:center;"><i data-lucide="palette"></i></div>
+        <div><strong style="font-size:13px;">Cohérence automatique</strong><br><span style="font-size:12px;color:var(--muted);">Le président, le trésorier ou le jeune bénévole : le résultat est toujours identique. Vos couleurs et polices sont intégrées, impossible de les rater.</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;">
+        <div class="icon-box-sm" style="width:28px;height:28px;background:var(--blue-light);border-radius:6px;display:flex;align-items:center;justify-content:center;"><i data-lucide="banknote"></i></div>
+        <div><strong style="font-size:13px;">Valeur commerciale</strong><br><span style="font-size:12px;color:var(--muted);">Chaque template peut intégrer le logo de votre sponsor. C'est votre offre de sponsoring digital : chaque publication devient une vitrine pour votre partenaire.</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;">
+        <div class="icon-box-sm" style="width:28px;height:28px;background:var(--blue-light);border-radius:6px;display:flex;align-items:center;justify-content:center;"><i data-lucide="smartphone"></i></div>
+        <div><strong style="font-size:13px;">Accessibilité totale</strong><br><span style="font-size:12px;color:var(--muted);">Canva fonctionne sur ordinateur et sur smartphone. Vos bénévoles peuvent créer des visuels depuis les tribunes pendant le match.</span></div>
+      </div>
+    </div>
+
+    <div class="highlight-soft">
+      Un logo sur une pancarte bord de terrain, c'est bien. Un logo sur un visuel qui fait 3 000 vues et se partage 200 fois, c'est infiniment mieux. Et c'est exactement ce que vos templates rendent possible.
+    </div>
+  </div>
+  <div class="page-footer">Page 6 sur 14</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 9 — CHAPITRE 3 INTRO
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="chapter-page">
+    <div class="chapter-label">Partie 03</div>
+    <h2>Les supports qui font<br>la différence</h2>
+    <p>Une identité visuelle forte ne sert à rien si elle ne s'exprime pas sur les bons supports. Voici les 5 visuels indispensables pour un club qui veut convaincre des sponsors.</p>
+    <div class="chapter-bg-num">03</div>
+  </div>
+  <div class="page-footer page-footer--dark">Page 7 sur 14</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 10 — LES 5 SUPPORTS
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="content-page">
+    <div class="page-header">
+      <span class="page-chapter">Partie 03</span>
+      <div class="page-sep"></div>
+      <span class="page-title">Les supports qui font la différence</span>
+      <span class="page-num">10</span>
+    </div>
+
+    <p class="body-text" style="margin-bottom:20px;">Ces 5 formats sont les plus attendus par votre audience et les plus efficaces pour valoriser vos sponsors. Avec les bons templates, chacun se crée en quelques minutes.</p>
+
+    <div class="support-grid">
+      <div class="support-item">
+        <div class="support-icon"><i data-lucide="calendar"></i></div>
+        <div>
+          <div class="support-title">L'affiche Jour de Match</div>
+          <div class="support-text">Votre publication la plus attendue. Elle annonce le match, crée l'anticipation et met en avant les informations clés (équipes, heure, lieu). C'est l'espace numéro 1 pour afficher le logo de votre sponsor principal.</div>
+          <span class="sponsor-tag">Sponsor visible</span>
+        </div>
+      </div>
+      <div class="support-item">
+        <div class="support-icon"><i data-lucide="clipboard-list"></i></div>
+        <div>
+          <div class="support-title">La Composition d'équipe</div>
+          <div class="support-text">Publiée quelques heures avant le coup d'envoi, elle génère de l'engagement et crée l'attente. Elle peut porter la mention "Présenté par [Sponsor]" — un format idéal pour valoriser un partenaire local.</div>
+          <span class="sponsor-tag">Présenté par [Sponsor]</span>
+        </div>
+      </div>
+      <div class="support-item">
+        <div class="support-icon"><i data-lucide="trophy"></i></div>
+        <div>
+          <div class="support-title">Le visuel Résultat</div>
+          <div class="support-text">Le post le plus partagé de la semaine. Vos supporters le commentent, le renvoient à leurs amis. Le logo de votre sponsor part avec chaque partage — une visibilité que vous ne pouvez pas acheter autrement.</div>
+          <span class="sponsor-tag">Sponsor visible</span>
+        </div>
+      </div>
+      <div class="support-item">
+        <div class="support-icon"><i data-lucide="radio"></i></div>
+        <div>
+          <div class="support-title">La Story live</div>
+          <div class="support-text">Un template Story bien fait permet de publier en live pendant un match en quelques secondes. Score mi-temps, but marqué, fin de match — vos supporters suivent en temps réel, votre sponsor apparaît à chaque update.</div>
+          <span class="sponsor-tag">Sponsoring live</span>
+        </div>
+      </div>
+      <div class="support-item">
+        <div class="support-icon"><i data-lucide="clapperboard"></i></div>
+        <div>
+          <div class="support-title">Le post "Présenté par"</div>
+          <div class="support-text">Interview d'un joueur, défi, concept vidéo — "présenté par" votre partenaire avec son logo mis en valeur. C'est votre offre de sponsoring digital la plus facile à vendre et la plus facile à justifier avec des statistiques.</div>
+          <span class="sponsor-tag">Format sponsoring direct</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-soft">
+      Ces 5 formats suffisent pour démarrer. Une fois maîtrisés, vous pouvez proposer à vos sponsors une offre structurée : X publications par mois avec leur logo, Y stories live par journée de championnat. C'est concret, mesurable, vendable.
+    </div>
+  </div>
+  <div class="page-footer">Page 8 sur 14</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 11 — CHAPITRE 4 INTRO
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="chapter-page">
+    <div class="chapter-label">Partie 04</div>
+    <h2>Avant / Après</h2>
+    <p>La transformation concrète d'un club fictif. Avant Klubik, après Klubik — et ce que ça change réellement aux yeux d'un sponsor.</p>
+    <div class="chapter-bg-num">04</div>
+  </div>
+  <div class="page-footer page-footer--dark">Page 9 sur 14</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 12 — AVANT / APRÈS VISUEL
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="content-page">
+    <div class="page-header">
+      <span class="page-chapter">Partie 04</span>
+      <div class="page-sep"></div>
+      <span class="page-title">Avant / Après — Le FC Exemple</span>
+      <span class="page-num">12</span>
+    </div>
+
+    <p class="body-text" style="margin-bottom:20px;">Même club. Même sport. Même nombre d'abonnés. Même budget. La seule différence : une identité visuelle professionnelle et des templates Canva aux couleurs du club.</p>
+
+    <div class="aa-cols">
+      <div class="aa-card">
+        <div class="aa-head av">Avant Klubik</div>
+        <div class="aa-visual av">
+          <div class="aa-placeholder" style="color:var(--red);opacity:.4;"><i data-lucide="x-circle"></i></div>
+          <div class="aa-visual-label">Visuels à intégrer</div>
+          <div class="aa-visual-sub">Screenshots des anciens visuels du club</div>
+        </div>
+        <ul class="aa-list av">
+          <li>Logo pixellisé récupéré sur internet</li>
+          <li>Visuels créés sur PowerPoint, polices par défaut</li>
+          <li>Couleurs différentes d'une publication à l'autre</li>
+          <li>Aucune place prévue pour un logo sponsor</li>
+          <li>Résultat mis en ligne 2 jours après le match</li>
+        </ul>
+        <div class="aa-result av">Le sponsor scrolle et passe à autre chose.</div>
+      </div>
+      <div class="aa-card">
+        <div class="aa-head ap">Après Klubik</div>
+        <div class="aa-visual ap">
+          <div class="aa-placeholder" style="color:var(--green);opacity:.5;"><i data-lucide="check-circle-2"></i></div>
+          <div class="aa-visual-label">Visuels à intégrer</div>
+          <div class="aa-visual-sub">Templates Canva aux couleurs du club</div>
+        </div>
+        <ul class="aa-list ap">
+          <li>Logo vectoriel déclinable sur tous les supports</li>
+          <li>Templates Canva cohérents, aux couleurs du club</li>
+          <li>Identité reconnaissable en 1 seconde</li>
+          <li>Logo sponsor intégré sur chaque visuel</li>
+          <li>Résultat en ligne dans les 10 min après le match</li>
+        </ul>
+        <div class="aa-result ap">Le sponsor prend la proposition au sérieux.</div>
+      </div>
+    </div>
+
+    <div class="highlight-blue">
+      La différence ne vient pas du budget ni du nombre de matchs gagnés. Elle vient de l'image. Et l'image, ça se construit — avec les bons outils.
+    </div>
+  </div>
+  <div class="page-footer">Page 10 sur 14</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 13 — AVANT / APRÈS ARGUMENTAIRE SPONSOR
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="content-page">
+    <div class="page-header">
+      <span class="page-chapter">Partie 04</span>
+      <div class="page-sep"></div>
+      <span class="page-title">Ce que ça change pour vos sponsors</span>
+      <span class="page-num">13</span>
+    </div>
+
+    <div class="section-title">L'argument sponsoring avant et après</div>
+    <p class="body-text">Voici comment se présente votre proposition de partenariat, selon que vous avez ou non une identité visuelle professionnelle.</p>
+
+    <div class="aa-cols" style="margin-bottom:20px;">
+      <div style="border:1px solid #FECACA;border-radius:10px;overflow:hidden;">
+        <div style="background:var(--red-light);padding:10px 16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--red);">Sans image pro</div>
+        <div style="padding:14px 16px;">
+          <p style="font-size:12px;line-height:1.65;color:var(--muted);font-style:italic;">"Bonjour, nous cherchons des sponsors pour notre club. En échange, votre logo sera affiché sur notre maillot et on en parlera sur Facebook."</p>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px;">Ce que le sponsor entend</div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:4px;">
+              <li style="font-size:12px;padding-left:14px;position:relative;color:var(--red);">⚠ Visibilité floue, non mesurable</li>
+              <li style="font-size:12px;padding-left:14px;position:relative;color:var(--red);">⚠ Pas de contrepartie concrète</li>
+              <li style="font-size:12px;padding-left:14px;position:relative;color:var(--red);">⚠ Image du club peu professionnelle</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div style="border:1px solid #A7F3D0;border-radius:10px;overflow:hidden;">
+        <div style="background:var(--green-light);padding:10px 16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);">Avec image pro (Klubik)</div>
+        <div style="padding:14px 16px;">
+          <p style="font-size:12px;line-height:1.65;color:var(--ink);font-style:italic;">"Votre logo apparaîtra sur nos 5 formats de publication récurrents, soit une moyenne de 12 visuels par mois atteignant notre communauté de 500 personnes engagées."</p>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px;">Ce que le sponsor entend</div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:4px;">
+              <li style="font-size:12px;padding-left:14px;position:relative;color:var(--green);">✓ Visibilité précise et mesurable</li>
+              <li style="font-size:12px;padding-left:14px;position:relative;color:var(--green);">✓ Contreparties concrètes listées</li>
+              <li style="font-size:12px;padding-left:14px;position:relative;color:var(--green);">✓ Club sérieux, organisé, professionnel</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-soft">
+      <strong>La clé :</strong> quand vos visuels sont professionnels, votre proposition de sponsoring devient crédible. Les stats Facebook et Instagram (vues, partages, portée) deviennent vos arguments de vente. C'est mesurable, donc c'est vendable.
+    </div>
+
+    <div style="background:var(--surface);border-radius:10px;padding:20px 22px;border:1px solid var(--border);">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:12px;">L'argument chiffré à utiliser avec vos sponsors</div>
+      <p style="font-size:13px;line-height:1.7;color:var(--ink);">"Si nos publications font 3 000 vues par semaine, est-ce que vous avez 3 000 personnes qui voient votre vitrine chaque semaine ? C'est ce que nous vous proposons — et c'est mesurable."</p>
+    </div>
+  </div>
+  <div class="page-footer">Page 11 sur 14</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 14 — CHAPITRE 5 INTRO
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="chapter-page">
+    <div class="chapter-label">Partie 05</div>
+    <h2>La solution Klubik</h2>
+    <p>Des packs de design clé en main, pensés pour les clubs amateurs. Votre logo, vos couleurs, vos templates Canva — livrés prêts à l'emploi.</p>
+    <div class="chapter-bg-num">05</div>
+  </div>
+  <div class="page-footer page-footer--dark">Page 12 sur 14</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 15 — SOLUTION KLUBIK
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="content-page">
+    <div class="page-header">
+      <span class="page-chapter">Partie 05</span>
+      <div class="page-sep"></div>
+      <span class="page-title">La solution Klubik</span>
+      <span class="page-num">15</span>
+    </div>
+
+    <p class="body-text">Vous avez compris l'enjeu. La question, c'est maintenant : comment y arriver sans y passer des semaines, sans compétences en design, et sans exploser votre budget ?</p>
+    <p class="body-text" style="margin-bottom:22px;">C'est exactement pour ça que Klubik existe. Nous créons votre identité visuelle complète et vos templates Canva prêts à l'emploi — pour que votre club ait l'image qu'il mérite, dès maintenant.</p>
+
+    <div class="solution-wrap">
+      <div class="solution-top">
+        <h3>Klubik — L'image pro pour les clubs amateurs</h3>
+        <p>Tout ce qu'il faut pour communiquer comme un grand club et attirer des sponsors.</p>
+      </div>
+      <div class="solution-row">
+        <div class="sol-check">✓</div>
+        <div>
+          <div class="sol-title">Logo professionnel vectoriel</div>
+          <div class="sol-text">Créé aux couleurs de votre club, déclinable sur tous les supports. Fourni en SVG, PNG fond transparent, et versions fond clair/foncé.</div>
+        </div>
+      </div>
+      <div class="solution-row">
+        <div class="sol-check">✓</div>
+        <div>
+          <div class="sol-title">Charte graphique complète</div>
+          <div class="sol-text">Vos couleurs exactes, vos polices, vos règles d'utilisation du logo. Le document de référence pour toute votre communication.</div>
+        </div>
+      </div>
+      <div class="solution-row">
+        <div class="sol-check">✓</div>
+        <div>
+          <div class="sol-title">Templates Canva prêts à l'emploi</div>
+          <div class="sol-text">Jour de match, composition, résultat, story live, post "présenté par" — et bien d'autres. Aux couleurs de votre club, avec espace logo sponsor intégré.</div>
+        </div>
+      </div>
+      <div class="solution-row">
+        <div class="sol-check">✓</div>
+        <div>
+          <div class="sol-title">Utilisation en totale autonomie</div>
+          <div class="sol-text">N'importe quel bénévole peut créer un visuel professionnel en 2 minutes. Pas besoin de graphiste, pas besoin de compétences techniques.</div>
+        </div>
+      </div>
+      <div class="solution-row">
+        <div class="sol-check">✓</div>
+        <div>
+          <div class="sol-title">Cohérence garantie</div>
+          <div class="sol-text">Vos couleurs et polices sont verrouillées dans chaque template. Impossible de "casser" votre identité visuelle — même après un an de publications.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-soft">
+      Vous vous concentrez sur votre club. Klubik s'occupe de votre image.
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:4px;">
+      <div style="text-align:center;padding:14px;border:1px solid var(--border);border-radius:8px;">
+        <div class="feature-icon" style="margin:0 auto 8px;"><i data-lucide="zap"></i></div>
+        <div style="font-size:12px;font-weight:700;margin-bottom:3px;">Livraison rapide</div>
+        <div style="font-size:11px;color:var(--muted);">Vos templates livrés en moins de 7 jours</div>
+      </div>
+      <div style="text-align:center;padding:14px;border:1px solid var(--border);border-radius:8px;">
+        <div class="feature-icon" style="margin:0 auto 8px;"><i data-lucide="target"></i></div>
+        <div style="font-size:12px;font-weight:700;margin-bottom:3px;">Adapté à votre club</div>
+        <div style="font-size:11px;color:var(--muted);">Vos couleurs, votre logo, votre identité</div>
+      </div>
+      <div style="text-align:center;padding:14px;border:1px solid var(--border);border-radius:8px;">
+        <div class="feature-icon" style="margin:0 auto 8px;"><i data-lucide="infinity"></i></div>
+        <div style="font-size:12px;font-weight:700;margin-bottom:3px;">À vie</div>
+        <div style="font-size:11px;color:var(--muted);">Vos templates vous appartiennent pour toujours</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">Page 13 sur 14</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAGE 16 — CTA
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="cta-page">
+    <div class="cta-eyebrow">Passez à l'action</div>
+    <h2>Prêt à donner à votre club l'image qu'il mérite ?</h2>
+    <p>Contactez-nous pour découvrir nos packs et recevoir un devis personnalisé pour votre club.</p>
+    <div class="cta-contacts">
+      <div class="cta-contact">
+        <span class="cta-contact-icon"><i data-lucide="globe"></i></span>
+        <span>klubik.pro</span>
+      </div>
+      <div class="cta-contact">
+        <span class="cta-contact-icon"><i data-lucide="message-circle"></i></span>
+        <span>WhatsApp : +33 6 95 97 17 15</span>
+      </div>
+      <div class="cta-contact">
+        <span class="cta-contact-icon"><i data-lucide="mail"></i></span>
+        <span>contact.klubik@gmail.com</span>
+      </div>
+      <div class="cta-contact">
+        <span class="cta-contact-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+        </span>
+        <span>Instagram : @klubik.pro</span>
+      </div>
+    </div>
+    <div class="cta-tagline">Klubik — L'image pro pour les clubs amateurs</div>
+  </div>
+  <div class="page-footer page-footer--dark">Page 14 sur 14</div>
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendrier Éditorial Klubik — Saison 2026/2027</title>
+  <style>
+    :root {
+      --blue:        #1353F4;
+      --blue-dark:   #0C3ECC;
+      --blue-light:  #EEF3FF;
+      --perf:        #EA8C00;
+      --perf-light:  #FEF3C7;
+      --elite:       #7C3AED;
+      --elite-light: #EDE9FE;
+      --ink:         #1A1A1A;
+      --muted:       #6B7280;
+      --border:      #E8EAED;
+      --surface:     #F8F9FC;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: #fff;
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    /* ── COUVERTURE ── */
+    .cover {
+      background: var(--blue);
+      color: #fff;
+      height: 360px;
+      display: flex;
+      align-items: center;
+      padding: 60px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Cercles décoratifs CSS */
+    .cover::before {
+      content: '';
+      position: absolute;
+      right: -80px;
+      top: -100px;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      border: 64px solid rgba(255,255,255,.07);
+    }
+    .cover::after {
+      content: '';
+      position: absolute;
+      right: 120px;
+      bottom: -120px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      border: 40px solid rgba(255,255,255,.05);
+    }
+
+    .cover-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+    }
+
+    .cover-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: .6;
+      margin-bottom: 20px;
+    }
+
+    .cover h1 {
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 1.02;
+      letter-spacing: -2px;
+      margin-bottom: 18px;
+    }
+
+    .cover-sub {
+      font-size: 14px;
+      opacity: .7;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .cover-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .cover-pill {
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .3px;
+    }
+
+    /* Badge "version de travail" */
+    .draft-ribbon {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      z-index: 2;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.3);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 5px 14px;
+      border-radius: 100px;
+    }
+
+    /* Ligne décorative en bas de couverture */
+    .cover-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(255,255,255,.15);
+    }
+
+    /* ── LÉGENDE ── */
+    .legend {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 28px 56px;
+      page-break-after: always;
+    }
+    .legend-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .legend-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .legend-pack-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 8px;
+    }
+    .legend-pack-title.essentiel  { color: var(--blue); }
+    .legend-pack-title.performance { color: var(--perf); }
+    .legend-pack-title.elite       { color: var(--elite); }
+    .legend-pack-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    /* ── BADGES ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+    .badge-e  { background: var(--blue-light);  color: var(--blue-dark); }
+    .badge-p  { background: var(--perf-light);  color: #92400E; }
+    .badge-el { background: var(--elite-light); color: #5B21B6; }
+
+    /* ── MOIS ── */
+    .month-wrap {
+      padding: 36px 56px 0;
+      page-break-after: always;
+    }
+    .month-wrap:last-child { padding-bottom: 48px; }
+
+    .month-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .month-name {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: -.5px;
+    }
+    .month-year {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .month-specials {
+      margin-left: auto;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .month-specials-label {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    /* ── TABLEAU CALENDRIER ── */
+    .cal {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,.07);
+      margin-bottom: 36px;
+    }
+    .cal thead th {
+      background: var(--blue);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .cal thead th.we { background: var(--blue-dark); }
+
+    .cal tbody tr { border-bottom: 1px solid var(--border); }
+    .cal tbody tr:last-child { border-bottom: none; }
+
+    .cal tbody td {
+      padding: 8px 10px;
+      vertical-align: top;
+      border-right: 1px solid var(--border);
+      width: calc(100% / 7);
+    }
+    .cal tbody td:last-child { border-right: none; }
+    .cal tbody td.we    { background: #FAFBFF; }
+    .cal tbody td.empty { background: transparent; }
+
+    .cell-date {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .cell-tags {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .cat-note {
+      font-size: 9px;
+      color: var(--muted);
+      margin-top: 2px;
+      font-style: italic;
+    }
+
+    /* ── PAGE GUIDE ── */
+    .guide {
+      background: #fff;
+      padding: 28px 56px 24px;
+      page-break-after: always;
+    }
+    .guide-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .guide-tag {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+    }
+    .guide-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: -.5px;
+      padding: 6px 16px;
+      background: var(--blue-light);
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .guide-intro {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--ink);
+      margin-bottom: 16px;
+      max-width: 820px;
+    }
+    .guide-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .guide-block {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+    }
+    .guide-block-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--blue);
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--blue-light);
+    }
+    .guide-days {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .guide-day {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+    .guide-day-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--blue);
+      background: var(--blue-light);
+      border-radius: 4px;
+      padding: 3px 6px;
+      text-align: center;
+    }
+    .guide-day-label.we {
+      background: var(--blue);
+      color: #fff;
+    }
+    .guide-day-text {
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--ink);
+    }
+    .guide-tips {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .guide-tip {
+      display: flex;
+      gap: 8px;
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--ink);
+    }
+    .guide-tip-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--blue);
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+    .guide-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .guide-stat {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .guide-stat-num {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1;
+    }
+    .guide-stat-label {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 3px;
+      line-height: 1.35;
+    }
+
+    /* ── IMPRESSION ── */
+    @media print {
+      body { background: #fff; }
+
+      .cover {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .cover::before,
+      .cover::after {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .cal thead {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .badge {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .guide-block-title,
+      .guide-day-label,
+      .guide-stat,
+      .guide-title {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .draft-ribbon {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .month-wrap { page-break-after: always; padding: 24px 40px 0; }
+      .legend { padding: 16px 40px; }
+      .guide  { padding: 20px 40px 16px; }
+    }
+
+    @page { size: A4 landscape; margin: 0; }
+  </style>
+</head>
+<body>
+
+<!-- COUVERTURE -->
+<div class="cover">
+  <div class="draft-ribbon">Version de travail</div>
+  <div class="cover-inner">
+    <div class="cover-eyebrow">Klubik · Clubs sportifs amateurs</div>
+    <h1>Calendrier<br>Éditorial<br>Saison 2026/27</h1>
+    <div class="cover-sub">
+      Planification des contenus réseaux sociaux<br>
+      Catégories jeunes &amp; séniors
+    </div>
+    <div class="cover-pills">
+      <div class="cover-pill">31 templates Canva</div>
+      <div class="cover-pill">Août 2026 → Juillet 2027</div>
+      <div class="cover-pill">4 publications / semaine</div>
+    </div>
+  </div>
+  <div class="cover-line"></div>
+</div>
+
+<!-- LÉGENDE -->
+<div class="legend">
+  <div class="legend-title">Templates disponibles par pack</div>
+  <div class="legend-grid">
+    <div>
+      <div class="legend-pack-title essentiel">Pack Essentiel</div>
+      <div class="legend-pack-items" id="legend-e"></div>
+    </div>
+    <div>
+      <div class="legend-pack-title performance">Pack Performance</div>
+      <div class="legend-pack-items" id="legend-p"></div>
+    </div>
+    <div>
+      <div class="legend-pack-title elite">Pack Élite</div>
+      <div class="legend-pack-items" id="legend-el"></div>
+    </div>
+  </div>
+</div>
+
+<!-- GUIDE D'UTILISATION -->
+<div class="guide">
+
+  <div class="guide-header">
+    <span class="guide-tag">Vos premiers pas avec</span>
+    <span class="guide-title">Le Média Planning</span>
+  </div>
+
+  <p class="guide-intro">
+    Bienvenue dans votre média planning conçu spécialement pour les clubs amateurs qui veulent grandir !
+    Ce document vous aide à organiser votre communication sur les réseaux sociaux tout au long de la saison,
+    sans y passer des heures. Suivez le rythme proposé, adaptez les contenus à votre actualité,
+    et communiquez comme un grand club.
+  </p>
+
+  <div class="guide-stats">
+    <div class="guide-stat">
+      <div class="guide-stat-num">4</div>
+      <div class="guide-stat-label">posts par semaine en saison</div>
+    </div>
+    <div class="guide-stat">
+      <div class="guide-stat-num">31</div>
+      <div class="guide-stat-label">templates Canva prêts à l'emploi</div>
+    </div>
+    <div class="guide-stat">
+      <div class="guide-stat-num">12</div>
+      <div class="guide-stat-label">mois de planification inclus</div>
+    </div>
+    <div class="guide-stat">
+      <div class="guide-stat-num">0</div>
+      <div class="guide-stat-label">graphiste nécessaire</div>
+    </div>
+  </div>
+
+  <div class="guide-cols">
+
+    <div class="guide-block">
+      <div class="guide-block-title">Votre rythme hebdomadaire</div>
+      <div class="guide-days">
+        <div class="guide-day">
+          <span class="guide-day-label">LUNDI</span>
+          <span class="guide-day-text">Retours du week-end : résultats, homme du match, récap des catégories jeunes.</span>
+        </div>
+        <div class="guide-day">
+          <span class="guide-day-label">MERCREDI</span>
+          <span class="guide-day-text">Contenu variable : classement, citation du coach, joueur du mois, calendrier mensuel…</span>
+        </div>
+        <div class="guide-day">
+          <span class="guide-day-label we">VENDREDI</span>
+          <span class="guide-day-text">Annonce des matchs du week-end. Créez l'anticipation !</span>
+        </div>
+        <div class="guide-day">
+          <span class="guide-day-label we">SAM / DIM</span>
+          <span class="guide-day-text">Match day et résultats selon votre calendrier. Adaptez au(x) jour(s) où vous jouez.</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <div class="guide-block">
+        <div class="guide-block-title">Contenus spéciaux dans l'année</div>
+        <div class="guide-tips">
+          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Chaque mois, 1 ou 2 contenus bonus apparaissent (bilan mi-saison, buteur, JPO, détection…). Ils viennent en plus du rythme habituel.</span></div>
+          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Juin–juillet : rythme réduit à 2 posts/semaine — recrutement, bilans de saison, remerciements.</span></div>
+          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Août : reprise de prépa — matchs amicaux, nouveau staff jeunes, Journée Portes Ouvertes.</span></div>
+        </div>
+      </div>
+
+      <div class="guide-block">
+        <div class="guide-block-title">Conseils pratiques</div>
+        <div class="guide-tips">
+          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Préparez vos visuels en avance avec Canva — prévoyez 30 min le dimanche soir pour la semaine suivante.</span></div>
+          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Publiez des stories tout au long du week-end pour capter l'audience en temps réel.</span></div>
+          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Pensez à tous vos effectifs : alternez entre l'équipe 1, les jeunes et les féminines.</span></div>
+          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Prévoyez des posts pour les temps forts de l'année : Noël, Halloween, Octobre rose, vacances scolaires…</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- CALENDRIER -->
+<div id="cal-root"></div>
+
+<script>
+const PACKS = {
+  e: {
+    label: 'Pack Essentiel',
+    cls: 'badge-e',
+    items: [
+      'Match day','Résultat du match','Composition officielle','Homme du match',
+      'Annonce de recrutement','Annonce de signature','Classement du championnat',
+      'Annonce de match','Publication sponsor','Citation du coach'
+    ]
+  },
+  p: {
+    label: 'Pack Performance',
+    cls: 'badge-p',
+    items: [
+      'Stats match','Calendrier mensuel','Résultat mi-temps','Joueur·euse du mois',
+      'Anniv\'','Interview post-match','Infirmerie','Compte à rebours',
+      'Résumé de journée','Résultats catégories jeunes'
+    ]
+  },
+  el: {
+    label: 'Pack Élite',
+    cls: 'badge-el',
+    items: [
+      'Pres adversaire','Bilan mensuel','Bilan mi-saison','Buteur',
+      'Passeur','Pres staff','Pres partenaires','Signature de contrat',
+      'Nouveau sponsor','JPO','Détection / recrutement'
+    ]
+  }
+};
+
+const PACK_OF = {};
+for (const [key, data] of Object.entries(PACKS)) {
+  for (const name of data.items) PACK_OF[name] = key;
+}
+
+function badge(name, cat) {
+  const pack = PACK_OF[name];
+  if (!pack) return '';
+  const cls  = PACKS[pack].cls;
+  const note = cat ? `<div class="cat-note">${cat}</div>` : '';
+  return `<span class="badge ${cls}">${name}</span>${note}`;
+}
+
+function weekOfMonth(d) {
+  const first = new Date(d.getFullYear(), d.getMonth(), 1).getDay();
+  return Math.ceil((d.getDate() + (first === 0 ? 6 : first - 1)) / 7);
+}
+
+const OFF_SEASON = new Set([5, 6]);
+
+function getContent(date) {
+  const day = date.getDay();
+  const wom = weekOfMonth(date);
+  const m   = date.getMonth();
+  const res = [];
+  const add = (name, cat) => res.push({name, cat: cat || null});
+
+  if (OFF_SEASON.has(m)) {
+    if (day === 1) {
+      if (wom === 1) add('Bilan mi-saison',       m === 5 ? 'Bilan fin de saison' : 'Point avant reprise');
+      if (wom === 2) add('Annonce de signature',   'Nouvelle recrue');
+      if (wom === 3) add('Joueur·euse du mois',    'Meilleur·e de la saison');
+      if (wom === 4) add('Citation du coach',      'Message de fin de saison');
+    }
+    if (day === 4) {
+      if (wom === 1) add('Annonce de recrutement', 'Saison 2026/2027');
+      if (wom === 2) add('Pres partenaires',       m === 5 ? 'Remerciements partenaires' : 'Nos partenaires 26/27');
+      if (wom === 3) add('Détection / recrutement','Catégories jeunes');
+      if (wom === 4) add(m === 5 ? 'Publication sponsor' : 'Compte à rebours',
+                         m === 5 ? 'Remerciements sponsors' : 'Reprise de la saison');
+    }
+    return res;
+  }
+
+  if (m === 7) {
+    if (day === 3) {
+      if (wom === 1) add('Pres staff',        'Nouveaux éducateurs jeunes');
+      if (wom === 2) add('Calendrier mensuel','Planning prépa estivale');
+      if (wom === 3) add('JPO',               'Journée Portes Ouvertes');
+      if (wom === 4) add('Nouveau sponsor',   'Nouveau partenariat 26/27');
+    }
+    if (day === 5) add('Annonce de match',  'Match amical');
+    if (day === 6) add('Match day',         'Amical · Prépa');
+    if (day === 0) {
+      add('Résultat du match', 'Amical');
+      if (wom === 4) add('Compte à rebours', 'Début de championnat');
+    }
+    return res;
+  }
+
+  if (day === 5) add('Annonce de match', 'Sam ou dim selon votre calendrier');
+
+  if (day === 6) {
+    add('Match day', 'Séniors');
+    if (wom === 2) add('Résultat mi-temps', 'Live');
+  }
+  if (day === 0) {
+    add('Résultat du match', 'Toutes catégories');
+    if (wom === 4) add('Bilan mensuel', 'Bilan du mois');
+  }
+
+  if (day === 1) {
+    if (wom === 1) add('Résultats catégories jeunes', 'U7 → U18');
+    if (wom === 2) add('Homme du match',              'Équipe 1');
+    if (wom === 3) add('Résultats catégories jeunes', 'U7 → U18');
+    if (wom === 4) add('Stats match',                 'Chiffres du week-end');
+  }
+
+  if (day === 3) {
+    if (wom === 1) add('Calendrier mensuel',          'Programme du mois');
+    if (wom === 2) add('Classement du championnat',   'Séniors');
+    if (wom === 3) add('Citation du coach',           null);
+    if (wom === 4) add('Joueur·euse du mois',        'Vote communauté');
+  }
+
+  if (m === 8 && wom === 1 && day === 4) add('Pres adversaire',        '1re journée');
+  if (m === 8 && wom === 3 && day === 2) add('Détection / recrutement','Catégories jeunes');
+  if (m === 9 && wom === 2 && day === 2) add('Buteur',  'Classement buteurs');
+  if (m === 9 && wom === 4 && day === 2) add('Passeur', 'Classement passeurs');
+  if (m === 10 && wom === 1 && day === 4) add('Infirmerie',             'Point médical');
+  if (m === 10 && wom === 3 && day === 4) add('Annonce de recrutement', 'Mercato hivernal');
+  if (m === 11 && wom === 2 && day === 4) add('Pres partenaires', 'Bilan partenariats');
+  if (m === 11 && wom === 4 && day === 2) add('Bilan mi-saison',  'Bilan automne');
+  if (m === 0 && wom === 1 && day === 4) add('Bilan mi-saison', 'Bilan aller');
+  if (m === 0 && wom === 3 && day === 4) add('Pres staff',      'Corps technique');
+  if (m === 1 && wom === 1 && day === 4) add('Infirmerie', 'Point médical');
+  if (m === 1 && wom === 3 && day === 2) add('Buteur',     'Top marqueurs');
+  if (m === 2 && wom === 1 && day === 2) add('Passeur',       'Top passeurs');
+  if (m === 2 && wom === 3 && day === 4) add('Pres adversaire','Match décisif');
+  if (m === 3 && wom === 1 && day === 4) add('Annonce de signature',    'Recrue confirmée');
+  if (m === 3 && wom === 3 && day === 4) add('Détection / recrutement', 'Saison suivante');
+  if (m === 4 && wom === 1 && day === 4) add('Annonce de recrutement', 'Saison 26/27');
+  if (m === 4 && wom === 3 && day === 2) add('Bilan mi-saison',        'Fin de saison régulière');
+
+  return res;
+}
+
+const MONTH_NAMES = [
+  'Janvier','Février','Mars','Avril','Mai','Juin',
+  'Juillet','Août','Septembre','Octobre','Novembre','Décembre'
+];
+const DAY_LABELS = ['LUNDI','MARDI','MERCREDI','JEUDI','VENDREDI','SAMEDI','DIMANCHE'];
+
+const MONTH_HIGHLIGHTS = {
+  0:  ['Bilan mi-saison','Pres staff'],
+  1:  ['Infirmerie','Buteur'],
+  2:  ['Passeur','Pres adversaire'],
+  3:  ['Annonce de signature','Détection / recrutement'],
+  4:  ['Annonce de recrutement','Bilan mi-saison'],
+  5:  ['Bilan mi-saison','Annonce de recrutement','Pres partenaires','Détection / recrutement'],
+  6:  ['Annonce de signature','Pres staff','Compte à rebours'],
+  7:  ['JPO','Pres staff','Calendrier mensuel','Annonce de match','Compte à rebours'],
+  8:  ['Pres adversaire','Détection / recrutement'],
+  9:  ['Buteur','Passeur'],
+  10: ['Infirmerie','Annonce de recrutement'],
+  11: ['Pres partenaires','Bilan mi-saison'],
+};
+
+function renderMonth(year, month) {
+  const first    = new Date(year, month, 1);
+  const last     = new Date(year, month + 1, 0);
+  const firstDow = first.getDay() === 0 ? 6 : first.getDay() - 1;
+
+  const highlights = MONTH_HIGHLIGHTS[month] || [];
+  const hlHTML = highlights.length
+    ? `<div class="month-specials">
+         <span class="month-specials-label">Temps forts :</span>
+         ${highlights.map(h => badge(h)).join('')}
+       </div>`
+    : '';
+
+  let html = `
+    <div class="month-wrap">
+      <div class="month-header">
+        <span class="month-name">${MONTH_NAMES[month]}</span>
+        <span class="month-year">${year}</span>
+        ${hlHTML}
+      </div>
+      <table class="cal">
+        <thead>
+          <tr>
+            ${DAY_LABELS.map((l, i) => `<th class="${i >= 5 ? 'we' : ''}">${l}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+  `;
+
+  const weeks = Math.ceil((firstDow + last.getDate()) / 7);
+  for (let w = 0; w < weeks; w++) {
+    html += '<tr>';
+    for (let d = 0; d < 7; d++) {
+      const dayNum = w * 7 + d - firstDow + 1;
+      const isWE   = d >= 5;
+      if (dayNum < 1 || dayNum > last.getDate()) {
+        html += `<td class="${isWE ? 'we' : ''} empty"></td>`;
+      } else {
+        const date     = new Date(year, month, dayNum);
+        const items    = getContent(date);
+        const tagsHTML = items.map(i => badge(i.name, i.cat)).join('');
+        html += `
+          <td class="${isWE ? 'we' : ''}">
+            <div class="cell-date">${dayNum}</div>
+            <div class="cell-tags">${tagsHTML}</div>
+          </td>`;
+      }
+    }
+    html += '</tr>';
+  }
+
+  html += '</tbody></table></div>';
+  return html;
+}
+
+document.getElementById('legend-e').innerHTML  = PACKS.e.items.map(n => badge(n)).join(' ');
+document.getElementById('legend-p').innerHTML  = PACKS.p.items.map(n => badge(n)).join(' ');
+document.getElementById('legend-el').innerHTML = PACKS.el.items.map(n => badge(n)).join(' ');
+
+const SAISON = [
+  [2026, 7],[2026, 8],[2026, 9],[2026, 10],[2026, 11],
+  [2027, 0],[2027, 1],[2027, 2],[2027, 3],[2027, 4],[2027, 5],[2027, 6]
+];
+const root = document.getElementById('cal-root');
+for (const [year, month] of SAISON) {
+  root.innerHTML += renderMonth(year, month);
+}
+</script>
+</body>
+</html>

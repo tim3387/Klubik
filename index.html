@@ -5,18 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Klubik — Marketing sportif pour clubs amateurs</title>
   <meta name="description" content="Klubik est une agence de marketing sportif pour clubs amateurs : logos, maillots, templates Canva et supports de communication. Une image professionnelle à prix accessible." />
-  <link rel="canonical" href="https://klubik.fr/" />
+  <link rel="canonical" href="https://klubik.pro/" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PDBNFLX6NJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PDBNFLX6NJ');
+  </script>
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://klubik.fr/" />
+  <meta property="og:url" content="https://klubik.pro/" />
   <meta property="og:title" content="Klubik — Marketing sportif pour clubs amateurs" />
   <meta property="og:description" content="Logos, maillots, templates Canva et supports de communication pour clubs amateurs. Une image pro à prix accessible." />
-  <meta property="og:image" content="https://klubik.fr/assets/images/og-image.jpg" />
+  <meta property="og:image" content="https://klubik.pro/assets/images/og-image.jpg" />
   <meta property="og:locale" content="fr_FR" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Klubik — Marketing sportif pour clubs amateurs" />
   <meta name="twitter:description" content="Logos, maillots, templates Canva et supports de communication pour clubs amateurs." />
-  <meta name="twitter:image" content="https://klubik.fr/assets/images/og-image.jpg" />
+  <meta name="twitter:image" content="https://klubik.pro/assets/images/og-image.jpg" />
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -509,6 +517,9 @@
         <span class="eyebrow">Nos packs</span>
         <h2>Une offre pour chaque<br/>ambition de club.</h2>
         <p class="section-sub">Des offres pensées pour les clubs amateurs, selon leur niveau de besoin et leur budget.</p>
+        <div class="packs-launch-badge">
+          <span class="hero-eyebrow">🎉 Prix de lancement</span>
+        </div>
       </div>
 
       <!-- ─── Packs essentiels : Klubik + Klubik+ ─── -->
@@ -705,9 +716,9 @@
               <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               contact.klubik@gmail.com
             </a>
-            <a href="https://instagram.com/klubik.fr" class="reach-item">
+            <a href="https://instagram.com/klubik.pro" class="reach-item">
               <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-              @klubik.fr
+              @klubik.pro
             </a>
           </div>
         </div>
@@ -790,6 +801,7 @@
         <a href="mentions-legales.html">Mentions légales</a>
         <a href="cgv.html">CGV</a>
         <a href="cgu.html">CGU</a>
+        <a href="confidentialite.html">Confidentialité</a>
       </div>
     </div>
   </footer>
@@ -805,12 +817,12 @@
     "@context": "https://schema.org",
     "@type": ["Organization", "LocalBusiness"],
     "name": "Klubik",
-    "url": "https://klubik.fr",
-    "logo": "https://klubik.fr/assets/images/logo.png",
+    "url": "https://klubik.pro",
+    "logo": "https://klubik.pro/assets/images/logo.png",
     "description": "Agence de marketing sportif pour clubs amateurs : logos, maillots, templates Canva et supports de communication.",
     "telephone": "+33695971715",
     "email": "contact.klubik@gmail.com",
-    "sameAs": ["https://instagram.com/klubik.fr"],
+    "sameAs": ["https://instagram.com/klubik.pro"],
     "serviceType": "Marketing sportif",
     "areaServed": { "@type": "Country", "name": "France" },
     "offers": [
@@ -822,7 +834,52 @@
     ]
   }
   </script>
+  <!-- ══════════════ POPUP GUIDE IMAGE PRO ══════════════ -->
+  <div class="popup-overlay" id="popupGuide" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-hidden="true">
+    <div class="popup-card">
+      <button class="popup-close" id="popupClose" aria-label="Fermer le popup">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <span class="popup-badge">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Guide gratuit
+      </span>
+
+      <h2 class="popup-title" id="popupTitle">Soignez l'image<br/>de votre club.</h2>
+      <p class="popup-sub">Recevez notre guide pratique pour construire une identité visuelle professionnelle — même sans graphiste.</p>
+
+      <form class="popup-form" id="popupForm" novalidate>
+        <div class="field">
+          <label for="popup-name">Prénom &amp; Nom</label>
+          <input type="text" id="popup-name" name="popup_name" placeholder="Jean Dupont" required autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="popup-email">Email</label>
+          <input type="email" id="popup-email" name="popup_email" placeholder="jean@monclub.fr" required autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="popup-club">Club</label>
+          <input type="text" id="popup-club" name="popup_club" placeholder="AS Montpellier Handball" autocomplete="organization" />
+        </div>
+        <button type="submit" class="btn-blue popup-submit">Recevoir le guide →</button>
+        <p class="popup-hint">Pas de spam. Désabonnement en 1 clic.</p>
+      </form>
+
+      <div class="popup-success" id="popupSuccess" hidden>
+        <div class="popup-success-icon">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <p class="popup-success-title">Guide envoyé !</p>
+        <p class="popup-success-sub">Vérifiez votre boîte mail dans quelques instants.</p>
+        <a href="guide-image-pro/guide-image-pro.html" target="_blank" rel="noopener" class="btn-blue popup-dl-btn">Accéder au guide →</a>
+      </div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <!-- EmailJS SDK — nécessaire pour l'envoi automatique du guide -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
