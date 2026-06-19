@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Klubik — Tableau des marges</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:      #1353F4;
+      --blue-dark: #0C3ECC;
+      --blue-bg:   #EEF3FF;
+      --black:     #0A0A0A;
+      --ink:       #1A1A1A;
+      --muted:     #6B7280;
+      --border:    #E8EAED;
+      --surface:   #F8F9FC;
+      --green:     #16A34A;
+      --orange:    #D97706;
+      --red:       #DC2626;
+      --green-bg:  #F0FDF4;
+      --orange-bg: #FFFBEB;
+      --red-bg:    #FEF2F2;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--surface);
+      color: var(--ink);
+      padding: 40px 24px 80px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .wrapper { max-width: 1080px; margin: 0 auto; }
+
+    /* ── Header ── */
+    header { margin-bottom: 32px; }
+    .brand { font-size: 22px; font-weight: 800; color: var(--blue); letter-spacing: -0.5px; }
+    .brand span { color: var(--black); }
+    header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+    /* ── Panneau de contrôle ── */
+    .controls {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .ctrl-group label.ctrl-title {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 13.5px;
+      cursor: pointer;
+    }
+    .toggle-row input[type="checkbox"] {
+      accent-color: var(--blue);
+      width: 15px; height: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .toggle-row .rate-badge {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--surface);
+      color: var(--muted);
+      padding: 2px 6px;
+      border-radius: 20px;
+    }
+    .ctrl-sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; margin-left: 23px; }
+
+    /* IR modes */
+    .ir-options { display: flex; flex-direction: column; gap: 8px; }
+    .ir-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      cursor: pointer;
+    }
+    .ir-option input[type="radio"] { accent-color: var(--blue); width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; }
+    .ir-tmi-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 23px;
+      margin-top: 4px;
+    }
+    .ir-tmi-wrap input[type="number"] {
+      width: 60px;
+      padding: 4px 8px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      text-align: right;
+    }
+    .ir-tmi-wrap input:focus { outline: none; border-color: var(--blue); }
+    .ir-tmi-wrap span { font-size: 13px; color: var(--muted); }
+
+    /* ── Sections ── */
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    /* ── Table ── */
+    .table-wrap {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      overflow-x: auto;
+    }
+
+    table { width: 100%; border-collapse: collapse; min-width: 700px; }
+
+    thead th {
+      background: var(--surface);
+      padding: 10px 12px;
+      text-align: right;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    thead th:first-child { text-align: left; }
+
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #FAFBFF; }
+
+    td { padding: 11px 12px; vertical-align: middle; text-align: right; }
+    td:first-child { text-align: left; }
+
+    .product-name { font-weight: 600; font-size: 14px; white-space: nowrap; }
+    .product-sub  { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* Colonnes masquables */
+    .col-stripe, .col-urssaf, .col-ir { transition: opacity 0.15s; }
+    .col-hidden { display: none; }
+
+    /* Valeurs déductibles */
+    .deduction { color: var(--red); font-size: 13px; }
+    .ca-val    { font-weight: 600; font-size: 13px; }
+
+    /* Input coût */
+    .cost-input {
+      width: 80px;
+      padding: 5px 8px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      text-align: right;
+      color: var(--ink);
+      background: white;
+      transition: border-color 0.15s;
+    }
+    .cost-input:focus { outline: none; border-color: var(--blue); }
+
+    /* Net final */
+    .net-eur { font-weight: 700; font-size: 14px; }
+    .net-pct-wrap { display: inline-block; font-weight: 700; font-size: 12px; padding: 3px 7px; border-radius: 20px; }
+    .good   { background: var(--green-bg);  color: var(--green); }
+    .medium { background: var(--orange-bg); color: var(--orange); }
+    .bad    { background: var(--red-bg);    color: var(--red); }
+    .empty  { background: var(--surface);   color: var(--muted); }
+
+    /* ── Résumé ── */
+    .summary {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 24px;
+    }
+    .summary h3 { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+    .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+    .summary-card { background: var(--surface); border-radius: 8px; padding: 14px; }
+    .summary-card .lbl { font-size: 11px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+    .summary-card .val { font-size: 24px; font-weight: 800; color: var(--ink); }
+    .summary-card .sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+    /* ── Infos déductions ── */
+    .deductions-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .info-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .info-card .i-title { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .info-card .i-rate  { font-size: 20px; font-weight: 800; color: var(--blue); }
+    .info-card .i-base  { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .info-card .i-note  { font-size: 11px; color: var(--muted); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
+
+    /* ── Légende ── */
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+    .legend span { display: flex; align-items: center; gap: 5px; }
+
+    footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 48px; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <header>
+    <div class="brand">klubi<span>k</span> <span style="color:var(--muted);font-weight:400;font-size:16px;">/ tableau des marges</span></div>
+    <p>Outil interne — non indexé · Les coûts sont sauvegardés dans ce navigateur</p>
+  </header>
+
+  <!-- Panneau de contrôle -->
+  <div class="controls">
+
+    <!-- Stripe -->
+    <div class="ctrl-group">
+      <label class="ctrl-title">Frais de paiement</label>
+      <label class="toggle-row">
+        <input type="checkbox" id="stripeToggle" checked />
+        Frais Stripe
+        <span class="rate-badge">1,5 % + 0,25 €</span>
+      </label>
+      <div class="ctrl-sub">Cartes européennes (taux standard)</div>
+    </div>
+
+    <!-- URSSAF -->
+    <div class="ctrl-group">
+      <label class="ctrl-title">Charges sociales</label>
+      <label class="toggle-row">
+        <input type="checkbox" id="urssafToggle" checked />
+        URSSAF auto-entrepreneur
+        <span class="rate-badge">21,2 %</span>
+      </label>
+      <div class="ctrl-sub">Prestation de services BIC — taux 2024-2025<br/>Calculé sur le CA, pas sur le bénéfice</div>
+    </div>
+
+    <!-- Impôt sur le revenu -->
+    <div class="ctrl-group">
+      <label class="ctrl-title">Impôt sur le revenu</label>
+      <div class="ir-options">
+        <label class="ir-option">
+          <input type="radio" name="ir" value="none" checked /> Aucun (je calcule ailleurs)
+        </label>
+        <label class="ir-option">
+          <input type="radio" name="ir" value="vl" /> Versement libératoire — 1,7 % du CA
+        </label>
+        <label class="ir-option">
+          <input type="radio" name="ir" value="tmi" /> Mon taux marginal (TMI)
+        </label>
+      </div>
+      <div class="ir-tmi-wrap" id="tmiWrap" style="display:none;">
+        <input type="number" id="tmiInput" min="0" max="90" value="30" />
+        <span>% sur 50 % du CA (abattement micro-BIC)</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Infos sur les déductions -->
+  <div class="deductions-info">
+    <div class="info-card">
+      <div class="i-title">Stripe</div>
+      <div class="i-rate" id="info-stripe">1,5 % + 0,25 €</div>
+      <div class="i-base">Appliqué sur le CA encaissé</div>
+      <div class="i-note">Déduit de ce que tu reçois réellement sur ton compte</div>
+    </div>
+    <div class="info-card">
+      <div class="i-title">URSSAF</div>
+      <div class="i-rate">21,2 %</div>
+      <div class="i-base">Appliqué sur le CA brut</div>
+      <div class="i-note">Déclaré et payé chaque mois ou trimestre. Comprend maladie, retraite, formation (0,3 %)</div>
+    </div>
+    <div class="info-card" id="info-ir-card">
+      <div class="i-title">Impôt sur le revenu</div>
+      <div class="i-rate" id="info-ir-rate">—</div>
+      <div class="i-base" id="info-ir-base">Sélectionne un mode ci-dessus</div>
+      <div class="i-note" id="info-ir-note">Le versement libératoire est optionnel (à cocher à la création ou en cours d'année si éligible)</div>
+    </div>
+  </div>
+
+  <!-- ════════════ PACKS ════════════ -->
+  <div class="section-title">Packs</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th>CA</th>
+          <th class="col-stripe">Stripe</th>
+          <th class="col-urssaf">URSSAF</th>
+          <th class="col-ir">IR estimé</th>
+          <th>Mon coût</th>
+          <th>Net final (€)</th>
+          <th>Net (%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-price="299">
+          <td><div class="product-name">Pack Klubik</div><div class="product-sub">Pack Canva · Calendrier 1 mois · Formation Canva</div></td>
+          <td class="ca-val">299 €</td>
+          <td class="col-stripe deduction stripe-val">—</td>
+          <td class="col-urssaf deduction urssaf-val">—</td>
+          <td class="col-ir deduction ir-val">—</td>
+          <td><input class="cost-input" type="number" min="0" placeholder="0" /></td>
+          <td class="net-eur-cell">—</td>
+          <td><span class="net-pct-wrap empty">—</span></td>
+        </tr>
+        <tr data-price="599">
+          <td><div class="product-name">Pack Klubik<sup>+</sup></div><div class="product-sub">Pack Canva · Calendrier 12 mois · Formation Canva</div></td>
+          <td class="ca-val">599 €</td>
+          <td class="col-stripe deduction stripe-val">—</td>
+          <td class="col-urssaf deduction urssaf-val">—</td>
+          <td class="col-ir deduction ir-val">—</td>
+          <td><input class="cost-input" type="number" min="0" placeholder="0" /></td>
+          <td class="net-eur-cell">—</td>
+          <td><span class="net-pct-wrap empty">—</span></td>
+        </tr>
+        <tr data-price="799">
+          <td><div class="product-name">Pack Terrain</div><div class="product-sub">Design maillot · Pack Klubik</div></td>
+          <td class="ca-val">799 €</td>
+          <td class="col-stripe deduction stripe-val">—</td>
+          <td class="col-urssaf deduction urssaf-val">—</td>
+          <td class="col-ir deduction ir-val">—</td>
+          <td><input class="cost-input" type="number" min="0" placeholder="0" /></td>
+          <td class="net-eur-cell">—</td>
+          <td><span class="net-pct-wrap empty">—</span></td>
+        </tr>
+        <tr data-price="1690">
+          <td><div class="product-name">Pack Identité</div><div class="product-sub">Design maillot · Logo · Pack Klubik+</div></td>
+          <td class="ca-val">1 690 €</td>
+          <td class="col-stripe deduction stripe-val">—</td>
+          <td class="col-urssaf deduction urssaf-val">—</td>
+          <td class="col-ir deduction ir-val">—</td>
+          <td><input class="cost-input" type="number" min="0" placeholder="0" /></td>
+          <td class="net-eur-cell">—</td>
+          <td><span class="net-pct-wrap empty">—</span></td>
+        </tr>
+        <tr data-price="1990">
+          <td><div class="product-name">Pack Saison</div><div class="product-sub">Design maillot · Logo · Pack Klubik+ · Bonus exclusifs</div></td>
+          <td class="ca-val">1 990 €</td>
+          <td class="col-stripe deduction stripe-val">—</td>
+          <td class="col-urssaf deduction urssaf-val">—</td>
+          <td class="col-ir deduction ir-val">—</td>
+          <td><input class="cost-input" type="number" min="0" placeholder="0" /></td>
+          <td class="net-eur-cell">—</td>
+          <td><span class="net-pct-wrap empty">—</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ════════════ KLUBIKITÉS ════════════ -->
+  <div class="section-title">Klubikités — à la carte</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th>CA</th>
+          <th class="col-stripe">Stripe</th>
+          <th class="col-urssaf">URSSAF</th>
+          <th class="col-ir">IR estimé</th>
+          <th>Mon coût</th>
+          <th>Net final (€)</th>
+          <th>Net (%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-price="990">
+          <td><div class="product-name">Logo</div><div class="product-sub">Création ou refonte complète</div></td>
+          <td class="ca-val">990 €</td>
+          <td class="col-stripe deduction stripe-val">—</td>
+          <td class="col-urssaf deduction urssaf-val">—</td>
+          <td class="col-ir deduction ir-val">—</td>
+          <td><input class="cost-input" type="number" min="0" placeholder="0" /></td>
+          <td class="net-eur-cell">—</td>
+          <td><span class="net-pct-wrap empty">—</span></td>
+        </tr>
+        <tr data-price="690">
+          <td><div class="product-name">Design maillot</div><div class="product-sub">Maillot domicile ou extérieur</div></td>
+          <td class="ca-val">690 €</td>
+          <td class="col-stripe deduction stripe-val">—</td>
+          <td class="col-urssaf deduction urssaf-val">—</td>
+          <td class="col-ir deduction ir-val">—</td>
+          <td><input class="cost-input" type="number" min="0" placeholder="0" /></td>
+          <td class="net-eur-cell">—</td>
+          <td><span class="net-pct-wrap empty">—</span></td>
+        </tr>
+        <tr data-price="99">
+          <td><div class="product-name">Calendrier de contenu 1 mois</div><div class="product-sub">Idées de publications, planning et recommandations</div></td>
+          <td class="ca-val">99 €</td>
+          <td class="col-stripe deduction stripe-val">—</td>
+          <td class="col-urssaf deduction urssaf-val">—</td>
+          <td class="col-ir deduction ir-val">—</td>
+          <td><input class="cost-input" type="number" min="0" placeholder="0" /></td>
+          <td class="net-eur-cell">—</td>
+          <td><span class="net-pct-wrap empty">—</span></td>
+        </tr>
+        <tr data-price="249">
+          <td><div class="product-name">Calendrier de contenu 6 mois</div><div class="product-sub">Planning structuré sur une demi-saison</div></td>
+          <td class="ca-val">249 €</td>
+          <td class="col-stripe deduction stripe-val">—</td>
+          <td class="col-urssaf deduction urssaf-val">—</td>
+          <td class="col-ir deduction ir-val">—</td>
+          <td><input class="cost-input" type="number" min="0" placeholder="0" /></td>
+          <td class="net-eur-cell">—</td>
+          <td><span class="net-pct-wrap empty">—</span></td>
+        </tr>
+        <tr data-price="399">
+          <td><div class="product-name">Calendrier de contenu 12 mois</div><div class="product-sub">Calendrier complet sur toute la saison</div></td>
+          <td class="ca-val">399 €</td>
+          <td class="col-stripe deduction stripe-val">—</td>
+          <td class="col-urssaf deduction urssaf-val">—</td>
+          <td class="col-ir deduction ir-val">—</td>
+          <td><input class="cost-input" type="number" min="0" placeholder="0" /></td>
+          <td class="net-eur-cell">—</td>
+          <td><span class="net-pct-wrap empty">—</span></td>
+        </tr>
+        <tr data-price="179">
+          <td><div class="product-name">Formation Canva</div><div class="product-sub">Prise en main des templates</div></td>
+          <td class="ca-val">179 €</td>
+          <td class="col-stripe deduction stripe-val">—</td>
+          <td class="col-urssaf deduction urssaf-val">—</td>
+          <td class="col-ir deduction ir-val">—</td>
+          <td><input class="cost-input" type="number" min="0" placeholder="0" /></td>
+          <td class="net-eur-cell">—</td>
+          <td><span class="net-pct-wrap empty">—</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Résumé -->
+  <div class="summary">
+    <h3>Résumé — produits renseignés</h3>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="lbl">Meilleur net %</div>
+        <div class="val" id="best-pct">—</div>
+        <div class="sub" id="best-name">remplis tes coûts</div>
+      </div>
+      <div class="summary-card">
+        <div class="lbl">Net moyen %</div>
+        <div class="val" id="avg-pct">—</div>
+        <div class="sub">tous produits renseignés</div>
+      </div>
+      <div class="summary-card">
+        <div class="lbl">Moins rentable</div>
+        <div class="val" id="worst-pct">—</div>
+        <div class="sub" id="worst-name">à surveiller</div>
+      </div>
+      <div class="summary-card">
+        <div class="lbl">Net si 1 vente de chaque</div>
+        <div class="val" id="total-net">—</div>
+        <div class="sub" id="total-sub">charges actives déduites</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Légende -->
+  <div class="legend">
+    <span><span class="net-pct-wrap good" style="font-size:11px;">▲ Confortable</span>&nbsp;≥ 40 %</span>
+    <span><span class="net-pct-wrap medium" style="font-size:11px;">◆ Correct</span>&nbsp;20 – 39 %</span>
+    <span><span class="net-pct-wrap bad" style="font-size:11px;">▼ Faible</span>&nbsp;< 20 %</span>
+    <span style="margin-left:auto;font-size:11px;">Net % = ce que tu gardes après toutes les déductions actives, rapporté au CA</span>
+  </div>
+
+  <footer>Outil interne Klubik · Données stockées localement · Non indexé · Taux URSSAF 2024-2025 BIC prestation de services</footer>
+</div>
+
+<script>
+  /* ── Taux ── */
+  const STRIPE_PCT  = 0.015;
+  const STRIPE_FLAT = 0.25;
+  const URSSAF_RATE = 0.212;  /* BIC prestation de services */
+  const VL_RATE     = 0.017;  /* versement libératoire BIC services */
+  const ABAT_BIC    = 0.50;   /* abattement forfaitaire micro-BIC */
+
+  const STORAGE_KEY = 'klubik_marges_v3';
+
+  /* Coûts par défaut — sous-traitance à chaque vente (scénario worst-case) */
+  const DEFAULTS = {
+    0: '160',   /* Pack Klubik */
+    1: '250',   /* Pack Klubik+ */
+    2: '510',   /* Pack Terrain */
+    3: '1200',  /* Pack Identité */
+    4: '1270',  /* Pack Saison */
+    5: '600',   /* Logo */
+    6: '350',   /* Design maillot */
+    7: '0',     /* Calendrier 1 mois */
+    8: '0',     /* Calendrier 6 mois */
+    9: '0',     /* Calendrier 12 mois */
+    10: '0',    /* Formation Canva */
+  };
+
+  /* ── Éléments ── */
+  const stripeToggle = document.getElementById('stripeToggle');
+  const urssafToggle = document.getElementById('urssafToggle');
+  const tmiInput     = document.getElementById('tmiInput');
+  const tmiWrap      = document.getElementById('tmiWrap');
+
+  function irMode()  { return document.querySelector('input[name="ir"]:checked').value; }
+  function tmiRate() { return parseFloat(tmiInput.value || 0) / 100; }
+
+  /* ── Calcul frais Stripe ── */
+  function stripeFee(ca) { return ca * STRIPE_PCT + STRIPE_FLAT; }
+
+  /* ── Calcul IR ── */
+  function irEstimated(ca) {
+    const mode = irMode();
+    if (mode === 'vl')  return ca * VL_RATE;
+    if (mode === 'tmi') return ca * ABAT_BIC * tmiRate();
+    return 0;
+  }
+
+  /* ── Classe couleur (seuils après charges) ── */
+  function netClass(pct) {
+    if (pct >= 40) return 'good';
+    if (pct >= 20) return 'medium';
+    return 'bad';
+  }
+
+  /* ── Mise à jour colonnes ── */
+  function updateColVisibility() {
+    const showStripe = stripeToggle.checked;
+    const showUrssaf = urssafToggle.checked;
+    const showIr     = irMode() !== 'none';
+
+    document.querySelectorAll('.col-stripe').forEach(el =>
+      el.classList.toggle('col-hidden', !showStripe));
+    document.querySelectorAll('.col-urssaf').forEach(el =>
+      el.classList.toggle('col-hidden', !showUrssaf));
+    document.querySelectorAll('.col-ir').forEach(el =>
+      el.classList.toggle('col-hidden', !showIr));
+
+    tmiWrap.style.display = irMode() === 'tmi' ? 'flex' : 'none';
+  }
+
+  /* ── Info cards ── */
+  function updateInfoCards() {
+    const mode = irMode();
+    const el   = {
+      rate: document.getElementById('info-ir-rate'),
+      base: document.getElementById('info-ir-base'),
+      note: document.getElementById('info-ir-note'),
+    };
+    if (mode === 'none') {
+      el.rate.textContent = '—';
+      el.base.textContent = 'Non activé';
+      el.note.textContent = 'Sélectionne un mode ci-dessus pour inclure l\'IR';
+    } else if (mode === 'vl') {
+      el.rate.textContent = '1,7 %';
+      el.base.textContent = 'Sur le CA brut';
+      el.note.textContent = 'Option à activer lors de la création ou en cours d\'année si éligible (revenu fiscal de référence sous plafond)';
+    } else {
+      el.rate.textContent = tmiInput.value + ' % × 50 %';
+      el.base.textContent = `Soit ${(parseFloat(tmiInput.value||0)/2).toFixed(1)} % du CA (après abattement micro-BIC)`;
+      el.note.textContent = 'L\'abattement forfaitaire de 50 % remplace les charges réelles en micro-BIC services';
+    }
+  }
+
+  /* ── Recalcul de toutes les lignes ── */
+  function updateAll() {
+    updateColVisibility();
+    updateInfoCards();
+
+    const withStripe = stripeToggle.checked;
+    const withUrssaf = urssafToggle.checked;
+
+    const results = [];
+
+    document.querySelectorAll('tr[data-price]').forEach(row => {
+      const ca       = parseFloat(row.dataset.price);
+      const stripe   = withStripe ? stripeFee(ca) : 0;
+      const urssaf   = withUrssaf ? ca * URSSAF_RATE : 0;
+      const ir       = irEstimated(ca);
+      const costVal  = row.querySelector('.cost-input').value;
+      const cost     = costVal !== '' ? parseFloat(costVal) : null;
+
+      /* Colonnes déductions */
+      row.querySelector('.stripe-val').textContent = withStripe ? '−' + stripe.toFixed(2) + ' €' : '—';
+      row.querySelector('.urssaf-val').textContent = withUrssaf ? '−' + urssaf.toFixed(2) + ' €' : '—';
+      row.querySelector('.ir-val').textContent     = irMode() !== 'none' ? '−' + ir.toFixed(2) + ' €' : '—';
+
+      /* Net */
+      const netCell   = row.querySelector('.net-eur-cell');
+      const pctSpan   = row.querySelector('.net-pct-wrap');
+
+      if (cost === null || costVal === '') {
+        const netNoCoût = ca - stripe - urssaf - ir;
+        netCell.textContent  = '— (sans coût)';
+        netCell.className    = 'net-eur-cell';
+        pctSpan.textContent  = '—';
+        pctSpan.className    = 'net-pct-wrap empty';
+        results.push(null);
+        return;
+      }
+
+      const net    = ca - stripe - urssaf - ir - cost;
+      const netPct = ca > 0 ? (net / ca) * 100 : 0;
+      const cls    = netClass(netPct);
+
+      netCell.textContent = (net >= 0 ? '' : '') + net.toFixed(0) + ' €';
+      netCell.style.color = net >= 0 ? 'var(--green)' : 'var(--red)';
+      netCell.style.fontWeight = '700';
+
+      pctSpan.textContent = netPct.toFixed(0) + ' %';
+      pctSpan.className   = 'net-pct-wrap ' + cls;
+
+      results.push({
+        name: row.querySelector('.product-name').textContent.trim(),
+        pct:  netPct,
+        net,
+        ca
+      });
+    });
+
+    /* Résumé */
+    const filled = results.filter(r => r !== null);
+    if (filled.length === 0) return;
+
+    const best  = filled.reduce((a, b) => b.pct > a.pct ? b : a);
+    const worst = filled.reduce((a, b) => b.pct < a.pct ? b : a);
+    const avg   = filled.reduce((s, r) => s + r.pct, 0) / filled.length;
+
+    /* Net total si 1 vente de chaque produit (même sans coût saisi) */
+    let totalNet = 0;
+    document.querySelectorAll('tr[data-price]').forEach(row => {
+      const ca   = parseFloat(row.dataset.price);
+      totalNet  += ca
+        - (withStripe ? stripeFee(ca) : 0)
+        - (withUrssaf ? ca * URSSAF_RATE : 0)
+        - irEstimated(ca);
+    });
+
+    document.getElementById('best-pct').textContent  = best.pct.toFixed(0) + ' %';
+    document.getElementById('best-name').textContent  = best.name;
+    document.getElementById('avg-pct').textContent    = avg.toFixed(0) + ' %';
+    document.getElementById('worst-pct').textContent  = worst.pct.toFixed(0) + ' %';
+    document.getElementById('worst-name').textContent = worst.name;
+    document.getElementById('total-net').textContent  = totalNet.toFixed(0) + ' €';
+    document.getElementById('total-sub').textContent  = 'avant tes coûts propres';
+  }
+
+  /* ── Sauvegarde ── */
+  function saveCosts() {
+    const data = {};
+    document.querySelectorAll('tr[data-price]').forEach((row, i) => {
+      data[i] = row.querySelector('.cost-input').value;
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function loadSaved() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      document.querySelectorAll('tr[data-price]').forEach((row, i) => {
+        const input = row.querySelector('.cost-input');
+        /* Valeur sauvegardée prioritaire, sinon défaut sous-traitance */
+        input.value = saved[i] !== undefined ? saved[i] : (DEFAULTS[i] || '');
+      });
+    } catch(e) {
+      document.querySelectorAll('tr[data-price]').forEach((row, i) => {
+        row.querySelector('.cost-input').value = DEFAULTS[i] || '';
+      });
+    }
+  }
+
+  /* ── Événements ── */
+  stripeToggle.addEventListener('change', updateAll);
+  urssafToggle.addEventListener('change', updateAll);
+  document.querySelectorAll('input[name="ir"]').forEach(r => r.addEventListener('change', updateAll));
+  tmiInput.addEventListener('input', updateAll);
+
+  document.querySelectorAll('.cost-input').forEach(input => {
+    input.addEventListener('input', () => { updateAll(); saveCosts(); });
+  });
+
+  /* ── Init ── */
+  loadSaved();
+  updateAll();
+</script>
+</body>
+</html>

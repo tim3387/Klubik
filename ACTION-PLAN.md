@@ -1,12 +1,27 @@
-# Plan d'action SEO — Klubik
-**Mis à jour le :** 9 juin 2026  
-**Score actuel :** 74/100  
-**Objectif :** 85/100
+# Plan d'action — Klubik
+**Mis à jour le :** 19 juin 2026  
+**Score SEO actuel :** 74/100  
+**Objectif SEO :** 85/100
+
+---
+
+## 🎓 Formation Canva Klubik — 179€
+
+### ✅ Fait
+- [x] Structure complète définie : 10 modules + 1 bonus (~3h de contenu)
+- [x] Script vidéo intégral rédigé (Module 0 à Bonus)
+
+### 🔜 À faire (dans l'ordre)
+- [ ] **Page de vente** — argumentaire, bénéfices, public cible, CTA d'achat
+- [ ] **PDF d'accompagnement** — guide livré avec les templates : checklist, captures d'écran, raccourcis clavier
+- [ ] **Enregistrement vidéo** — module par module (écran + voix), montage
+- [ ] **Hébergement & vente** — choisir la plateforme (Gumroad, Stan, Systeme.io…) et mettre en ligne
 
 ---
 
 ## ✅ Terminé
 
+**SEO**
 - [x] Meta description ajoutée sur `index.html`
 - [x] `robots.txt` créé
 - [x] `sitemap.xml` créé
@@ -18,10 +33,32 @@
 - [x] Vidéo renommée `hero-kubo.mp4` (espace supprimé)
 - [x] Schema.org `Organization` + `LocalBusiness` + 5 `Offer`
 - [x] Bouton burger : `aria-expanded` + `aria-label` dynamiques
+- [x] `rel="noopener nofollow"` sur les 5 liens Stripe
+
+**Sécurité / Fonctionnel**
+- [x] `privateKey` EmailJS retirée du code front-end (`script.js`) — n'avait aucun rôle côté client et exposait une clé privée dans le source public
+- [x] Formulaire de contact branché sur Formspree (`script.js`) — le faux `setTimeout` est remplacé par un vrai `fetch`. **Reste à faire : créer le compte et pluguer l'ID** (voir item 0 ci-dessous)
 
 ---
 
 ## Medium — À traiter avant le lancement
+
+### 0. Activer le formulaire de contact (Formspree)
+**Pourquoi :** Le code est en place mais le formulaire n'envoie rien tant que l'ID Formspree n'est pas renseigné.  
+**Action (2 min) :**
+1. Aller sur [formspree.io](https://formspree.io) → créer un compte gratuit (50 soumissions/mois)
+2. Cliquer **"New Form"** → nommer "Contact Klubik" → copier l'ID généré (ex: `xyzabc12`)
+3. Dans `script.js` ligne 115, remplacer :
+```js
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/VOTRE_ID_FORMSPREE';
+```
+par :
+```js
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xyzabc12';
+```
+4. Tester en soumettant le formulaire → vérifier la réception email.
+
+---
 
 ### 1. Créer l'image Open Graph
 **Action :** Créer `assets/images/og-image.jpg` en 1200×630px sur Canva  
@@ -106,10 +143,28 @@ Dès les premières réalisations, ajouter une section avec schema `Review` et `
 ### 9. Créer un llms.txt
 Un fichier `llms.txt` à la racine indique aux crawlers IA (ChatGPT, Claude, Perplexity) le contenu important du site — utile pour apparaître dans les réponses IA quand quelqu'un cherche "agence marketing club amateur".
 
-### 10. Précharger la police Inter
+### 10. Self-hoster la police Inter
+Au lieu de charger depuis Google Fonts (2 requêtes DNS externes), télécharger les fichiers WOFF2 et les servir localement.  
+**Outil :** [google-webfonts-helper.herokuapp.com](https://gwfh.mranftl.com/fonts/inter) → sélectionner les graisses 300–900 → télécharger le ZIP → placer dans `assets/fonts/`.  
+Remplace l'actuelle balise Google Fonts dans le `<head>` par un `@font-face` dans `style.css`. Gain : −2 connexions externes, premier rendu plus rapide.
+
+### 11. Épingler la version Lucide Icons
+Actuellement chargé avec `@latest` ce qui peut casser le site en cas de breaking change.  
+Télécharger `lucide.min.js` et le placer dans `js/`, ou épingler la version dans l'URL CDN :
 ```html
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" />
+<!-- Remplacer -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<!-- Par une version fixe, ex: -->
+<script src="https://unpkg.com/lucide@0.475.0/dist/umd/lucide.min.js"></script>
 ```
+
+### 12. Créer une page 404
+Aucune page `404.html` n'existe — une URL incorrecte retourne une erreur générique du serveur.  
+Une page simple avec le logo, un message clair et un lien retour vers l'accueil suffit.
+
+### 13. Portfolio — ajouter les premières réalisations
+C'est le frein numéro 1 à la conversion. La section affiche encore un placeholder.  
+Même une seule vraie création (logo, maillot, template Instagram) suffit à rendre la page crédible.
 
 ---
 

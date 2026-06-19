@@ -110,29 +110,51 @@ const activeObs = new IntersectionObserver((entries) => {
 sections.forEach(s => activeObs.observe(s));
 
 // ─── Contact form ─────────────────────────────────────
+// Remplacez VOTRE_ID_FORMSPREE par l'ID obtenu sur formspree.io/new
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/VOTRE_ID_FORMSPREE';
+
 const form = document.getElementById('contactForm');
 if (form) {
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const btn = form.querySelector('.btn-submit');
+    const btn      = form.querySelector('.btn-submit');
     const original = btn.textContent;
 
-    btn.textContent  = 'Envoi en cours…';
+    btn.textContent   = 'Envoi en cours…';
     btn.style.opacity = '0.7';
     btn.disabled      = true;
 
-    setTimeout(() => {
-      btn.textContent   = '✓ Message envoyé !';
-      btn.style.opacity = '1';
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method:  'POST',
+        body:    new FormData(form),
+        headers: { 'Accept': 'application/json' },
+      });
+
+      if (!res.ok) throw new Error('Erreur serveur');
+
+      btn.textContent      = '✓ Message envoyé !';
+      btn.style.opacity    = '1';
       btn.style.background = '#22c55e';
+      form.reset();
 
       setTimeout(() => {
-        btn.textContent       = original;
-        btn.style.background  = '';
-        btn.disabled          = false;
-        form.reset();
+        btn.textContent      = original;
+        btn.style.background = '';
+        btn.disabled         = false;
       }, 3000);
-    }, 900);
+
+    } catch {
+      btn.textContent      = 'Erreur — réessayez';
+      btn.style.opacity    = '1';
+      btn.style.background = '#ef4444';
+
+      setTimeout(() => {
+        btn.textContent      = original;
+        btn.style.background = '';
+        btn.disabled         = false;
+      }, 3000);
+    }
   });
 }
 
@@ -153,6 +175,88 @@ if (window.matchMedia('(hover: hover)').matches) {
     });
   });
 }
+
+// ─── Popup guide image pro ───────────────────────────
+(function () {
+  const EMAILJS_SERVICE_ID  = 'service_hhd7mln';
+  const EMAILJS_TEMPLATE_ID = 'template_s9sq30s';
+
+  emailjs.init({ publicKey: 'bherDarQtTkvkJlP3' });
+
+  // URL publique du PDF à inclure dans l'email envoyé au visiteur
+  const PDF_URL = 'https://klubik.pro/guide-image-pro/guide-image-pro.html';
+
+  const overlay  = document.getElementById('popupGuide');
+  const closeBtn = document.getElementById('popupClose');
+  const form     = document.getElementById('popupForm');
+  const success  = document.getElementById('popupSuccess');
+
+  if (!overlay) return;
+
+  function openPopup() {
+    overlay.classList.add('visible');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    const firstInput = overlay.querySelector('input');
+    if (firstInput) firstInput.focus();
+  }
+
+  function closePopup() {
+    overlay.classList.remove('visible');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    sessionStorage.setItem('guide-popup-seen', '1');
+  }
+
+  // Affiche le popup après 17 secondes — une seule fois par session
+  if (!sessionStorage.getItem('guide-popup-seen')) {
+    setTimeout(openPopup, 17000);
+  }
+
+  closeBtn.addEventListener('click', closePopup);
+
+  // Fermer en cliquant sur le fond sombre
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closePopup();
+  });
+
+  // Fermer avec Échap
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('visible')) closePopup();
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Validation manuelle
+    const nameInput  = document.getElementById('popup-name');
+    const emailInput = document.getElementById('popup-email');
+    if (!nameInput.value.trim() || !emailInput.value.trim()) return;
+
+    const btn = form.querySelector('.popup-submit');
+    btn.textContent = 'Envoi en cours…';
+    btn.disabled    = true;
+
+    emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      {
+        to_name:  nameInput.value.trim(),
+        to_email: emailInput.value.trim(),
+        pdf_url:  PDF_URL,
+      }
+    )
+    .then(() => {
+      form.hidden    = true;
+      success.hidden = false;
+      sessionStorage.setItem('guide-popup-seen', '1');
+    })
+    .catch(() => {
+      btn.textContent = 'Réessayer →';
+      btn.disabled    = false;
+    });
+  });
+})();
 
 // ─── Système orbital "Pour qui" ───────────────────────
 (function () {

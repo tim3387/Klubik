@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://klubik.fr/sitemap.xml
+Sitemap: https://klubik.pro/sitemap.xml

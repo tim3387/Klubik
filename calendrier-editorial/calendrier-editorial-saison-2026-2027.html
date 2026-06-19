@@ -396,7 +396,7 @@
       </div>
     </div>
     <div class="cover-pills">
-      <div class="cover-pill">31 templates Canva</div>
+      <div class="cover-pill">30 templates Canva</div>
       <div class="cover-pill">Août 2026 → Juillet 2027</div>
       <div class="cover-pill">4 publications / semaine</div>
     </div>
@@ -411,15 +411,15 @@
   <div class="legend-title">Templates disponibles par pack</div>
   <div class="legend-grid">
     <div>
-      <div class="legend-pack-title essentiel">Pack Essentiel</div>
+      <div class="legend-pack-title essentiel">Pack Klubik</div>
       <div class="legend-pack-items" id="legend-e"></div>
     </div>
     <div>
-      <div class="legend-pack-title performance">Pack Performance</div>
+      <div class="legend-pack-title performance">Pack Klubik +</div>
       <div class="legend-pack-items" id="legend-p"></div>
     </div>
     <div>
-      <div class="legend-pack-title elite">Pack Élite</div>
+      <div class="legend-pack-title elite">Pack Saison</div>
       <div class="legend-pack-items" id="legend-el"></div>
     </div>
   </div>
@@ -452,7 +452,7 @@
       <div class="guide-stat-label">posts par semaine en saison</div>
     </div>
     <div class="guide-stat">
-      <div class="guide-stat-num">31</div>
+      <div class="guide-stat-num">30</div>
       <div class="guide-stat-label">templates Canva prêts à l'emploi</div>
     </div>
     <div class="guide-stat">
@@ -522,34 +522,34 @@
 
 <script>
 /* ─────────────────────────────────────────
-   DONNÉES : 31 templates par pack
+   DONNÉES : 30 templates répartis sur 3 packs
 ───────────────────────────────────────── */
 const PACKS = {
   e: {
-    label: 'Pack Essentiel',
+    label: 'Pack Klubik',
     cls: 'badge-e',
     items: [
-      'Match day','Résultat du match','Composition officielle','Homme du match',
-      'Annonce de recrutement','Annonce de signature','Classement du championnat',
-      'Annonce de match','Publication sponsor','Citation du coach'
+      'Match du week-end','Résultat du match','Classement','Planning du week-end',
+      'Résultats du week-end','Tournoi','Stage vacances','Événement du club',
+      'Nouveau partenaire','Mise en avant partenaire'
     ]
   },
   p: {
-    label: 'Pack Performance',
+    label: 'Pack Klubik +',
     cls: 'badge-p',
     items: [
-      'Stats match','Calendrier mensuel','Résultat mi-temps','Joueur·euse du mois',
-      'Anniv\'','Interview post-match','Infirmerie','Compte à rebours',
-      'Résumé de journée','Résultats catégories jeunes'
+      'Portes ouvertes','Détection / Recrutement','Nouvelle recrue','Signature joueur',
+      'Joueur du match','Équipe du week-end','Interview joueur / éducateur',
+      'Bénévole du mois','Calendrier mensuel','Anniversaire'
     ]
   },
   el: {
-    label: 'Pack Élite',
+    label: 'Pack Saison',
     cls: 'badge-el',
     items: [
-      'Pres adversaire','Bilan mensuel','Bilan mi-saison','Buteur',
-      'Passeur','Pres staff','Pres partenaires','Signature de contrat',
-      'Nouveau sponsor','JPO','Détection / recrutement'
+      'Campagne licences','Inscriptions saison','Journée club','Match événement',
+      'Soirée partenaires','Recherche sponsors','Offre partenaire','Boutique du club',
+      'Album photo événement','Rétrospective de saison'
     ]
   }
 };
@@ -599,16 +599,16 @@ function getContent(date) {
   ────────────────────────────────────────────── */
   if (OFF_SEASON.has(m)) {
     if (day === 1) { // LUNDI
-      if (wom === 1) add('Bilan mi-saison',       m === 5 ? 'Bilan fin de saison' : 'Point avant reprise');
-      if (wom === 2) add('Annonce de signature',   'Nouvelle recrue');
-      if (wom === 3) add('Joueur·euse du mois',    'Meilleur·e de la saison');
-      if (wom === 4) add('Citation du coach',      'Message de fin de saison');
+      if (wom === 1) add('Rétrospective de saison',         m === 5 ? 'Bilan fin de saison' : 'Point avant reprise');
+      if (wom === 2) add('Signature joueur',                'Nouvelle recrue');
+      if (wom === 3) add('Bénévole du mois',                'Meilleur·e de la saison');
+      if (wom === 4) add('Interview joueur / éducateur',    'Message de fin de saison');
     }
     if (day === 4) { // JEUDI
-      if (wom === 1) add('Annonce de recrutement', 'Saison 2026/2027');
-      if (wom === 2) add('Pres partenaires',       m === 5 ? 'Remerciements partenaires' : 'Nos partenaires 26/27');
-      if (wom === 3) add('Détection / recrutement','Catégories jeunes');
-      if (wom === 4) add(m === 5 ? 'Publication sponsor' : 'Compte à rebours',
+      if (wom === 1) add('Détection / Recrutement',         'Saison 2026/2027');
+      if (wom === 2) add('Mise en avant partenaire',        m === 5 ? 'Remerciements partenaires' : 'Nos partenaires 26/27');
+      if (wom === 3) add('Détection / Recrutement',         'Catégories jeunes');
+      if (wom === 4) add(m === 5 ? 'Mise en avant partenaire' : 'Événement du club',
                          m === 5 ? 'Remerciements sponsors' : 'Reprise de la saison');
     }
     return res;
@@ -622,17 +622,17 @@ function getContent(date) {
   if (m === 7) {
     // Post en semaine (mercredi, 1 par semaine)
     if (day === 3) {
-      if (wom === 1) add('Pres staff',        'Nouveaux éducateurs jeunes');
-      if (wom === 2) add('Calendrier mensuel','Planning prépa estivale');
-      if (wom === 3) add('JPO',               'Journée Portes Ouvertes');
-      if (wom === 4) add('Nouveau sponsor',   'Nouveau partenariat 26/27');
+      if (wom === 1) add('Interview joueur / éducateur', 'Nouveaux éducateurs');
+      if (wom === 2) add('Calendrier mensuel',           'Planning prépa estivale');
+      if (wom === 3) add('Portes ouvertes',              'Journée Portes Ouvertes');
+      if (wom === 4) add('Nouveau partenaire',           'Nouveau partenariat 26/27');
     }
     // Week-end amical
-    if (day === 5) add('Annonce de match',  'Match amical');
-    if (day === 6) add('Match day',         'Amical · Prépa');
+    if (day === 5) add('Planning du week-end', 'Match amical');
+    if (day === 6) add('Match du week-end',    'Amical · Prépa');
     if (day === 0) {
       add('Résultat du match', 'Amical');
-      if (wom === 4) add('Compte à rebours', 'Début de championnat');
+      if (wom === 4) add('Événement du club', 'Début de championnat');
     }
     return res;
   }
@@ -646,72 +646,72 @@ function getContent(date) {
 
   /* --- VENDREDI : annonce du week-end --- */
   if (day === 5) {
-    add('Annonce de match', 'Sam ou dim selon votre calendrier');
+    add('Planning du week-end', 'Sam ou dim selon votre calendrier');
   }
 
   /* --- SAM ou DIM : match day + résultat (à adapter selon les jours de match) --- */
   if (day === 6) { // Samedi — match day séniors
-    add('Match day', 'Séniors');
-    if (wom === 2) add('Résultat mi-temps', 'Live');
+    add('Match du week-end', 'Séniors');
+    if (wom === 2) add('Résultats du week-end', 'Mi-temps live');
   }
   if (day === 0) { // Dimanche — résultats toutes catégories
     add('Résultat du match', 'Toutes catégories');
-    if (wom === 4) add('Bilan mensuel', 'Bilan du mois');
+    if (wom === 4) add('Rétrospective de saison', 'Bilan du mois');
   }
 
   /* --- LUNDI : retours du week-end (toujours) --- */
   if (day === 1) {
-    if (wom === 1) add('Résultats catégories jeunes', 'U7 → U18');
-    if (wom === 2) add('Homme du match',              'Équipe 1');
-    if (wom === 3) add('Résultats catégories jeunes', 'U7 → U18');
-    if (wom === 4) add('Stats match',                 'Chiffres du week-end');
+    if (wom === 1) add('Résultats du week-end', 'Toutes catégories');
+    if (wom === 2) add('Joueur du match',        'Équipe 1');
+    if (wom === 3) add('Résultats du week-end',  'Toutes catégories');
+    if (wom === 4) add('Équipe du week-end',     'Chiffres du week-end');
   }
 
   /* --- MERCREDI : contenu variable (toujours) --- */
   if (day === 3) {
-    if (wom === 1) add('Calendrier mensuel',          'Programme du mois');
-    if (wom === 2) add('Classement du championnat',   'Séniors');
-    if (wom === 3) add('Citation du coach',           null);
-    if (wom === 4) add('Joueur·euse du mois',        'Vote communauté');
+    if (wom === 1) add('Calendrier mensuel',           'Programme du mois');
+    if (wom === 2) add('Classement',                   'Séniors');
+    if (wom === 3) add('Interview joueur / éducateur', null);
+    if (wom === 4) add('Bénévole du mois',             'Vote communauté');
   }
 
   /* --- CONTENUS SAISONNIERS : 1 bonus/mois sur un jour libre --- */
 
   // Septembre : ouverture de saison
-  if (m === 8 && wom === 1 && day === 4) add('Pres adversaire',        '1re journée');
-  if (m === 8 && wom === 3 && day === 2) add('Détection / recrutement','Catégories jeunes');
+  if (m === 8 && wom === 1 && day === 4) add('Match événement',        '1re journée');
+  if (m === 8 && wom === 3 && day === 2) add('Détection / Recrutement','Catégories jeunes');
 
-  // Octobre : tops stats mi-parcours aller
-  if (m === 9 && wom === 2 && day === 2) add('Buteur',  'Classement buteurs');
-  if (m === 9 && wom === 4 && day === 2) add('Passeur', 'Classement passeurs');
+  // Octobre : tops joueurs mi-parcours aller
+  if (m === 9 && wom === 2 && day === 2) add('Équipe du week-end', 'Top joueurs');
+  if (m === 9 && wom === 4 && day === 2) add('Bénévole du mois',   'Bénévole du mois');
 
-  // Novembre : mercato hivernal + infirmerie
-  if (m === 10 && wom === 1 && day === 4) add('Infirmerie',             'Point médical');
-  if (m === 10 && wom === 3 && day === 4) add('Annonce de recrutement', 'Mercato hivernal');
+  // Novembre : mercato hivernal + portrait joueur
+  if (m === 10 && wom === 1 && day === 4) add('Interview joueur / éducateur', 'Portrait joueur');
+  if (m === 10 && wom === 3 && day === 4) add('Détection / Recrutement',      'Mercato hivernal');
 
   // Décembre : bilan automne
-  if (m === 11 && wom === 2 && day === 4) add('Pres partenaires', 'Bilan partenariats');
-  if (m === 11 && wom === 4 && day === 2) add('Bilan mi-saison',  'Bilan automne');
+  if (m === 11 && wom === 2 && day === 4) add('Mise en avant partenaire', 'Bilan partenariats');
+  if (m === 11 && wom === 4 && day === 2) add('Rétrospective de saison',  'Bilan automne');
 
   // Janvier : reprise + présentation staff
-  if (m === 0 && wom === 1 && day === 4) add('Bilan mi-saison', 'Bilan aller');
-  if (m === 0 && wom === 3 && day === 4) add('Pres staff',      'Corps technique');
+  if (m === 0 && wom === 1 && day === 4) add('Rétrospective de saison',       'Bilan aller');
+  if (m === 0 && wom === 3 && day === 4) add('Interview joueur / éducateur',  'Corps technique');
 
-  // Février : stats retour + infirmerie
-  if (m === 1 && wom === 1 && day === 4) add('Infirmerie', 'Point médical');
-  if (m === 1 && wom === 3 && day === 2) add('Buteur',     'Top marqueurs');
+  // Février : top joueurs retour + portrait
+  if (m === 1 && wom === 1 && day === 4) add('Interview joueur / éducateur', 'Portrait joueur');
+  if (m === 1 && wom === 3 && day === 2) add('Équipe du week-end',            'Top joueurs');
 
-  // Mars : stats + match clé
-  if (m === 2 && wom === 1 && day === 2) add('Passeur',       'Top passeurs');
-  if (m === 2 && wom === 3 && day === 4) add('Pres adversaire','Match décisif');
+  // Mars : bénévole + match décisif
+  if (m === 2 && wom === 1 && day === 2) add('Bénévole du mois',  'Bénévole du mois');
+  if (m === 2 && wom === 3 && day === 4) add('Match événement',   'Match décisif');
 
   // Avril : recrutement saison suivante
-  if (m === 3 && wom === 1 && day === 4) add('Annonce de signature',    'Recrue confirmée');
-  if (m === 3 && wom === 3 && day === 4) add('Détection / recrutement', 'Saison suivante');
+  if (m === 3 && wom === 1 && day === 4) add('Signature joueur',       'Recrue confirmée');
+  if (m === 3 && wom === 3 && day === 4) add('Détection / Recrutement','Saison suivante');
 
   // Mai : fin de saison régulière
-  if (m === 4 && wom === 1 && day === 4) add('Annonce de recrutement', 'Saison 26/27');
-  if (m === 4 && wom === 3 && day === 2) add('Bilan mi-saison',        'Fin de saison régulière');
+  if (m === 4 && wom === 1 && day === 4) add('Détection / Recrutement', 'Saison 26/27');
+  if (m === 4 && wom === 3 && day === 2) add('Rétrospective de saison', 'Fin de saison régulière');
 
   return res;
 }
@@ -727,18 +727,18 @@ const DAY_LABELS = ['LUNDI','MARDI','MERCREDI','JEUDI','VENDREDI','SAMEDI','DIMA
 
 // Contenus saisonniers à mettre en avant dans l'en-tête du mois
 const MONTH_HIGHLIGHTS = {
-  0:  ['Bilan mi-saison','Pres staff'],
-  1:  ['Infirmerie','Buteur'],
-  2:  ['Passeur','Pres adversaire'],
-  3:  ['Annonce de signature','Détection / recrutement'],
-  4:  ['Annonce de recrutement','Bilan mi-saison'],
-  5:  ['Bilan mi-saison','Annonce de recrutement','Pres partenaires','Détection / recrutement'],
-  6:  ['Annonce de signature','Pres staff','Compte à rebours'],
-  7:  ['JPO','Pres staff','Calendrier mensuel','Annonce de match','Compte à rebours'],
-  8:  ['Pres adversaire','Détection / recrutement'],
-  9:  ['Buteur','Passeur'],
-  10: ['Infirmerie','Annonce de recrutement'],
-  11: ['Pres partenaires','Bilan mi-saison'],
+  0:  ['Rétrospective de saison','Interview joueur / éducateur'],
+  1:  ['Équipe du week-end','Interview joueur / éducateur'],
+  2:  ['Bénévole du mois','Match événement'],
+  3:  ['Signature joueur','Détection / Recrutement'],
+  4:  ['Détection / Recrutement','Rétrospective de saison'],
+  5:  ['Rétrospective de saison','Détection / Recrutement','Mise en avant partenaire'],
+  6:  ['Signature joueur','Interview joueur / éducateur','Événement du club'],
+  7:  ['Portes ouvertes','Interview joueur / éducateur','Calendrier mensuel','Planning du week-end','Événement du club'],
+  8:  ['Match événement','Détection / Recrutement'],
+  9:  ['Équipe du week-end','Bénévole du mois'],
+  10: ['Interview joueur / éducateur','Détection / Recrutement'],
+  11: ['Mise en avant partenaire','Rétrospective de saison'],
 };
 
 function renderMonth(year, month) {

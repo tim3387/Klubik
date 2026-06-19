@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Klubik — Comptabilité</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:      #1353F4;
+      --black:     #0A0A0A;
+      --ink:       #1A1A1A;
+      --muted:     #6B7280;
+      --border:    #E8EAED;
+      --surface:   #F8F9FC;
+      --green:     #16A34A;
+      --green-bg:  #F0FDF4;
+      --orange:    #D97706;
+      --orange-bg: #FFFBEB;
+      --red:       #DC2626;
+      --red-bg:    #FEF2F2;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--surface);
+      color: var(--ink);
+      padding: 40px 24px 80px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .wrapper { max-width: 1100px; margin: 0 auto; }
+
+    /* ── Header ── */
+    header { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+    .brand { font-size: 22px; font-weight: 800; color: var(--blue); letter-spacing: -0.5px; }
+    .brand span { color: var(--muted); font-weight: 400; font-size: 16px; }
+    header p { font-size: 12px; color: var(--muted); }
+
+    /* ── IR bar ── */
+    .ir-bar {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .ir-bar .lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); white-space: nowrap; }
+    .ir-opt { display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; }
+    .ir-opt input[type="radio"] { accent-color: var(--blue); cursor: pointer; }
+    .tmi-wrap { display: none; align-items: center; gap: 5px; }
+    .tmi-wrap.visible { display: flex; }
+    .tmi-wrap input { width: 52px; padding: 3px 7px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 13px; font-family: inherit; text-align: right; }
+    .tmi-wrap input:focus { outline: none; border-color: var(--blue); }
+    .tmi-wrap span { font-size: 12px; color: var(--muted); }
+
+    /* ── Résumé ── */
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .scard { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+    .scard.red   { border-color: #FCA5A5; background: var(--red-bg); }
+    .scard.red   .sval { color: var(--red); }
+    .scard.orange { border-color: #FCD34D; background: var(--orange-bg); }
+    .scard.orange .sval { color: var(--orange); }
+    .scard.green { border-color: #86EFAC; background: var(--green-bg); }
+    .scard.green .sval { color: var(--green); }
+    .slbl { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 6px; }
+    .sval { font-size: 24px; font-weight: 800; color: var(--ink); line-height: 1.1; }
+    .ssub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+    /* ── Filtres ── */
+    .filters { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+    .filter-btn { padding: 5px 13px; border: 1.5px solid var(--border); border-radius: 20px; background: white; font-size: 12.5px; font-family: inherit; cursor: pointer; color: var(--ink); transition: all 0.15s; }
+    .filter-btn.active { background: var(--blue); border-color: var(--blue); color: white; font-weight: 600; }
+    .filter-count { margin-left: auto; font-size: 12px; color: var(--muted); }
+
+    /* ── Formulaires ── */
+    .add-form { border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; }
+    .add-form.sales  { background: white; border: 1.5px solid var(--blue); }
+    .add-form.depenses { background: white; border: 1.5px solid var(--orange); }
+    .form-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px; }
+    .form-title.blue   { color: var(--blue); }
+    .form-title.orange { color: var(--orange); }
+    .form-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+    .form-group input, .form-group select {
+      padding: 8px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-family: inherit;
+      color: var(--ink);
+      background: white;
+      transition: border-color 0.15s;
+    }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--blue); }
+    .form-group.wide input  { min-width: 150px; }
+    .form-group.narrow input { width: 88px; }
+    .form-group.mid select  { min-width: 200px; }
+    .form-group.cat select  { min-width: 170px; }
+    .hint { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+
+    .btn-add { padding: 9px 18px; border: none; border-radius: 8px; font-size: 13.5px; font-weight: 700; font-family: inherit; cursor: pointer; white-space: nowrap; transition: background 0.15s; align-self: flex-end; }
+    .btn-add.blue   { background: var(--blue);   color: white; }
+    .btn-add.blue:hover   { background: #0C3ECC; }
+    .btn-add.orange { background: var(--orange); color: white; }
+    .btn-add.orange:hover { background: #B45309; }
+
+    /* ── Séparateur section ── */
+    .section-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 28px 0 12px; display: flex; align-items: center; gap: 10px; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ── Tables ── */
+    .table-wrap { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; overflow-x: auto; margin-bottom: 12px; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      background: var(--surface);
+      padding: 9px 12px;
+      text-align: right;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    thead th:first-child, thead th:nth-child(2), thead th:nth-child(3) { text-align: left; }
+
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #FAFBFF; }
+    td { padding: 10px 12px; vertical-align: middle; text-align: right; font-size: 13px; }
+    td:first-child, td:nth-child(2), td:nth-child(3) { text-align: left; }
+
+    /* Ventes */
+    .td-date    { color: var(--muted); font-size: 12px; white-space: nowrap; }
+    .td-client  { font-size: 12px; color: var(--muted); max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .td-produit { font-weight: 600; white-space: nowrap; }
+    .td-ca      { font-weight: 700; }
+    .td-neg     { color: var(--red); font-size: 12px; }
+    .td-net     { font-weight: 700; color: var(--green); }
+    .td-net.negative { color: var(--red); }
+
+    /* Dépenses */
+    .td-montant { font-weight: 700; color: var(--orange); }
+    .td-cat { font-size: 11.5px; background: var(--orange-bg); color: var(--orange); padding: 2px 7px; border-radius: 10px; display: inline-block; white-space: nowrap; }
+
+    .btn-del { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; cursor: pointer; font-size: 12px; color: var(--muted); font-family: inherit; transition: all 0.15s; }
+    .btn-del:hover { background: var(--red-bg); border-color: #FCA5A5; color: var(--red); }
+
+    .total-row td { font-weight: 700; background: var(--surface); border-top: 2px solid var(--border); font-size: 13px; }
+
+    .empty-state { text-align: center; padding: 30px; color: var(--muted); font-size: 13px; }
+
+    /* ── Bottom bar ── */
+    .bottom-bar { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+    .btn-export { padding: 8px 16px; border: 1.5px solid var(--border); border-radius: 8px; background: white; font-size: 12.5px; font-family: inherit; cursor: pointer; color: var(--ink); transition: all 0.15s; }
+    .btn-export:hover { border-color: var(--blue); color: var(--blue); }
+
+    footer { text-align: center; color: var(--muted); font-size: 11.5px; margin-top: 48px; }
+
+    /* Ventes table min-width */
+    #table-ventes { min-width: 820px; }
+    /* Dépenses table pas besoin de min-width */
+
+    @media (max-width: 600px) {
+      .form-row { flex-direction: column; }
+      .form-group.narrow input, .form-group.narrow select { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <header>
+    <div>
+      <div class="brand">klubik <span>/ comptabilité</span></div>
+      <p>Outil interne — Données sauvegardées dans ce navigateur</p>
+    </div>
+    <a href="marges.html" style="font-size:12px;color:var(--blue);text-decoration:none;">← Voir les marges</a>
+  </header>
+
+  <!-- IR -->
+  <div class="ir-bar">
+    <span class="lbl">Impôt sur le revenu</span>
+    <label class="ir-opt"><input type="radio" name="ir" value="none" checked /> Non inclus</label>
+    <label class="ir-opt"><input type="radio" name="ir" value="vl" /> Versement libératoire — 1,7 % du CA</label>
+    <label class="ir-opt"><input type="radio" name="ir" value="tmi" /> Taux marginal (TMI)</label>
+    <div class="tmi-wrap" id="tmiWrap">
+      <input type="number" id="tmiInput" value="30" min="0" max="90" />
+      <span>% sur 50 % du CA (abattement micro-BIC)</span>
+    </div>
+  </div>
+
+  <!-- Résumé -->
+  <div class="summary">
+    <div class="scard">
+      <div class="slbl">CA brut</div>
+      <div class="sval" id="s-ca">0 €</div>
+      <div class="ssub" id="s-ca-sub">sur la période</div>
+    </div>
+    <div class="scard red">
+      <div class="slbl">URSSAF à déclarer</div>
+      <div class="sval" id="s-urssaf">0 €</div>
+      <div class="ssub">21,2 % du CA · ce trimestre</div>
+    </div>
+    <div class="scard">
+      <div class="slbl">Coûts sous-traités</div>
+      <div class="sval" id="s-cout">0 €</div>
+      <div class="ssub">liés aux ventes</div>
+    </div>
+    <div class="scard orange">
+      <div class="slbl">Dépenses</div>
+      <div class="sval" id="s-dep">0 €</div>
+      <div class="ssub">abonnements, outils…</div>
+    </div>
+    <div class="scard green">
+      <div class="slbl">Net estimé</div>
+      <div class="sval" id="s-net">0 €</div>
+      <div class="ssub" id="s-net-sub">après tout</div>
+    </div>
+    <div class="scard">
+      <div class="slbl">Ventes</div>
+      <div class="sval" id="s-count">0</div>
+      <div class="ssub" id="s-count-sub">sur la période</div>
+    </div>
+  </div>
+
+  <!-- Filtres -->
+  <div class="filters">
+    <button class="filter-btn" data-period="month">Ce mois-ci</button>
+    <button class="filter-btn active" data-period="quarter">Ce trimestre</button>
+    <button class="filter-btn" data-period="year">Cette année</button>
+    <button class="filter-btn" data-period="all">Tout</button>
+    <span class="filter-count" id="filterCount"></span>
+  </div>
+
+  <!-- ════ VENTES ════ -->
+  <div class="section-label">Ventes</div>
+
+  <div class="add-form sales">
+    <div class="form-title blue">+ Ajouter une vente</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="f-date" />
+      </div>
+      <div class="form-group wide">
+        <label>Client (optionnel)</label>
+        <input type="text" id="f-client" placeholder="Nom du club…" />
+      </div>
+      <div class="form-group mid">
+        <label>Produit</label>
+        <select id="f-produit">
+          <option value="">— Choisir —</option>
+          <optgroup label="Packs">
+            <option value="Pack Klubik|299|0">Pack Klubik</option>
+            <option value="Pack Klubik+|599|0">Pack Klubik+</option>
+            <option value="Pack Terrain|799|350">Pack Terrain</option>
+            <option value="Pack Identité|1690|950">Pack Identité</option>
+            <option value="Pack Saison|1990|950">Pack Saison</option>
+          </optgroup>
+          <optgroup label="Klubikités">
+            <option value="Logo|990|600">Logo</option>
+            <option value="Design maillot|690|350">Design maillot</option>
+            <option value="Calendrier 1 mois|99|0">Calendrier 1 mois</option>
+            <option value="Calendrier 6 mois|249|0">Calendrier 6 mois</option>
+            <option value="Calendrier 12 mois|399|0">Calendrier 12 mois</option>
+            <option value="Formation Canva|179|0">Formation Canva</option>
+          </optgroup>
+          <optgroup label="Autre">
+            <option value="Autre / Devis|0|0">Autre / Sur devis</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="form-group narrow">
+        <label>CA (€)</label>
+        <input type="number" id="f-ca" min="0" placeholder="0" />
+        <span class="hint">Prix facturé</span>
+      </div>
+      <div class="form-group narrow">
+        <label>Coût (€)</label>
+        <input type="number" id="f-cout" min="0" placeholder="0" />
+        <span class="hint">Sous-traitance</span>
+      </div>
+      <button class="btn-add blue" id="btnAddVente">Ajouter →</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Client</th>
+          <th>Produit</th>
+          <th>CA</th>
+          <th>Stripe</th>
+          <th>URSSAF</th>
+          <th>IR estimé</th>
+          <th>Coût</th>
+          <th>Net</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody-ventes"></tbody>
+      <tfoot id="tfoot-ventes"></tfoot>
+    </table>
+  </div>
+
+  <!-- ════ DÉPENSES ════ -->
+  <div class="section-label">Dépenses</div>
+
+  <div class="add-form depenses">
+    <div class="form-title orange">+ Ajouter une dépense</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="d-date" />
+      </div>
+      <div class="form-group wide">
+        <label>Description</label>
+        <input type="text" id="d-desc" placeholder="Ex : Abonnement Canva Pro…" />
+      </div>
+      <div class="form-group cat">
+        <label>Catégorie</label>
+        <select id="d-cat">
+          <option>Logiciel / Abonnement</option>
+          <option>Formation</option>
+          <option>Matériel</option>
+          <option>Marketing</option>
+          <option>Déplacement</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div class="form-group narrow">
+        <label>Montant (€)</label>
+        <input type="number" id="d-montant" min="0" placeholder="0" />
+      </div>
+      <button class="btn-add orange" id="btnAddDep">Ajouter →</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Catégorie</th>
+          <th>Montant</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody-dep"></tbody>
+      <tfoot id="tfoot-dep"></tfoot>
+    </table>
+  </div>
+
+  <!-- Export -->
+  <div class="bottom-bar">
+    <button class="btn-export" id="btnExport">Exporter Excel — ventes</button>
+    <button class="btn-export" id="btnExportDep">Exporter Excel — dépenses</button>
+  </div>
+
+  <footer>Outil interne Klubik · URSSAF auto-entrepreneur BIC prestation de services 2024-2025 · Non indexé</footer>
+
+</div>
+<script>
+  /* ── Constantes ── */
+  const STRIPE_PCT  = 0.015;
+  const STRIPE_FLAT = 0.25;
+  const URSSAF_RATE = 0.212;
+  const VL_RATE     = 0.017;
+  const ABAT_BIC    = 0.50;
+  const KEY_VENTES  = 'klubik_compta_v1';
+  const KEY_DEP     = 'klubik_depenses_v1';
+
+  /* ── État ── */
+  let ventes   = [];
+  let depenses = [];
+  let periode  = 'quarter';
+
+  /* ── Calculs ── */
+  function calcStripe(ca) { return ca * STRIPE_PCT + STRIPE_FLAT; }
+
+  function calcIR(ca) {
+    const mode = document.querySelector('input[name="ir"]:checked').value;
+    if (mode === 'vl')  return ca * VL_RATE;
+    if (mode === 'tmi') return ca * ABAT_BIC * (parseFloat(document.getElementById('tmiInput').value || 0) / 100);
+    return 0;
+  }
+
+  /* ── Filtrage par période ── */
+  function inPeriod(dateStr) {
+    if (periode === 'all') return true;
+    const now = new Date();
+    const d   = new Date(dateStr);
+    if (periode === 'year')    return d.getFullYear() === now.getFullYear();
+    if (periode === 'quarter') return d.getFullYear() === now.getFullYear() && Math.floor(d.getMonth()/3) === Math.floor(now.getMonth()/3);
+    if (periode === 'month')   return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+    return true;
+  }
+
+  function filteredVentes()   { return ventes.filter(v => inPeriod(v.date)).sort((a,b) => new Date(b.date)-new Date(a.date)); }
+  function filteredDepenses() { return depenses.filter(d => inPeriod(d.date)).sort((a,b) => new Date(b.date)-new Date(a.date)); }
+
+  /* ── Format ── */
+  function fmt(n)     { return n.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+  function fmtInt(n)  { return n.toLocaleString('fr-FR') + ' €'; }
+  function fmtDate(s) { const [y,m,d] = s.split('-'); return `${d}/${m}/${y}`; }
+
+  /* ── Render ventes ── */
+  function renderVentes() {
+    const data   = filteredVentes();
+    const tbody  = document.getElementById('tbody-ventes');
+    const tfoot  = document.getElementById('tfoot-ventes');
+
+    if (!data.length) {
+      tbody.innerHTML = `<tr><td colspan="10" class="empty-state">Aucune vente sur cette période.</td></tr>`;
+      tfoot.innerHTML = '';
+    } else {
+      tbody.innerHTML = data.map(v => {
+        const stripe = calcStripe(v.ca);
+        const urssaf = v.ca * URSSAF_RATE;
+        const ir     = calcIR(v.ca);
+        const net    = v.ca - stripe - urssaf - ir - v.cout;
+        return `<tr>
+          <td class="td-date">${fmtDate(v.date)}</td>
+          <td class="td-client">${v.client || '—'}</td>
+          <td class="td-produit">${v.produit}</td>
+          <td class="td-ca">${v.ca.toLocaleString('fr-FR')} €</td>
+          <td class="td-neg">−${fmt(stripe)}</td>
+          <td class="td-neg">−${fmt(urssaf)}</td>
+          <td class="td-neg">${ir > 0 ? '−'+fmt(ir) : '—'}</td>
+          <td class="td-neg">${v.cout > 0 ? '−'+fmtInt(v.cout) : '—'}</td>
+          <td class="td-net${net<0?' negative':''}">${fmt(net)}</td>
+          <td><button class="btn-del" data-type="vente" data-id="${v.id}">×</button></td>
+        </tr>`;
+      }).join('');
+
+      const totCA     = data.reduce((s,v) => s+v.ca, 0);
+      const totStripe = data.reduce((s,v) => s+calcStripe(v.ca), 0);
+      const totUrssaf = data.reduce((s,v) => s+v.ca*URSSAF_RATE, 0);
+      const totIR     = data.reduce((s,v) => s+calcIR(v.ca), 0);
+      const totCout   = data.reduce((s,v) => s+v.cout, 0);
+      const totNet    = totCA - totStripe - totUrssaf - totIR - totCout;
+
+      tfoot.innerHTML = `<tr class="total-row">
+        <td colspan="3">Total (${data.length} vente${data.length>1?'s':''})</td>
+        <td>${totCA.toLocaleString('fr-FR')} €</td>
+        <td class="td-neg">−${fmt(totStripe)}</td>
+        <td class="td-neg">−${fmt(totUrssaf)}</td>
+        <td class="td-neg">${totIR>0?'−'+fmt(totIR):'—'}</td>
+        <td class="td-neg">${totCout>0?'−'+fmtInt(totCout):'—'}</td>
+        <td class="td-net${totNet<0?' negative':''}">${fmt(totNet)}</td>
+        <td></td>
+      </tr>`;
+    }
+
+    document.getElementById('filterCount').textContent =
+      data.length + ' vente' + (data.length > 1 ? 's' : '');
+  }
+
+  /* ── Render dépenses ── */
+  function renderDepenses() {
+    const data  = filteredDepenses();
+    const tbody = document.getElementById('tbody-dep');
+    const tfoot = document.getElementById('tfoot-dep');
+
+    if (!data.length) {
+      tbody.innerHTML = `<tr><td colspan="5" class="empty-state">Aucune dépense sur cette période.</td></tr>`;
+      tfoot.innerHTML = '';
+    } else {
+      tbody.innerHTML = data.map(d => `<tr>
+        <td class="td-date">${fmtDate(d.date)}</td>
+        <td style="font-weight:500">${d.desc}</td>
+        <td><span class="td-cat">${d.cat}</span></td>
+        <td class="td-montant">−${fmt(d.montant)}</td>
+        <td><button class="btn-del" data-type="depense" data-id="${d.id}">×</button></td>
+      </tr>`).join('');
+
+      const tot = data.reduce((s,d) => s+d.montant, 0);
+      tfoot.innerHTML = `<tr class="total-row">
+        <td colspan="3">Total (${data.length} dépense${data.length>1?'s':''})</td>
+        <td class="td-montant">−${fmt(tot)}</td>
+        <td></td>
+      </tr>`;
+    }
+  }
+
+  /* ── Résumé global ── */
+  function renderSummary() {
+    const vData = filteredVentes();
+    const dData = filteredDepenses();
+
+    const totCA     = vData.reduce((s,v) => s+v.ca, 0);
+    const totUrssaf = totCA * URSSAF_RATE;
+    const totStripe = vData.reduce((s,v) => s+calcStripe(v.ca), 0);
+    const totIR     = vData.reduce((s,v) => s+calcIR(v.ca), 0);
+    const totCout   = vData.reduce((s,v) => s+v.cout, 0);
+    const totDep    = dData.reduce((s,d) => s+d.montant, 0);
+    const totNet    = totCA - totStripe - totUrssaf - totIR - totCout - totDep;
+
+    const label = { all:'au total', year:'cette année', quarter:'ce trimestre', month:'ce mois-ci' };
+
+    document.getElementById('s-ca').textContent     = fmtInt(totCA);
+    document.getElementById('s-ca-sub').textContent = label[periode];
+    document.getElementById('s-urssaf').textContent = fmt(totUrssaf);
+    document.getElementById('s-cout').textContent   = fmtInt(totCout);
+    document.getElementById('s-dep').textContent    = fmt(totDep);
+    document.getElementById('s-net').textContent    = fmt(totNet);
+    document.getElementById('s-count').textContent  = vData.length;
+    document.getElementById('s-count-sub').textContent = label[periode];
+
+    const irMode = document.querySelector('input[name="ir"]:checked').value;
+    document.getElementById('s-net-sub').textContent = irMode === 'none'
+      ? 'Stripe + URSSAF + coûts + dépenses (IR non inclus)'
+      : 'Stripe + URSSAF + IR + coûts + dépenses';
+  }
+
+  /* ── Render tout ── */
+  function renderAll() { renderVentes(); renderDepenses(); renderSummary(); }
+
+  /* ── Suppression (délégation) ── */
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.btn-del');
+    if (!btn) return;
+    if (!confirm('Supprimer cette entrée ?')) return;
+    const id = parseInt(btn.dataset.id);
+    if (btn.dataset.type === 'vente') {
+      ventes = ventes.filter(v => v.id !== id);
+      localStorage.setItem(KEY_VENTES, JSON.stringify(ventes));
+    } else {
+      depenses = depenses.filter(d => d.id !== id);
+      localStorage.setItem(KEY_DEP, JSON.stringify(depenses));
+    }
+    renderAll();
+  });
+
+  /* ── Formulaire ventes ── */
+  document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
+
+  document.getElementById('f-produit').addEventListener('change', function() {
+    const p = this.value.split('|');
+    if (p.length === 3) { document.getElementById('f-ca').value = p[1]; document.getElementById('f-cout').value = p[2]; }
+  });
+
+  document.getElementById('btnAddVente').addEventListener('click', () => {
+    const date   = document.getElementById('f-date').value;
+    const client = document.getElementById('f-client').value.trim();
+    const psel   = document.getElementById('f-produit').value;
+    const ca     = parseFloat(document.getElementById('f-ca').value || 0);
+    const cout   = parseFloat(document.getElementById('f-cout').value || 0);
+    if (!date)  return alert('Choisis une date.');
+    if (!psel)  return alert('Choisis un produit.');
+    if (!ca)    return alert('Saisis un CA.');
+    ventes.push({ id: Date.now(), date, client, produit: psel.split('|')[0], ca, cout });
+    localStorage.setItem(KEY_VENTES, JSON.stringify(ventes));
+    document.getElementById('f-client').value = '';
+    document.getElementById('f-produit').value = '';
+    document.getElementById('f-ca').value = '';
+    document.getElementById('f-cout').value = '';
+    renderAll();
+  });
+
+  /* ── Formulaire dépenses ── */
+  document.getElementById('d-date').value = new Date().toISOString().slice(0,10);
+
+  document.getElementById('btnAddDep').addEventListener('click', () => {
+    const date    = document.getElementById('d-date').value;
+    const desc    = document.getElementById('d-desc').value.trim();
+    const cat     = document.getElementById('d-cat').value;
+    const montant = parseFloat(document.getElementById('d-montant').value || 0);
+    if (!date)    return alert('Choisis une date.');
+    if (!desc)    return alert('Saisis une description.');
+    if (!montant) return alert('Saisis un montant.');
+    depenses.push({ id: Date.now(), date, desc, cat, montant });
+    localStorage.setItem(KEY_DEP, JSON.stringify(depenses));
+    document.getElementById('d-desc').value    = '';
+    document.getElementById('d-montant').value = '';
+    renderAll();
+  });
+
+  /* ── Filtres période ── */
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      periode = btn.dataset.period;
+      renderAll();
+    });
+  });
+
+  /* ── IR ── */
+  document.querySelectorAll('input[name="ir"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('tmiWrap').classList.toggle('visible', r.value === 'tmi' && r.checked);
+      renderAll();
+    });
+  });
+  document.getElementById('tmiInput').addEventListener('input', renderAll);
+
+  /* ── Exports XLSX ── */
+  function downloadXLSX(rows, sheetName, filename) {
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+    XLSX.writeFile(wb, filename);
+  }
+
+  document.getElementById('btnExport').addEventListener('click', () => {
+    const data = filteredVentes();
+    if (!data.length) return alert('Aucune vente à exporter.');
+    const header = ['Date','Client','Produit','CA (€)','Stripe (€)','URSSAF (€)','IR estimé (€)','Coût (€)','Net (€)'];
+    const rows = data.map(v => {
+      const s = calcStripe(v.ca), u = v.ca*URSSAF_RATE, ir = calcIR(v.ca), n = v.ca-s-u-ir-v.cout;
+      return [v.date, v.client||'', v.produit, v.ca, +s.toFixed(2), +u.toFixed(2), +ir.toFixed(2), v.cout, +n.toFixed(2)];
+    });
+    downloadXLSX([header,...rows], 'Ventes', `klubik-ventes-${new Date().toISOString().slice(0,10)}.xlsx`);
+  });
+
+  document.getElementById('btnExportDep').addEventListener('click', () => {
+    const data = filteredDepenses();
+    if (!data.length) return alert('Aucune dépense à exporter.');
+    const header = ['Date','Description','Catégorie','Montant (€)'];
+    const rows = data.map(d => [d.date, d.desc, d.cat, d.montant]);
+    downloadXLSX([header,...rows], 'Dépenses', `klubik-depenses-${new Date().toISOString().slice(0,10)}.xlsx`);
+  });
+
+  /* ── Init ── */
+  try { ventes   = JSON.parse(localStorage.getItem(KEY_VENTES) || '[]'); } catch(e) { ventes = []; }
+  try { depenses = JSON.parse(localStorage.getItem(KEY_DEP)    || '[]'); } catch(e) { depenses = []; }
+  renderAll();
+</script>
+</body>
+</html>

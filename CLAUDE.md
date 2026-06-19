@@ -58,7 +58,7 @@ Stripe payment links are hardcoded in `index.html` inside the `#packs` section. 
 
 - WhatsApp: `+33695971715`
 - Email: `contact.klubik@gmail.com`
-- Instagram: `@klubik.fr`
+- Instagram: `@klubik.pro`
 
 These appear in multiple places (contact section, floating WhatsApp button, footer). Search for the phone number or email to find all occurrences before changing.
 
