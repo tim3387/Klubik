@@ -19,3 +19,6 @@ Thumbs.db
 # Données clubs — contiennent des infos personnelles, ne pas committer
 klubik_*.csv
 clubs_*.csv
+
+# Local Netlify folder
+.netlify

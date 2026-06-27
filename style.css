@@ -953,6 +953,85 @@ img, svg { display: block; }
   line-height: 1.7;
 }
 
+/* ─── Bannière formation ─── */
+.formation-banner {
+  margin-top: 48px;
+  background: var(--black);
+  border-radius: var(--radius-xl);
+  padding: 40px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+.formation-banner-left { flex: 1; min-width: 0; }
+.formation-banner-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 12px;
+}
+.formation-banner-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.formation-banner-sub {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,.5);
+}
+.formation-banner-right {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+}
+.formation-banner-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.formation-banner-price-amount {
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  line-height: 1;
+}
+.formation-banner-price-amount sup {
+  font-size: 1rem;
+  font-weight: 700;
+  vertical-align: super;
+}
+.formation-banner-price-label {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,.4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.formation-banner-cta {
+  display: inline-flex;
+  align-items: center;
+  background: var(--blue);
+  color: var(--white);
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 13px 24px;
+  border-radius: 100px;
+  box-shadow: var(--shadow-blue);
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.formation-banner-cta:hover { background: var(--blue-dark); transform: translateY(-2px); }
+
 .klubikites {
   margin-top: 48px;
   background: var(--white);
@@ -1885,6 +1964,8 @@ img, svg { display: block; }
   .packs-row--secondary { grid-template-columns: 1fr; max-width: 480px; }
   .pack-card--featured { transform: none; padding-top: 52px; }
   .pack-card--featured:hover { transform: translateY(-4px); }
+  .formation-banner { padding: 32px 36px; }
+  .formation-banner-title { font-size: 1.05rem; }
   .klubikites { padding: 36px 32px; }
   .klubikites-grid { grid-template-columns: repeat(2, 1fr); }
   .why-grid { grid-template-columns: 1fr; gap: 60px; }
@@ -1928,6 +2009,8 @@ img, svg { display: block; }
   .audience-grid   { grid-template-columns: 1fr; }
   .ba-grid         { grid-template-columns: 1fr; }
   .packs-row--secondary { max-width: 100%; }
+  .formation-banner { flex-direction: column; align-items: flex-start; padding: 28px 24px; gap: 24px; }
+  .formation-banner-right { align-items: flex-start; flex-direction: row; align-items: center; gap: 20px; }
   .klubikites { padding: 28px 20px; }
   .klubikites-grid { grid-template-columns: 1fr 1fr; }
   .portfolio-grid { grid-template-columns: 1fr; }
