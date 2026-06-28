@@ -430,6 +430,9 @@
     @media (max-width: 480px) {
       .f-hero-cta { padding: 16px 28px; font-size: 0.97rem; }
     }
+
+    /* Pas d'animation reveal sur cette page — contenu visible immédiatement */
+    .reveal-item { opacity: 1 !important; transform: none !important; transition: none !important; }
   </style>
 </head>
 <body>
@@ -922,6 +925,7 @@
   }
   </script>
 
+  <script src="https://unpkg.com/lucide@0.475.0/dist/umd/lucide.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

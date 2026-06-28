@@ -34,31 +34,15 @@
 - [x] Schema.org `Organization` + `LocalBusiness` + 5 `Offer`
 - [x] Bouton burger : `aria-expanded` + `aria-label` dynamiques
 - [x] `rel="noopener nofollow"` sur les 5 liens Stripe
+- [x] Mentions légales complétées (forme juridique, adresse, SIRET, directeur de publication)
 
 **Sécurité / Fonctionnel**
 - [x] `privateKey` EmailJS retirée du code front-end (`script.js`) — n'avait aucun rôle côté client et exposait une clé privée dans le source public
-- [x] Formulaire de contact branché sur Formspree (`script.js`) — le faux `setTimeout` est remplacé par un vrai `fetch`. **Reste à faire : créer le compte et pluguer l'ID** (voir item 0 ci-dessous)
+- [x] Formulaire de contact branché sur Formspree (`script.js`) — ID `xlgynyro` actif, emails reçus sur `contact.klubik@gmail.com`
 
 ---
 
 ## Medium — À traiter avant le lancement
-
-### 0. Activer le formulaire de contact (Formspree)
-**Pourquoi :** Le code est en place mais le formulaire n'envoie rien tant que l'ID Formspree n'est pas renseigné.  
-**Action (2 min) :**
-1. Aller sur [formspree.io](https://formspree.io) → créer un compte gratuit (50 soumissions/mois)
-2. Cliquer **"New Form"** → nommer "Contact Klubik" → copier l'ID généré (ex: `xyzabc12`)
-3. Dans `script.js` ligne 115, remplacer :
-```js
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/VOTRE_ID_FORMSPREE';
-```
-par :
-```js
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xyzabc12';
-```
-4. Tester en soumettant le formulaire → vérifier la réception email.
-
----
 
 ### 1. Créer l'image Open Graph
 **Action :** Créer `assets/images/og-image.jpg` en 1200×630px sur Canva  
@@ -95,16 +79,6 @@ const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xyzabc12';
   width="1920" height="1080"
 ></video>
 ```
-
----
-
-### 4. Compléter les mentions légales
-**Fichier :** `mentions-legales.html`  
-**Remplir :**
-- `[Forme juridique]` → ex. Auto-entrepreneur, SASU…
-- `[Adresse complète]` → adresse postale
-- `[SIRET : XXXXXXXXXX]` → numéro SIRET
-- `[Prénom Nom]` → directeur de publication
 
 ---
 

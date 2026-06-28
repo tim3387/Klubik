@@ -2,8 +2,8 @@
    KLUBIK — script.js
 ═══════════════════════════════════════════════════════ */
 
-// Initialise les icônes Lucide
-lucide.createIcons();
+// Initialise les icônes Lucide (garde : absent sur certaines pages)
+if (typeof lucide !== 'undefined') lucide.createIcons();
 
 // ─── Navbar scroll ───────────────────────────────────
 const navbar = document.getElementById('navbar');
@@ -111,7 +111,7 @@ sections.forEach(s => activeObs.observe(s));
 
 // ─── Contact form ─────────────────────────────────────
 // Remplacez VOTRE_ID_FORMSPREE par l'ID obtenu sur formspree.io/new
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/VOTRE_ID_FORMSPREE';
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xlgynyro';
 
 const form = document.getElementById('contactForm');
 if (form) {
@@ -181,8 +181,6 @@ if (window.matchMedia('(hover: hover)').matches) {
   const EMAILJS_SERVICE_ID  = 'service_hhd7mln';
   const EMAILJS_TEMPLATE_ID = 'template_s9sq30s';
 
-  emailjs.init({ publicKey: 'bherDarQtTkvkJlP3' });
-
   // URL publique du PDF à inclure dans l'email envoyé au visiteur
   const PDF_URL = 'https://klubik.pro/guide-image-pro/guide-image-pro.html';
 
@@ -192,6 +190,8 @@ if (window.matchMedia('(hover: hover)').matches) {
   const success  = document.getElementById('popupSuccess');
 
   if (!overlay) return;
+
+  emailjs.init({ publicKey: 'bherDarQtTkvkJlP3' });
 
   function openPopup() {
     overlay.classList.add('visible');
