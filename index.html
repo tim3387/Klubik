@@ -6,14 +6,7 @@
   <title>Klubik — Marketing sportif pour clubs amateurs</title>
   <meta name="description" content="Klubik est une agence de marketing sportif pour clubs amateurs : logos, maillots, templates Canva et supports de communication. Une image professionnelle à prix accessible." />
   <link rel="canonical" href="https://klubik.pro/" />
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PDBNFLX6NJ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-PDBNFLX6NJ');
-  </script>
+  <!-- Google Analytics — chargé uniquement après consentement RGPD (voir script.js) -->
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://klubik.pro/" />
@@ -56,6 +49,7 @@
         <li><a href="#why">Pourquoi nous</a></li>
         <li><a href="#portfolio">Portfolio</a></li>
         <li><a href="#packs">Packs</a></li>
+        <li><a href="formation-canva.html" class="nav-formation">Formation</a></li>
         <li><a href="#contact" class="nav-cta">Démarrer un projet</a></li>
       </ul>
       <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
@@ -98,6 +92,9 @@
       <!-- Card : Maillot — top left -->
       <div class="hcard hcard--jersey" data-delay="0">
         <div class="jersey-shape">
+          <div class="jersey-sleeve jersey-sleeve--left"></div>
+          <div class="jersey-sleeve jersey-sleeve--right"></div>
+          <div class="jersey-collar"></div>
           <div class="jersey-number">10</div>
           <div class="jersey-name">MARTIN</div>
         </div>
@@ -133,16 +130,22 @@
       <!-- Card : Identité — centre -->
       <div class="hcard hcard--brand" data-delay="200">
         <div class="brand-demo">
-          <div class="brand-logo-circle">K</div>
+          <div class="brand-logo-row">
+            <div class="brand-logo-circle">K</div>
+            <div class="brand-name-block">
+              <div class="brand-name-main">Club FC</div>
+              <div class="brand-name-sub">Logo & identité</div>
+            </div>
+          </div>
           <div class="brand-palette">
             <span style="background:#1353F4"></span>
             <span style="background:#0A0A0A"></span>
             <span style="background:#E8EDFF"></span>
-            <span style="background:#F5F5F5"></span>
+            <span style="background:#F8F9FC; border:1.5px solid #E8EAED"></span>
           </div>
           <div class="brand-typo">
             <span class="brand-t1">Aa</span>
-            <span class="brand-t2">Klubik FC</span>
+            <span class="brand-t2">Inter · Regular / Bold</span>
           </div>
         </div>
         <div class="hcard-label">
@@ -151,56 +154,81 @@
         </div>
       </div>
 
-      <!-- Card : Templates Instagram — bas gauche -->
+      <!-- Card : Templates Canva — bas gauche -->
       <div class="hcard hcard--template" data-delay="150">
         <div class="tpl-grid">
-          <div class="tpl-cell tpl-blue"><span>MATCH</span></div>
-          <div class="tpl-cell tpl-dark"><span>3—0</span></div>
+          <div class="tpl-cell tpl-blue">
+            <span>MATCH</span>
+            <span class="tpl-sub tpl-sub--light">Annonce</span>
+          </div>
+          <div class="tpl-cell tpl-dark">
+            <span class="tpl-score">3—0</span>
+            <span class="tpl-sub tpl-sub--light">Victoire</span>
+          </div>
           <div class="tpl-cell tpl-light"><span>JOUEUR<br/>DU MOIS</span></div>
           <div class="tpl-cell tpl-outline"><span>📅 EVENT</span></div>
         </div>
         <div class="hcard-label">
           <span class="dot dot--blue"></span>
-          Templates Instagram
+          Templates Canva
         </div>
       </div>
 
-      <!-- Card : Dossier sponsoring — bas droit -->
+      <!-- Card : Dossier partenaires — bas droit -->
       <div class="hcard hcard--sponsor" data-delay="180">
-        <div class="sponsor-doc">
-          <div class="doc-header">Dossier<br/>partenaires</div>
-          <div class="doc-lines">
-            <div class="doc-line long"></div>
-            <div class="doc-line medium"></div>
-            <div class="doc-line short"></div>
+        <div class="sponsor-cover">
+          <div class="sponsor-cover-header">
+            <div class="sponsor-cover-season">Saison 2025 — 26</div>
+            <div class="sponsor-cover-title">Dossier<br>Partenaires</div>
           </div>
-          <div class="doc-logos">
-            <div class="sponsor-logo-sm"></div>
-            <div class="sponsor-logo-sm"></div>
-            <div class="sponsor-logo-sm"></div>
+          <div class="sponsor-tiers">
+            <div class="sponsor-tier">
+              <span class="tier-dot tier-dot--gold"></span>
+              <span class="tier-label">Or</span>
+              <span class="tier-price">2 000 €</span>
+            </div>
+            <div class="sponsor-tier">
+              <span class="tier-dot tier-dot--silver"></span>
+              <span class="tier-label">Argent</span>
+              <span class="tier-price">1 000 €</span>
+            </div>
+            <div class="sponsor-tier">
+              <span class="tier-dot tier-dot--bronze"></span>
+              <span class="tier-label">Bronze</span>
+              <span class="tier-price">500 €</span>
+            </div>
           </div>
         </div>
         <div class="hcard-label">
           <span class="dot dot--blue"></span>
-          Dossier sponsoring
+          Dossier partenaires
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- ══════════════ VIDÉO HERO ══════════════ -->
-  <div class="hero-video-wrap">
-    <video
-      class="hero-video"
-      src="assets/images/hero-kubo.mp4"
-      autoplay
-      muted
-      loop
-      playsinline
-      aria-hidden="true"
-    ></video>
-  </div>
+  <!-- ══════════════ KUBO ══════════════ -->
+  <section class="kubo-intro">
+    <div class="container">
+      <div class="kubo-intro-head reveal-item">
+        <span class="eyebrow">Rencontrez Kubo</span>
+        <h2 class="kubo-intro-title">La mascotte des clubs<br>qui veulent briller.</h2>
+        <p class="kubo-intro-sub">Kubo incarne ce qu'on fait chaque jour : aider les clubs amateurs à se démarquer avec une image soignée, à la hauteur de leur passion.</p>
+      </div>
+    </div>
+    <div class="hero-video-wrap">
+      <video
+        class="hero-video"
+        src="assets/images/hero-kubo.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        aria-hidden="true"
+      ></video>
+    </div>
+  </section>
 
   <!-- ══════════════ SERVICES ══════════════ -->
   <section id="services" class="services reveal-section">
@@ -303,6 +331,24 @@
 
     </div>
   </section>
+
+  <!-- ─── Bannière Formation Canva ─── -->
+  <div class="container">
+    <div class="formation-banner reveal-item">
+      <div class="formation-banner-left">
+        <span class="formation-banner-tag">🎓 Formation en ligne</span>
+        <h3 class="formation-banner-title">Apprendre Canva pour gérer<br />la communication de ton club toi-même.</h3>
+        <p class="formation-banner-sub">10 modules vidéo + guide PDF — à ton rythme, accès à vie.</p>
+      </div>
+      <div class="formation-banner-right">
+        <div class="formation-banner-price">
+          <span class="formation-banner-price-amount">179<sup>€</sup></span>
+          <span class="formation-banner-price-label">paiement unique</span>
+        </div>
+        <a href="formation-canva.html" class="formation-banner-cta">Voir la formation →</a>
+      </div>
+    </div>
+  </div>
 
   <!-- ══════════════ POUR QUI ══════════════ -->
   <section id="pour-qui" class="pour-qui reveal-section">
@@ -452,7 +498,34 @@
     </div>
   </section>
 
-  <!-- ══════════════ PORTFOLIO ══════════════ -->
+  <!-- ══════════════ FONDATEUR ══════════════ -->
+  <section id="fondateur" class="fondateur reveal-section">
+    <div class="container">
+      <div class="fondateur-inner">
+
+        <div class="fondateur-photo reveal-item">
+          <div class="fondateur-photo-wrap">
+            <!-- Remplacer par <img> quand la photo est prête -->
+            <div class="fondateur-placeholder">
+              <i data-lucide="camera" class="fondateur-placeholder-icon"></i>
+              <p>Photo à venir</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="fondateur-text reveal-item">
+          <span class="eyebrow">Le fondateur</span>
+          <h2 class="fondateur-name">Timothé LECLERCQ</h2>
+          <p class="fondateur-role">Handballeur &amp; fondateur de Klubik</p>
+          <p>J'ai évolué dans des clubs amateurs pendant des années — du Haillan jusqu'à la JA Isle, en passant par Saint-Médard, Saint-Flour et Saint-Étienne. Au fil des saisons, j'ai vu trop souvent des clubs passionnés avec une communication qui ne leur rendait pas justice.</p>
+          <p>En échangeant directement avec des responsables de clubs, j'ai compris : ce n'est pas une question de volonté. C'est le manque de temps, de compétences graphiques et des budgets serrés. Le problème est structurel, pas individuel.</p>
+          <p>Fort de ma formation en marketing et communication, j'ai créé Klubik pour y répondre concrètement — des solutions adaptées à chaque budget, pour que chaque club ait l'image qu'il mérite.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ══════════════ PORTFOLIO ══════════════ -->
   <section id="portfolio" class="portfolio reveal-section">
     <div class="container">
@@ -638,22 +711,6 @@
           <p class="pack-secure">🔒 Paiement sécurisé par Stripe</p>
         </div>
 
-      </div>
-
-      <!-- ─── Bannière Formation Canva ─── -->
-      <div class="formation-banner reveal-item">
-        <div class="formation-banner-left">
-          <span class="formation-banner-tag">🎓 Formation en ligne</span>
-          <h3 class="formation-banner-title">Apprendre Canva pour gérer<br />la communication de ton club toi-même.</h3>
-          <p class="formation-banner-sub">10 modules vidéo + guide PDF — à ton rythme, accès à vie.</p>
-        </div>
-        <div class="formation-banner-right">
-          <div class="formation-banner-price">
-            <span class="formation-banner-price-amount">179<sup>€</sup></span>
-            <span class="formation-banner-price-label">paiement unique</span>
-          </div>
-          <a href="formation-canva.html" class="formation-banner-cta">Voir la formation →</a>
-        </div>
       </div>
 
       <!-- ─── Les Klubikités ─── -->
@@ -893,7 +950,27 @@
     </div>
   </div>
 
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <!-- ══════════════ BANDEAU RGPD ══════════════ -->
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookies et confidentialité" aria-live="polite" hidden>
+    <div class="cookie-icon" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    </div>
+    <div class="cookie-body">
+      <p class="cookie-eyebrow">Coup de sifflet !</p>
+      <p class="cookie-banner-text">
+        Comme tout bon staff, on analyse le jeu. On utilise Google Analytics pour comprendre comment les clubs naviguent sur le site — données anonymes, sans données personnelles.
+        <a href="confidentialite.html" class="cookie-banner-link">En savoir plus</a>
+      </p>
+    </div>
+    <div class="cookie-banner-actions">
+      <button class="cookie-btn cookie-btn--refuse" id="cookieRefuse">Rester sur le banc</button>
+      <button class="cookie-btn cookie-btn--accept" id="cookieAccept">Entrer en jeu →</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@0.475.0/dist/umd/lucide.min.js"></script>
   <!-- EmailJS SDK — nécessaire pour l'envoi automatique du guide -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="script.js"></script>

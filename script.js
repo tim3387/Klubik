@@ -2,6 +2,46 @@
    KLUBIK — script.js
 ═══════════════════════════════════════════════════════ */
 
+// ─── Consentement cookies (RGPD/CNIL) ────────────────
+(function () {
+  const GA_ID = 'G-PDBNFLX6NJ';
+  const STORAGE_KEY = 'cookie-consent';
+
+  function loadGA() {
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', GA_ID);
+  }
+
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored === 'accepted') {
+    loadGA();
+    return;
+  }
+
+  const banner = document.getElementById('cookieBanner');
+  if (!banner) return;
+
+  if (!stored) banner.hidden = false;
+
+  document.getElementById('cookieAccept').addEventListener('click', function () {
+    localStorage.setItem(STORAGE_KEY, 'accepted');
+    banner.hidden = true;
+    loadGA();
+  });
+
+  document.getElementById('cookieRefuse').addEventListener('click', function () {
+    localStorage.setItem(STORAGE_KEY, 'refused');
+    banner.hidden = true;
+  });
+})();
+
 // Initialise les icônes Lucide (garde : absent sur certaines pages)
 if (typeof lucide !== 'undefined') lucide.createIcons();
 

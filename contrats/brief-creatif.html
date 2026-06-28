@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brief Créatif — Klubik</title>
+  <style>
+    /* ── Variables ── */
+    :root {
+      --blue: #1353F4;
+      --blue-dark: #0C3ECC;
+      --black: #0A0A0A;
+      --ink: #1A1A1A;
+      --muted: #6B7280;
+      --border: #E8EAED;
+      --surface: #F8F9FC;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+      background: #fff;
+      line-height: 1.6;
+    }
+
+    /* ── Mise en page document ── */
+    .doc {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 48px 56px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    /* ── En-tête ── */
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 24px;
+      border-bottom: 3px solid var(--blue);
+      margin-bottom: 32px;
+    }
+
+    .doc-brand .brand-name {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--blue);
+      letter-spacing: -0.5px;
+    }
+
+    .doc-brand .brand-tagline {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .doc-meta {
+      text-align: right;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .doc-meta strong {
+      display: block;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    /* ── Titre de section ── */
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--blue);
+      margin-bottom: 16px;
+      margin-top: 32px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Grilles de champs ── */
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .field-grid--3 {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field--full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    textarea,
+    select {
+      border: none;
+      border-bottom: 1.5px solid var(--border);
+      padding: 6px 0;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--ink);
+      background: transparent;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-bottom-color: var(--blue);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+      padding-top: 6px;
+    }
+
+    select option { background: #fff; }
+
+    /* ── Cases à cocher ── */
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--blue);
+      cursor: pointer;
+    }
+
+    /* ── Nuancier couleurs ── */
+    .color-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .color-swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    input[type="color"] {
+      width: 48px;
+      height: 48px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px;
+      background: #fff;
+    }
+
+    /* ── Zone de signature ── */
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 8px;
+    }
+
+    .sig-box {
+      border: 1.5px dashed var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .sig-box label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 8px;
+    }
+
+    /* ── Pied de page ── */
+    .doc-footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Impression ── */
+    @media print {
+      body { background: #fff; }
+      .doc {
+        border: none;
+        margin: 0;
+        padding: 24px 32px;
+        max-width: 100%;
+      }
+      .section-title { margin-top: 20px; }
+      input, textarea, select { border-bottom-color: #ccc; }
+      @page { margin: 1.5cm; }
+    }
+
+    @media (max-width: 600px) {
+      .doc { padding: 24px 20px; }
+      .field-grid, .field-grid--3, .signature-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="doc">
+
+  <!-- ── En-tête ── -->
+  <div class="doc-header">
+    <div class="doc-brand">
+      <div class="brand-name">Klubik</div>
+      <div class="brand-tagline">Marketing sportif pour clubs amateurs</div>
+    </div>
+    <div class="doc-meta">
+      <strong>Brief créatif</strong>
+      contact.klubik@gmail.com<br />
+      +33 6 95 97 17 15<br />
+      klubik.pro
+    </div>
+  </div>
+
+  <!-- ── 1. Infos du club ── -->
+  <div class="section-title">1. Informations sur le club</div>
+  <div class="field-grid">
+    <div class="field">
+      <label for="club-nom">Nom du club</label>
+      <input type="text" id="club-nom" />
+    </div>
+    <div class="field">
+      <label for="club-sport">Sport</label>
+      <input type="text" id="club-sport" />
+    </div>
+    <div class="field">
+      <label for="club-ville">Ville</label>
+      <input type="text" id="club-ville" />
+    </div>
+    <div class="field">
+      <label for="club-division">Division / Niveau</label>
+      <input type="text" id="club-division" placeholder="ex : Nationale 3, Régionale 1…" />
+    </div>
+    <div class="field">
+      <label for="club-fondation">Année de fondation</label>
+      <input type="text" id="club-fondation" />
+    </div>
+    <div class="field">
+      <label for="club-adherents">Nombre de licenciés</label>
+      <input type="text" id="club-adherents" />
+    </div>
+    <div class="field field--full">
+      <label for="club-site">Site web / Réseaux sociaux</label>
+      <input type="text" id="club-site" placeholder="ex : instagram.com/monclub" />
+    </div>
+  </div>
+
+  <!-- ── 2. Contact ── -->
+  <div class="section-title">2. Votre contact</div>
+  <div class="field-grid">
+    <div class="field">
+      <label for="contact-nom">Nom et prénom</label>
+      <input type="text" id="contact-nom" />
+    </div>
+    <div class="field">
+      <label for="contact-role">Rôle dans le club</label>
+      <input type="text" id="contact-role" placeholder="ex : Président, Trésorier…" />
+    </div>
+    <div class="field">
+      <label for="contact-email">Email</label>
+      <input type="email" id="contact-email" />
+    </div>
+    <div class="field">
+      <label for="contact-tel">Téléphone</label>
+      <input type="tel" id="contact-tel" />
+    </div>
+  </div>
+
+  <!-- ── 3. Prestation souhaitée ── -->
+  <div class="section-title">3. Prestation souhaitée</div>
+  <div class="field">
+    <label>Type de projet (cochez tout ce qui s'applique)</label>
+    <div class="checkbox-group">
+      <label><input type="checkbox" /> Logo / Identité visuelle</label>
+      <label><input type="checkbox" /> Design de maillot</label>
+      <label><input type="checkbox" /> Équipements (short, veste, sac…)</label>
+      <label><input type="checkbox" /> Templates Canva réseaux sociaux</label>
+      <label><input type="checkbox" /> Affiches / Flyers</label>
+      <label><input type="checkbox" /> Autre</label>
+    </div>
+  </div>
+
+  <div class="field-grid" style="margin-top:16px;">
+    <div class="field">
+      <label for="projet-delai">Date limite souhaitée</label>
+      <input type="date" id="projet-delai" />
+    </div>
+    <div class="field">
+      <label for="projet-budget">Budget envisagé (€)</label>
+      <input type="text" id="projet-budget" placeholder="ex : 300 – 500 €" />
+    </div>
+  </div>
+
+  <!-- ── 4. Identité du club ── -->
+  <div class="section-title">4. Identité et valeurs du club</div>
+  <div class="field">
+    <label for="valeurs-3mots">Décrivez votre club en 3 mots</label>
+    <input type="text" id="valeurs-3mots" placeholder="ex : Combatif, Familial, Ambitieux" />
+  </div>
+  <div class="field" style="margin-top:16px;">
+    <label for="valeurs-histoire">Brève histoire du club (origines, anecdote marquante, fierté locale…)</label>
+    <textarea id="valeurs-histoire" rows="3"></textarea>
+  </div>
+  <div class="field" style="margin-top:16px;">
+    <label for="valeurs-public">Qui sont vos supporters / adhérents cibles ?</label>
+    <textarea id="valeurs-public" rows="2" placeholder="ex : Familles de la ville, jeunes 15-25 ans, anciens joueurs…"></textarea>
+  </div>
+
+  <!-- ── 5. Préférences visuelles ── -->
+  <div class="section-title">5. Préférences visuelles</div>
+
+  <div class="field">
+    <label>Couleurs actuelles du club</label>
+    <div class="color-row">
+      <div class="color-swatch">
+        <input type="color" value="#1353F4" />
+        <span>Couleur 1</span>
+      </div>
+      <div class="color-swatch">
+        <input type="color" value="#ffffff" />
+        <span>Couleur 2</span>
+      </div>
+      <div class="color-swatch">
+        <input type="color" value="#0A0A0A" />
+        <span>Couleur 3</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="field-grid" style="margin-top:16px;">
+    <div class="field">
+      <label for="style-ambiance">Ambiance visuelle souhaitée</label>
+      <select id="style-ambiance">
+        <option value="">— Choisir —</option>
+        <option>Moderne et épuré</option>
+        <option>Dynamique et agressif</option>
+        <option>Classique et sobre</option>
+        <option>Coloré et festif</option>
+        <option>Rétro / Vintage</option>
+        <option>Pas de préférence</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="style-logo-type">Type de logo (si concerné)</label>
+      <select id="style-logo-type">
+        <option value="">— Choisir —</option>
+        <option>Icône + texte</option>
+        <option>Lettres initiales (monogramme)</option>
+        <option>Blason / Écusson</option>
+        <option>Texte seul (wordmark)</option>
+        <option>Pas de préférence</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field" style="margin-top:16px;">
+    <label for="ref-aiment">Clubs ou logos que vous aimez (et pourquoi)</label>
+    <textarea id="ref-aiment" rows="2" placeholder="ex : PSG parce que l'écusson est reconnaissable, Bayern pour la sobriété…"></textarea>
+  </div>
+
+  <div class="field" style="margin-top:16px;">
+    <label for="ref-naiment-pas">Ce que vous ne voulez surtout pas</label>
+    <textarea id="ref-naiment-pas" rows="2" placeholder="ex : Pas de couleur rouge, pas d'animal, éviter les effets dorés…"></textarea>
+  </div>
+
+  <!-- ── 6. Maillot (si concerné) ── -->
+  <div class="section-title">6. Design de maillot <span style="font-weight:400;color:var(--muted)">(à remplir si prestation maillot)</span></div>
+  <div class="field-grid">
+    <div class="field">
+      <label for="maillot-type">Type de maillot</label>
+      <select id="maillot-type">
+        <option value="">— Choisir —</option>
+        <option>Domicile uniquement</option>
+        <option>Extérieur uniquement</option>
+        <option>Domicile + Extérieur</option>
+        <option>Domicile + Extérieur + Third</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="maillot-quantite">Nombre de joueurs (taille de commande estimée)</label>
+      <input type="text" id="maillot-quantite" />
+    </div>
+    <div class="field field--full">
+      <label for="maillot-elements">Éléments à faire apparaître sur le maillot</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" /> Logo du club</label>
+        <label><input type="checkbox" /> Sponsor principal</label>
+        <label><input type="checkbox" /> Numéros dans le dos</label>
+        <label><input type="checkbox" /> Nom du joueur</label>
+        <label><input type="checkbox" /> Drapeau régional / local</label>
+        <label><input type="checkbox" /> Autre</label>
+      </div>
+    </div>
+    <div class="field field--full">
+      <label for="maillot-inspirations">Maillots qui vous inspirent (liens ou descriptions)</label>
+      <textarea id="maillot-inspirations" rows="2"></textarea>
+    </div>
+    <div class="field field--full">
+      <label for="maillot-specs">Contraintes techniques ou contraintes du fournisseur</label>
+      <textarea id="maillot-specs" rows="2" placeholder="ex : Fichier AI requis, gabarit Hummel fourni, couleurs Pantone imposées…"></textarea>
+    </div>
+  </div>
+
+  <!-- ── 7. Informations complémentaires ── -->
+  <div class="section-title">7. Informations complémentaires</div>
+  <div class="field">
+    <label for="infos-complement">Avez-vous des fichiers existants à nous transmettre ? (ancien logo, charte graphique, photos…)</label>
+    <div class="checkbox-group">
+      <label><input type="checkbox" /> Oui, je les enverrai par email</label>
+      <label><input type="checkbox" /> Non, on part de zéro</label>
+    </div>
+  </div>
+  <div class="field" style="margin-top:16px;">
+    <label for="infos-autres">Autres informations que vous jugez importantes</label>
+    <textarea id="infos-autres" rows="3"></textarea>
+  </div>
+
+  <!-- ── 8. Signature ── -->
+  <div class="section-title">8. Validation du brief</div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">
+    En signant ce document, vous confirmez que les informations transmises sont exactes et que vous êtes habilité(e) à prendre des décisions au nom de votre club.
+  </p>
+  <div class="signature-grid">
+    <div class="sig-box">
+      <label>Date de validation</label>
+    </div>
+    <div class="sig-box">
+      <label>Signature du représentant du club</label>
+    </div>
+  </div>
+
+  <!-- ── Pied de page ── -->
+  <div class="doc-footer">
+    Klubik — EI LECLERCQ TIMOTHÉ MATHIEU MARIUS — SIRET 903 786 655 000 22 — 71 rue Watteau, 87000 Limoges<br />
+    contact.klubik@gmail.com · +33 6 95 97 17 15 · klubik.pro
+  </div>
+
+</div>
+
+</body>
+</html>

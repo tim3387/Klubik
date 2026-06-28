@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Devis — Klubik</title>
+  <style>
+    :root {
+      --blue: #1353F4;
+      --blue-dark: #0C3ECC;
+      --blue-light: #EEF3FF;
+      --black: #0A0A0A;
+      --ink: #1A1A1A;
+      --muted: #6B7280;
+      --border: #E8EAED;
+      --surface: #F8F9FC;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+      background: #fff;
+      line-height: 1.6;
+    }
+
+    .doc {
+      max-width: 820px;
+      margin: 40px auto;
+      padding: 48px 56px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    /* ── En-tête ── */
+    .doc-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: flex-start;
+      padding-bottom: 24px;
+      border-bottom: 3px solid var(--blue);
+      margin-bottom: 32px;
+    }
+
+    .brand-name {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--blue);
+      letter-spacing: -0.5px;
+    }
+
+    .brand-coords {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.8;
+    }
+
+    .doc-title-block {
+      text-align: right;
+    }
+
+    .doc-title-block h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.5px;
+    }
+
+    .doc-number {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── Bloc client + conditions ── */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .meta-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 20px;
+    }
+
+    .meta-box h3 {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+
+    .meta-box p {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.8;
+    }
+
+    .meta-box .field-inline {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .meta-box .field-label {
+      font-size: 11px;
+      color: var(--muted);
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+
+    .fill-line {
+      flex: 1;
+      border-bottom: 1px solid #ccc;
+      min-width: 60px;
+      height: 18px;
+    }
+
+    /* ── Tableau des prestations ── */
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--blue);
+      margin-bottom: 12px;
+      margin-top: 28px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead tr {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    thead th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    thead th:last-child,
+    thead th:nth-last-child(2),
+    thead th:nth-last-child(3) {
+      text-align: right;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--surface);
+    }
+
+    tbody td {
+      padding: 10px 14px;
+      vertical-align: top;
+    }
+
+    tbody td:last-child,
+    tbody td:nth-last-child(2),
+    tbody td:nth-last-child(3) {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .td-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ── Lignes de totaux ── */
+    .totals {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      margin-top: 16px;
+      gap: 6px;
+    }
+
+    .total-line {
+      display: flex;
+      gap: 32px;
+      font-size: 13px;
+    }
+
+    .total-line .total-label {
+      color: var(--muted);
+      min-width: 160px;
+      text-align: right;
+    }
+
+    .total-line .total-value {
+      min-width: 100px;
+      text-align: right;
+      font-weight: 500;
+    }
+
+    .total-line--main {
+      font-size: 16px;
+      font-weight: 700;
+      padding-top: 8px;
+      border-top: 2px solid var(--ink);
+      color: var(--ink);
+    }
+
+    .total-line--main .total-label {
+      color: var(--ink);
+    }
+
+    /* ── Conditions de la prestation ── */
+    .conditions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .condition-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 13px;
+    }
+
+    .condition-icon {
+      width: 22px;
+      height: 22px;
+      background: var(--blue-light);
+      color: var(--blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .condition-text strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 1px;
+    }
+
+    .condition-text span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* ── Modalités de règlement ── */
+    .paiement-bloc {
+      background: var(--blue-light);
+      border: 1px solid #c7d8fd;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+
+    .paiement-bloc p + p { margin-top: 6px; }
+
+    /* ── Signature ── */
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 12px;
+    }
+
+    .sig-block {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+    }
+
+    .sig-block h4 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .sig-field {
+      border-bottom: 1px solid #ccc;
+      height: 18px;
+      margin-bottom: 10px;
+    }
+
+    .sig-field-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .sig-area {
+      border: 1px dashed var(--border);
+      border-radius: 4px;
+      height: 60px;
+      margin-top: 8px;
+    }
+
+    /* ── Note légale ── */
+    .note-legale {
+      background: var(--surface);
+      border-left: 3px solid var(--blue);
+      padding: 12px 16px;
+      font-size: 12px;
+      color: var(--muted);
+      border-radius: 0 4px 4px 0;
+      margin-top: 8px;
+    }
+
+    /* ── Pied ── */
+    .doc-footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .doc { border: none; margin: 0; padding: 24px 32px; max-width: 100%; }
+      @page { margin: 1.5cm; }
+      .paiement-bloc { background: #f0f4ff; }
+    }
+
+    @media (max-width: 600px) {
+      .doc { padding: 24px 16px; }
+      .doc-header, .meta-grid, .conditions-grid, .signature-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="doc">
+
+  <!-- ── En-tête ── -->
+  <div class="doc-header">
+    <div class="doc-emetteur">
+      <div class="brand-name">Klubik</div>
+      <div class="brand-coords">
+        EI — LECLERCQ TIMOTHÉ MATHIEU MARIUS<br />
+        71 rue Watteau, 87000 Limoges<br />
+        SIRET : 903 786 655 000 22<br />
+        contact.klubik@gmail.com · +33 6 95 97 17 15
+      </div>
+    </div>
+    <div class="doc-title-block">
+      <h1>Devis</h1>
+      <div class="doc-number">
+        N° DEV-<span style="border-bottom:1px solid #ccc;display:inline-block;width:80px;">&nbsp;</span><br />
+        Émis le : <span style="border-bottom:1px solid #ccc;display:inline-block;width:90px;">&nbsp;</span><br />
+        Valable jusqu'au : <span style="border-bottom:1px solid #ccc;display:inline-block;width:90px;">&nbsp;</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Client + projet ── -->
+  <div class="meta-grid">
+    <div class="meta-box">
+      <h3>Client</h3>
+      <div class="field-inline">
+        <span class="field-label">Club :</span>
+        <span class="fill-line"></span>
+      </div>
+      <div class="field-inline">
+        <span class="field-label">Contact :</span>
+        <span class="fill-line"></span>
+      </div>
+      <div class="field-inline">
+        <span class="field-label">Rôle :</span>
+        <span class="fill-line"></span>
+      </div>
+      <div class="field-inline">
+        <span class="field-label">Email :</span>
+        <span class="fill-line"></span>
+      </div>
+      <div class="field-inline">
+        <span class="field-label">Téléphone :</span>
+        <span class="fill-line"></span>
+      </div>
+      <div class="field-inline">
+        <span class="field-label">Adresse :</span>
+        <span class="fill-line"></span>
+      </div>
+    </div>
+    <div class="meta-box">
+      <h3>Projet</h3>
+      <div class="field-inline">
+        <span class="field-label">Intitulé :</span>
+        <span class="fill-line"></span>
+      </div>
+      <div class="field-inline">
+        <span class="field-label">Brief reçu le :</span>
+        <span class="fill-line"></span>
+      </div>
+      <div class="field-inline">
+        <span class="field-label">Livraison :</span>
+        <span class="fill-line"></span>
+      </div>
+      <div class="field-inline">
+        <span class="field-label">Format livré :</span>
+        <span class="fill-line"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Prestations ── -->
+  <div class="section-title">Détail des prestations</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:40%">Prestation</th>
+        <th style="width:25%">Détails inclus</th>
+        <th style="width:10%">Qté</th>
+        <th style="width:12%">Prix unit.</th>
+        <th style="width:13%">Total HT</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <strong>&nbsp;</strong>
+          <div class="td-desc">&nbsp;</div>
+        </td>
+        <td>&nbsp;</td>
+        <td>1</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>
+          <strong>&nbsp;</strong>
+          <div class="td-desc">&nbsp;</div>
+        </td>
+        <td>&nbsp;</td>
+        <td>1</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>
+          <strong>&nbsp;</strong>
+          <div class="td-desc">&nbsp;</div>
+        </td>
+        <td>&nbsp;</td>
+        <td>1</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>
+          <strong>Révisions supplémentaires</strong>
+          <div class="td-desc">Au-delà des révisions incluses</div>
+        </td>
+        <td>Par aller-retour</td>
+        <td>—</td>
+        <td>50 € / tour</td>
+        <td>Selon besoin</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="totals">
+    <div class="total-line">
+      <span class="total-label">Total HT</span>
+      <span class="total-value">___________&nbsp;€</span>
+    </div>
+    <div class="total-line">
+      <span class="total-label">TVA (non applicable — art. 293 B CGI)</span>
+      <span class="total-value">0,00 €</span>
+    </div>
+    <div class="total-line total-line--main">
+      <span class="total-label">Total TTC</span>
+      <span class="total-value">___________&nbsp;€</span>
+    </div>
+  </div>
+
+  <!-- ── Conditions de la prestation ── -->
+  <div class="section-title">Conditions de la prestation</div>
+  <div class="conditions-grid">
+    <div class="condition-item">
+      <div class="condition-icon">✏</div>
+      <div class="condition-text">
+        <strong>Révisions incluses</strong>
+        <span>2 allers-retours de corrections inclus dans le prix. Au-delà : 50 € / tour.</span>
+      </div>
+    </div>
+    <div class="condition-item">
+      <div class="condition-icon">📦</div>
+      <div class="condition-text">
+        <strong>Livrables</strong>
+        <span>Fichiers finaux fournis en PNG, SVG et PDF haute résolution via WeTransfer.</span>
+      </div>
+    </div>
+    <div class="condition-item">
+      <div class="condition-icon">📅</div>
+      <div class="condition-text">
+        <strong>Délai</strong>
+        <span>Le délai court à partir de la réception de l'acompte et du brief signé.</span>
+      </div>
+    </div>
+    <div class="condition-item">
+      <div class="condition-icon">🖼</div>
+      <div class="condition-text">
+        <strong>Portfolio</strong>
+        <span>Klubik se réserve le droit de présenter le travail réalisé dans son portfolio.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modalités de règlement ── -->
+  <div class="section-title">Modalités de règlement</div>
+  <div class="paiement-bloc">
+    <p><strong>Acompte de 50 %</strong> à la signature du devis, avant démarrage des travaux.</p>
+    <p><strong>Solde de 50 %</strong> à la livraison des fichiers finaux, avant transfert des droits.</p>
+    <p>Paiement par virement bancaire ou via lien de paiement sécurisé Stripe.<br />
+    En cas de retard de paiement : pénalité de 1,5 % par mois (art. L441-10 C. com.).</p>
+  </div>
+
+  <!-- ── Mention micro-entrepreneur ── -->
+  <div class="note-legale">
+    Micro-entrepreneur — TVA non applicable en vertu de l'article 293 B du CGI.
+    Le présent devis est valable 30 jours à compter de sa date d'émission.
+  </div>
+
+  <!-- ── Signatures ── -->
+  <div class="section-title">Bon pour accord — Ce devis vaut bon de commande à la signature</div>
+  <div class="signature-grid">
+    <div class="sig-block">
+      <h4>Le client</h4>
+      <div class="sig-field-label">Nom et prénom</div>
+      <div class="sig-field"></div>
+      <div class="sig-field-label">Qualité (Président, Trésorier…)</div>
+      <div class="sig-field"></div>
+      <div class="sig-field-label">Date</div>
+      <div class="sig-field"></div>
+      <div class="sig-field-label">Signature précédée de la mention « Bon pour accord »</div>
+      <div class="sig-area"></div>
+    </div>
+    <div class="sig-block">
+      <h4>Klubik</h4>
+      <div class="sig-field-label">Timothé LECLERCQ — Gérant Klubik</div>
+      <div class="sig-field"></div>
+      <div class="sig-field-label">Date</div>
+      <div class="sig-field"></div>
+      <div class="sig-field-label">Signature</div>
+      <div class="sig-area"></div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    Klubik — EI LECLERCQ TIMOTHÉ MATHIEU MARIUS — SIRET 903 786 655 000 22 — 71 rue Watteau, 87000 Limoges<br />
+    contact.klubik@gmail.com · +33 6 95 97 17 15 · klubik.pro
+  </div>
+
+</div>
+
+</body>
+</html>

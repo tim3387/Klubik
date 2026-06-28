@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contrat de cession de droits — Klubik</title>
+  <style>
+    :root {
+      --blue: #1353F4;
+      --blue-dark: #0C3ECC;
+      --blue-light: #EEF3FF;
+      --black: #0A0A0A;
+      --ink: #1A1A1A;
+      --muted: #6B7280;
+      --border: #E8EAED;
+      --surface: #F8F9FC;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+      background: #fff;
+      line-height: 1.8;
+    }
+
+    .doc {
+      max-width: 820px;
+      margin: 40px auto;
+      padding: 48px 56px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    /* ── En-tête ── */
+    .doc-header {
+      text-align: center;
+      padding-bottom: 28px;
+      border-bottom: 3px solid var(--blue);
+      margin-bottom: 36px;
+    }
+
+    .brand-name {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--blue);
+      letter-spacing: -0.5px;
+    }
+
+    .brand-tagline {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .doc-type {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .doc-sous-titre {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── Numéro et date ── */
+    .doc-ref {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 16px;
+      font-size: 13px;
+    }
+
+    .doc-ref span {
+      color: var(--muted);
+    }
+
+    .fill-sm {
+      display: inline-block;
+      border-bottom: 1px solid #ccc;
+      min-width: 100px;
+      height: 16px;
+      vertical-align: bottom;
+    }
+
+    /* ── Parties ── */
+    .parties-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .partie-box {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 20px;
+    }
+
+    .partie-box h3 {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+
+    .partie-box .row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
+    .partie-box .lbl {
+      font-size: 11px;
+      color: var(--muted);
+      min-width: 70px;
+      flex-shrink: 0;
+    }
+
+    .fill-line {
+      flex: 1;
+      border-bottom: 1px solid #ccc;
+      height: 18px;
+    }
+
+    /* ── Sections du contrat ── */
+    .article {
+      margin-bottom: 24px;
+    }
+
+    .article h2 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--blue);
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+
+    .article p {
+      font-size: 13px;
+      margin-bottom: 8px;
+      text-align: justify;
+    }
+
+    .article ul {
+      list-style: none;
+      padding: 0;
+      margin: 8px 0;
+    }
+
+    .article ul li {
+      font-size: 13px;
+      padding: 4px 0 4px 20px;
+      position: relative;
+    }
+
+    .article ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--blue);
+      font-size: 12px;
+    }
+
+    /* ── Zone d'oeuvre ── */
+    .oeuvre-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    .oeuvre-box .row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .oeuvre-box .lbl {
+      font-size: 11px;
+      color: var(--muted);
+      min-width: 130px;
+      flex-shrink: 0;
+    }
+
+    /* ── Tableau droits ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 12px 0;
+    }
+
+    thead tr { background: var(--blue); color: #fff; }
+    thead th { padding: 9px 14px; font-size: 11px; font-weight: 600; text-align: left; }
+
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:nth-child(even) { background: var(--surface); }
+    tbody td { padding: 9px 14px; vertical-align: top; }
+    tbody td:first-child { font-weight: 600; }
+
+    /* ── Encadrés informatifs ── */
+    .info-box {
+      border-left: 3px solid var(--blue);
+      background: var(--blue-light);
+      padding: 12px 16px;
+      border-radius: 0 4px 4px 0;
+      font-size: 12px;
+      color: var(--ink);
+      margin: 12px 0;
+    }
+
+    .warn-box {
+      border-left: 3px solid #F59E0B;
+      background: #FFFBEB;
+      padding: 12px 16px;
+      border-radius: 0 4px 4px 0;
+      font-size: 12px;
+      color: var(--ink);
+      margin: 12px 0;
+    }
+
+    /* ── Signatures ── */
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 12px;
+    }
+
+    .sig-block {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+    }
+
+    .sig-block h4 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .sig-row {
+      margin-bottom: 10px;
+    }
+
+    .sig-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+
+    .sig-field {
+      border-bottom: 1px solid #ccc;
+      height: 20px;
+    }
+
+    .sig-area {
+      border: 1px dashed var(--border);
+      border-radius: 4px;
+      height: 70px;
+      margin-top: 4px;
+    }
+
+    /* ── Pied de page ── */
+    .doc-footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .doc { border: none; margin: 0; padding: 24px 32px; max-width: 100%; }
+      .info-box { background: #eef3ff; }
+      .warn-box { background: #fffbeb; }
+      @page { margin: 1.5cm; }
+    }
+
+    @media (max-width: 600px) {
+      .doc { padding: 24px 16px; }
+      .parties-grid, .signature-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="doc">
+
+  <!-- ── En-tête ── -->
+  <div class="doc-header">
+    <div class="brand-name">Klubik</div>
+    <div class="brand-tagline">Marketing sportif pour clubs amateurs</div>
+    <div class="doc-type">Contrat de cession de droits d'auteur</div>
+    <div class="doc-sous-titre">Création graphique — Logo et/ou Design maillot</div>
+    <div class="doc-ref">
+      <span>N° <span class="fill-sm"></span></span>
+      <span>Date : <span class="fill-sm"></span></span>
+      <span>Lié au devis N° <span class="fill-sm"></span></span>
+    </div>
+  </div>
+
+  <!-- ── Parties ── -->
+  <div class="article">
+    <h2>Entre les soussignés</h2>
+  </div>
+
+  <div class="parties-grid">
+    <div class="partie-box">
+      <h3>Le Cédant (Auteur)</h3>
+      <div class="row"><span class="lbl">Société :</span> <strong>Klubik</strong></div>
+      <div class="row"><span class="lbl">Statut :</span> Entrepreneur individuel</div>
+      <div class="row"><span class="lbl">Représenté par :</span> Timothé LECLERCQ</div>
+      <div class="row"><span class="lbl">SIRET :</span> 903 786 655 000 22</div>
+      <div class="row"><span class="lbl">Adresse :</span> 71 rue Watteau, 87000 Limoges</div>
+      <div class="row"><span class="lbl">Email :</span> contact.klubik@gmail.com</div>
+    </div>
+    <div class="partie-box">
+      <h3>Le Cessionnaire (Client)</h3>
+      <div class="row"><span class="lbl">Club :</span> <span class="fill-line"></span></div>
+      <div class="row"><span class="lbl">Représenté par :</span> <span class="fill-line"></span></div>
+      <div class="row"><span class="lbl">Rôle :</span> <span class="fill-line"></span></div>
+      <div class="row"><span class="lbl">Adresse :</span> <span class="fill-line"></span></div>
+      <div class="row"><span class="lbl">Email :</span> <span class="fill-line"></span></div>
+      <div class="row"><span class="lbl">SIRET / RNA :</span> <span class="fill-line"></span></div>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:var(--muted);margin-bottom:28px;">
+    Ci-après dénommés respectivement « le Cédant » et « le Cessionnaire », il a été convenu ce qui suit.
+  </p>
+
+  <!-- ── Article 1 ── -->
+  <div class="article">
+    <h2>Article 1 — Objet du contrat</h2>
+    <p>
+      Le présent contrat a pour objet la cession, par le Cédant au Cessionnaire, des droits d'auteur
+      sur la ou les œuvre(s) originale(s) créée(s) dans le cadre de la prestation décrite ci-dessous.
+    </p>
+    <div class="oeuvre-box">
+      <div class="row">
+        <span class="lbl">Nature de l'œuvre :</span>
+        <span class="fill-line"></span>
+      </div>
+      <div class="row">
+        <span class="lbl">Description :</span>
+        <span class="fill-line"></span>
+      </div>
+      <div class="row">
+        <span class="lbl">Fichiers livrés :</span>
+        <span class="fill-line"></span>
+      </div>
+      <div class="row">
+        <span class="lbl">Date de livraison :</span>
+        <span class="fill-line"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Article 2 ── -->
+  <div class="article">
+    <h2>Article 2 — Droits cédés</h2>
+    <p>
+      Le Cédant cède au Cessionnaire, à titre exclusif pour les usages liés à l'activité sportive du
+      Cessionnaire, les droits patrimoniaux d'auteur suivants :
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Droit</th>
+          <th>Périmètre autorisé</th>
+          <th>Inclus</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Reproduction</td>
+          <td>Impression sur maillots, équipements, supports de communication</td>
+          <td>✓</td>
+        </tr>
+        <tr>
+          <td>Représentation</td>
+          <td>Site web, réseaux sociaux, affiches, bannières du club</td>
+          <td>✓</td>
+        </tr>
+        <tr>
+          <td>Adaptation / modification</td>
+          <td>Déclinaisons de couleurs pour maillots dom./ext./third</td>
+          <td>✓ limité</td>
+        </tr>
+        <tr>
+          <td>Distribution</td>
+          <td>Remise des fichiers aux prestataires (imprimeurs, brodeurs…)</td>
+          <td>✓</td>
+        </tr>
+        <tr>
+          <td>Cession à des tiers</td>
+          <td>Revente ou transfert à une autre entité</td>
+          <td>✗</td>
+        </tr>
+        <tr>
+          <td>Usage commercial externe</td>
+          <td>Hors activité du club (marchandising externe, franchise…)</td>
+          <td>✗ (avenant requis)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <strong>Modification de l'œuvre :</strong> Toute modification substantielle du logo ou du design
+      (recoloriage global, suppression d'éléments, fusion avec une autre identité) doit faire l'objet
+      d'une demande préalable à Klubik. Les déclinaisons mineures pour différents supports (tailles,
+      fond blanc/noir) sont autorisées.
+    </div>
+  </div>
+
+  <!-- ── Article 3 ── -->
+  <div class="article">
+    <h2>Article 3 — Étendue territoriale et durée</h2>
+    <ul>
+      <li><strong>Territoire :</strong> Monde entier.</li>
+      <li><strong>Durée :</strong> Pour toute la durée légale des droits d'auteur (70 ans post mortem auctoris en France), sans limitation de temps pour les usages définis à l'article 2.</li>
+      <li>La cession prend effet à la date du paiement intégral de la prestation.</li>
+    </ul>
+  </div>
+
+  <!-- ── Article 4 ── -->
+  <div class="article">
+    <h2>Article 4 — Contrepartie financière</h2>
+    <p>
+      La cession des droits est incluse dans le prix total de la prestation figurant au devis N°
+      <span class="fill-sm"></span>, d'un montant de
+      <span class="fill-sm"></span> € TTC.
+    </p>
+    <p>
+      Aucune redevance supplémentaire ne sera due pour les usages listés à l'article 2, sous réserve
+      du paiement intégral du devis dans les délais convenus.
+    </p>
+    <div class="warn-box">
+      <strong>Important :</strong> La cession de droits est conditionnée au règlement intégral de la
+      prestation. Tant que le solde n'est pas réglé, le Cessionnaire ne dispose d'aucun droit d'usage
+      sur les fichiers livrés.
+    </div>
+  </div>
+
+  <!-- ── Article 5 ── -->
+  <div class="article">
+    <h2>Article 5 — Droit moral du Cédant</h2>
+    <p>
+      Conformément à l'article L.121-1 du Code de la propriété intellectuelle, le droit moral
+      de Timothé LECLERCQ (Klubik) est inaliénable et imprescriptible. À ce titre :
+    </p>
+    <ul>
+      <li>Le Cédant conserve le droit à la paternité de l'œuvre.</li>
+      <li>Le Cessionnaire s'engage à ne pas présenter l'œuvre comme étant de sa propre création.</li>
+      <li>Le Cédant peut s'opposer à toute modification qui porterait atteinte à l'intégrité de l'œuvre ou à son honneur.</li>
+    </ul>
+  </div>
+
+  <!-- ── Article 6 ── -->
+  <div class="article">
+    <h2>Article 6 — Droit de présentation (portfolio)</h2>
+    <p>
+      Le Cessionnaire autorise expressément le Cédant à présenter les œuvres réalisées dans le cadre
+      de cette prestation à titre de référence commerciale et artistique, notamment sur :
+    </p>
+    <ul>
+      <li>Le site internet klubik.pro</li>
+      <li>Les réseaux sociaux de Klubik (Instagram, LinkedIn…)</li>
+      <li>Tout support de présentation commerciale (présentations clients, salons, médias…)</li>
+    </ul>
+    <p>Le Cédant s'engage à ne pas diffuser de visuels confidentiels avant la livraison officielle au Cessionnaire.</p>
+  </div>
+
+  <!-- ── Article 7 ── -->
+  <div class="article">
+    <h2>Article 7 — Garanties et originalité</h2>
+    <p>
+      Le Cédant garantit que les œuvres créées sont originales et qu'il dispose bien de tous les droits
+      nécessaires pour en effectuer la cession. En cas de réclamation d'un tiers fondée sur la violation
+      d'un droit antérieur, le Cédant s'engage à prendre en charge la défense du Cessionnaire et à l'indemniser de tout préjudice direct.
+    </p>
+    <p>
+      Le Cessionnaire garantit que les informations transmises dans le brief créatif (noms, éléments
+      graphiques fournis, photos…) ne violent aucun droit tiers. En cas de litige lié à des éléments
+      fournis par le Cessionnaire, la responsabilité de Klubik ne saurait être engagée.
+    </p>
+  </div>
+
+  <!-- ── Article 8 ── -->
+  <div class="article">
+    <h2>Article 8 — Résiliation</h2>
+    <p>
+      En cas de non-paiement dans les délais fixés au devis, le Cédant se réserve le droit de
+      résilier le présent contrat par email avec accusé de réception. Dans ce cas :
+    </p>
+    <ul>
+      <li>L'acompte versé reste acquis à Klubik à titre d'indemnité forfaitaire.</li>
+      <li>Les fichiers finaux ne sont pas transmis.</li>
+      <li>Les droits cédés sont annulés et tous droits restent la propriété exclusive du Cédant.</li>
+    </ul>
+  </div>
+
+  <!-- ── Article 9 ── -->
+  <div class="article">
+    <h2>Article 9 — Loi applicable et litiges</h2>
+    <p>
+      Le présent contrat est soumis au droit français. En cas de litige, les parties s'engagent à
+      rechercher une solution amiable avant toute action judiciaire. À défaut d'accord, le tribunal
+      compétent sera celui du ressort du siège social de Klubik (Limoges, 87000).
+    </p>
+  </div>
+
+  <!-- ── Signatures ── -->
+  <div class="article">
+    <h2>Signatures</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">
+      Fait en deux exemplaires originaux, chaque partie reconnaissant avoir reçu le sien.
+    </p>
+  </div>
+
+  <div class="signature-grid">
+    <div class="sig-block">
+      <h4>Le Cessionnaire (Client)</h4>
+      <div class="sig-row">
+        <div class="sig-label">Nom et prénom</div>
+        <div class="sig-field"></div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-label">Qualité</div>
+        <div class="sig-field"></div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-label">Lieu et date</div>
+        <div class="sig-field"></div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-label">Signature précédée de « Lu et approuvé »</div>
+        <div class="sig-area"></div>
+      </div>
+    </div>
+    <div class="sig-block">
+      <h4>Le Cédant — Klubik</h4>
+      <div class="sig-row">
+        <div class="sig-label">Timothé LECLERCQ</div>
+        <div class="sig-field"></div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-label">Gérant Klubik — EI</div>
+        <div class="sig-field"></div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-label">Lieu et date</div>
+        <div class="sig-field"></div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-label">Signature</div>
+        <div class="sig-area"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    Klubik — EI LECLERCQ TIMOTHÉ MATHIEU MARIUS — SIRET 903 786 655 000 22 — 71 rue Watteau, 87000 Limoges<br />
+    contact.klubik@gmail.com · +33 6 95 97 17 15 · klubik.pro<br /><br />
+    Document établi conformément au Code de la propriété intellectuelle (art. L.131-3 à L.131-7 CPI).
+  </div>
+
+</div>
+
+</body>
+</html>

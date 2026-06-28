@@ -1,8 +1,246 @@
-# Audit SEO Complet — Klubik
-**Date :** 9 juin 2026  
+# Audit SEO Complet — Klubik (v2)
+**Date :** 28 juin 2026  
 **Type de site :** Site vitrine one-page — Agence de marketing sportif pour clubs amateurs  
 **Stack :** HTML5 / CSS3 / JS vanilla  
-**Pages analysées :** index.html, mentions-legales.html, cgv.html, cgu.html
+**Pages analysées :** index.html, formation-canva.html, mentions-legales.html, cgv.html, cgu.html, confidentialite.html, robots.txt, sitemap.xml, script.js, style.css
+
+---
+
+## Score de santé SEO global : 58 / 100
+
+> ⬇️ Score en baisse vs audit v1 (74/100) — la grille de scoring v2 inclut E-E-A-T, GEO et contenu, qui pénalisent le portfolio vide et l'absence de preuve sociale.
+
+| Catégorie | Poids | Score | Points |
+|---|---|---|---|
+| SEO Technique | 25% | 65/100 | 16.3 |
+| Qualité du contenu (E-E-A-T) | 25% | 45/100 | 11.3 |
+| SEO On-Page | 20% | 75/100 | 15.0 |
+| Schémas / Données structurées | 10% | 50/100 | 5.0 |
+| Performance (Core Web Vitals) | 10% | 60/100 | 6.0 |
+| Images | 5% | 60/100 | 3.0 |
+| Référencement IA (GEO) | 5% | 35/100 | 1.8 |
+| **TOTAL** | **100%** | | **58.3 / 100** |
+
+---
+
+## 🔴 Top 5 — Problèmes critiques (à corriger immédiatement)
+
+1. **Lien Stripe brisé** sur `formation-canva.html` — CTA de vente pointe vers `LIEN_STRIPE_FORMATION` (placeholder non remplacé) → personne ne peut acheter la formation
+2. **`formation-canva.html` absent du sitemap.xml** — page de vente principale, Google ne la connaît pas officiellement
+3. **Pas de consentement cookie (RGPD/CNIL)** — Google Analytics chargé sans bannière → infraction CNIL, amende potentielle
+4. **CLS potentiel sur le logo** — dimensions HTML (`width="120" height="40"`) vs CSS (`height: 52px`) créent un décalage visuel au chargement
+5. **Portfolio entièrement vide** — section placeholder = zéro preuve sociale, zéro crédibilité
+
+## 🟡 Top 5 — Gains rapides (quick wins, < 30 min chacun)
+
+1. Ajouter `formation-canva.html` au sitemap (5 min)
+2. Corriger le lien Stripe de la formation (2 min)
+3. Épingler `lucide@0.475.0` dans `index.html` (2 min, déjà fait dans formation-canva.html)
+4. Corriger les dimensions du logo HTML pour coller au CSS (5 min)
+5. Exclure `calendrier-editorial/`, `outils/`, `contrats/` du crawl via robots.txt (10 min)
+
+---
+
+## 1. SEO TECHNIQUE — 65/100
+
+### ✅ Points forts
+- `robots.txt` correct, référence le sitemap
+- Balises canoniques sur `index.html` et `formation-canva.html`
+- `lang="fr"` sur toutes les pages
+- HTTPS via Netlify (canonicals en https)
+- `rel="noopener nofollow"` sur les liens Stripe
+- `rel="noopener"` sur les liens WhatsApp
+- `preconnect` pour Google Fonts
+
+### ❌ Problèmes détectés
+
+**Critique**
+- **`formation-canva.html` absent du sitemap.xml** — page revenue non indexée officiellement
+- **Pas de cookie banner RGPD** — `G-PDBNFLX6NJ` se charge sans consentement → infraction CNIL
+
+**Élevé**
+- **Favicon manquant** — pas de balise `<link rel="icon">` sur aucune page
+- **`og:image` non vérifiable** — `assets/images/og-image.jpg` référencée mais non trouvée dans le projet
+
+**Moyen**
+- **Pages internes exposées** : `calendrier-editorial/`, `outils/`, `contrats/` sont dans le repo et potentiellement indexables. À bloquer via robots.txt sauf intention délibérée
+- **`<section class="kubo-intro">` sans `id`** — impossible d'y linker directement
+- **Section `#fondateur`** absente de la navbar et du footer — introuvable sans scrolling
+
+### Sitemap — état actuel
+
+| Page | Dans sitemap | Priorité | Statut |
+|---|---|---|---|
+| `index.html` | ✅ | 1.0 | OK |
+| `formation-canva.html` | ❌ | — | **À AJOUTER** |
+| `mentions-legales.html` | ✅ | 0.3 | OK |
+| `cgv.html` | ✅ | 0.3 | OK |
+| `cgu.html` | ✅ | 0.3 | OK |
+| `confidentialite.html` | ✅ | 0.3 | OK |
+| `guide-image-pro/guide-image-pro.html` | ✅ | 0.7 | OK |
+| `calendrier-editorial/*` | ❌ | — | À exclure (robots.txt) |
+| `outils/*`, `contrats/*` | ❌ | — | À exclure (robots.txt) |
+
+---
+
+## 2. QUALITÉ DU CONTENU (E-E-A-T) — 45/100
+
+### ✅ Points forts
+- Section Fondateur avec backstory authentique (clubs réels mentionnés : Haillan, JA Isle, Saint-Médard, Saint-Flour, Saint-Étienne)
+- 6 cibles clairement définies
+- Pricing transparent (5 packs avec prix publics)
+- Process en 4 étapes décrit
+- Contacts multiples visibles
+- Pages légales complètes
+
+### ❌ Problèmes détectés
+
+**Critique**
+- **Portfolio entièrement vide** — "Les visuels arrivent bientôt" = aucune preuve d'avoir travaillé avec un club. C'est le signal E-E-A-T le plus manquant.
+
+**Élevé**
+- **Zéro témoignage client** — aucun avis, aucune citation, aucune note
+- **Pas de photo du fondateur** — placeholder "Photo à venir" nuit à la crédibilité personnelle
+- **Pas de FAQ** — questions fréquentes non traitées = opportunité SEO manquée
+- **Aucune preuve de résultat** — pas de stat, pas de chiffre ("X clubs accompagnés", "X visuels livrés")
+
+**Moyen**
+- **Pas de contenu éditorial** — impossible de construire une autorité sur "marketing sportif clubs amateurs" sans contenu régulier
+- **Page formation sans preuve** — aucun témoignage, aucune note, aucune capture d'écran de la formation
+
+---
+
+## 3. SEO ON-PAGE — 75/100
+
+### ✅ Points forts
+
+| Page | Title | Meta desc | H1 | Sémantique |
+|---|---|---|---|---|
+| `index.html` | ✅ 54 chars | ✅ 172 chars | ✅ 1 seule | ✅ |
+| `formation-canva.html` | ✅ 47 chars | ✅ 152 chars | ✅ 1 seule | ✅ |
+
+- Hiérarchie H1 → H2 → H3 respectée
+- Open Graph complet sur les deux pages principales
+- Balises sémantiques HTML5 correctes
+
+### ❌ Problèmes
+
+**Élevé**
+- **H1 index.html générique** : "On aide les clubs amateurs à avoir une image plus professionnelle." — aucun mot-clé cible ("agence marketing sportif", "logo club amateur") n'y apparaît
+- **Title index.html** : "Klubik — Marketing sportif pour clubs amateurs" — correct mais le mot "agence" manque
+
+**Moyen**
+- **`formation-canva.html`** : meta Twitter Card incomplète (pas de `twitter:image` ni `twitter:description`)
+- **Section `#fondateur`** sans lien depuis la navigation principale
+
+---
+
+## 4. SCHÉMAS / DONNÉES STRUCTURÉES — 50/100
+
+### index.html — problèmes
+
+```json
+// Actuel
+{ "@type": ["Organization", "LocalBusiness"], ... }
+```
+
+- ❌ `LocalBusiness` sans `address` — invalide selon Google (adresse physique obligatoire)
+- ❌ Double type `["Organization", "LocalBusiness"]` — LocalBusiness hérite d'Organization, redondance
+- ❌ `offers` sur Organization — à placer sur un type `Service`
+- ❌ `serviceType` — propriété non standard de LocalBusiness
+
+### formation-canva.html — problèmes
+
+Le type `Course` est une bonne base, mais :
+- ❌ Manque `educationalCredentialAwarded`
+- ❌ Manque `image` pour le cours
+- ❌ Manque `coursePrerequisites` ("Aucun prérequis")
+- ❌ Manque `teaches` (liste des compétences)
+- ❌ Manque `aggregateRating` (à ajouter quand des avis existent)
+
+### Schémas manquants sur index.html
+- `Person` pour le fondateur (Timothé Leclercq)
+- `FAQPage` (quand une FAQ sera créée)
+- `Service` pour chaque prestation
+
+---
+
+## 5. PERFORMANCE (Core Web Vitals estimée) — 60/100
+
+### ✅ Points forts
+- CSS + JS en un seul fichier chacun
+- Animations via IntersectionObserver (non bloquant)
+- Google Analytics en `async`
+- `preconnect` pour Google Fonts
+
+### ❌ Risques
+
+**LCP (Largest Contentful Paint)**
+- Vidéo `hero-kubo.mp4` sans attribut `poster` → zone noire pendant le chargement
+- Fix : `poster="assets/images/kubo-poster.jpg"`
+
+**CLS (Cumulative Layout Shift)**
+- Logo navbar : HTML `width="120" height="40"` mais CSS `height: 52px; width: auto` → mismatch → CLS
+- Logo footer : HTML `width="100" height="33"` mais CSS `height: 60px` → CLS
+
+**Scripts tiers**
+- `lucide@latest` dans index.html → résolution DNS non cachée, version imprévisible
+- EmailJS et Lucide sans hash SRI (`integrity`) → risque sécurité
+
+**Animation orbital**
+- `requestAnimationFrame` tourne en continu même hors viewport — recommandé : suspendre avec IntersectionObserver
+
+---
+
+## 6. IMAGES — 60/100
+
+### ✅ Points forts
+- Quasi toutes les "images" du hero sont du HTML/CSS pur → 0 requête image dans le hero
+- `loading="lazy"` sur le logo footer
+- SVGs inline pour les icônes
+
+### ❌ Problèmes
+- `og:image` référencée mais fichier non trouvé dans le projet
+- Vidéo sans `poster` → contenu invisible pendant le chargement
+- `logo.png` en PNG → SVG ou WebP serait plus léger
+- Dimensions logo HTML ≠ CSS → CLS
+
+---
+
+## 7. RÉFÉRENCEMENT IA (GEO) — 35/100
+
+### ✅ Points forts
+- Structure sémantique claire
+- Pricing explicite
+- Biographie fondateur avec détails réels
+
+### ❌ Manques critiques
+- **Pas de `llms.txt`** — les crawlers IA (ClaudeBot, GPTBot, PerplexityBot) n'ont pas de guide de navigation
+- **Pas de FAQ** — format idéal pour les réponses directes des IA
+- **Aucune statistique ou donnée chiffrée** à citer
+- **Pas de contenu éditorial** — les IA citent des contenus informatifs, pas des landing pages
+- **Zéro mention externe connue**
+
+---
+
+## Récapitulatif des fichiers
+
+| Fichier | Rôle | Statut |
+|---|---|---|
+| `index.html` | Landing page principale | ⚠️ Logo CLS, H1 générique |
+| `formation-canva.html` | Page vente formation | 🔴 Lien Stripe brisé, absent sitemap |
+| `robots.txt` | Directives crawlers | ✅ OK |
+| `sitemap.xml` | Index pages | ⚠️ formation-canva manquante |
+| `script.js` | JS | ✅ OK |
+| `style.css` | Styles | ✅ OK |
+| Pages légales (4) | Légal | ✅ OK |
+| `guide-image-pro/` | Guide gratuit | ✅ Dans sitemap |
+| `calendrier-editorial/` | Outil interne | ⚠️ À exclure |
+| `outils/`, `contrats/` | Outils internes | ⚠️ À exclure |
+
+---
+
+*Audit v2 — 28/06/2026 — Analyse statique complète (index.html + formation-canva.html + tous fichiers config)*
 
 ---
 

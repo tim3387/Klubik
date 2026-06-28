@@ -1,7 +1,79 @@
 # Plan d'action — Klubik
-**Mis à jour le :** 19 juin 2026  
-**Score SEO actuel :** 74/100  
-**Objectif SEO :** 85/100
+**Mis à jour le :** 28 juin 2026  
+**Score SEO actuel :** 58/100 (audit v2, grille élargie E-E-A-T + GEO)  
+**Objectif SEO :** 80/100
+
+---
+
+## 🔴 CRITIQUE — À corriger immédiatement
+
+### 1. Lien Stripe brisé — formation-canva.html
+**Fichier :** `formation-canva.html` ligne ~796  
+**Problème :** Le CTA d'achat pointe vers `https://buy.stripe.com/LIEN_STRIPE_FORMATION` — personne ne peut acheter la formation.  
+**Action :** Remplacer ce placeholder par le vrai lien Stripe dès que le produit est créé sur Stripe/Systeme.io.
+
+```html
+<!-- Remplacer -->
+<a href="https://buy.stripe.com/LIEN_STRIPE_FORMATION" ...>
+<!-- Par le vrai lien -->
+<a href="https://buy.stripe.com/VOTRE_VRAI_LIEN" ...>
+```
+
+---
+
+### 2. Ajouter formation-canva.html au sitemap.xml
+**Fichier :** `sitemap.xml`  
+**Problème :** La page de vente formation est absente du sitemap — Google ne l'indexe pas officiellement.  
+**Action :** Ajouter l'entrée suivante dans `sitemap.xml` :
+
+```xml
+<url>
+  <loc>https://klubik.pro/formation-canva.html</loc>
+  <lastmod>2026-06-28</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.9</priority>
+</url>
+```
+
+---
+
+### 3. Bannière de consentement cookie (RGPD/CNIL)
+**Problème :** Google Analytics se charge sans consentement de l'utilisateur → infraction CNIL. Risque d'amende jusqu'à 150 000 €.  
+**Solution recommandée :** Outil gratuit [Axeptio](https://www.axeptio.eu) (widget JS simple, version gratuite disponible).  
+**Alternative simple :** Charger GA seulement si l'utilisateur a accepté via un localStorage flag.
+
+---
+
+### 4. Corriger le CLS du logo (dimensions HTML ≠ CSS)
+**Fichier :** `index.html` lignes 53 et 852  
+**Problème :** HTML dit `width="120" height="40"` mais CSS définit `height: 52px` → le navigateur réserve 40px puis saute à 52px → Cumulative Layout Shift.
+
+```html
+<!-- Navbar logo : aligner sur height: 52px du CSS -->
+<img src="assets/images/logo.png" alt="Klubik — Marketing sportif pour clubs amateurs" 
+     class="logo-img" width="156" height="52" />
+
+<!-- Footer logo : aligner sur height: 60px du CSS -->
+<img src="assets/images/logo.png" alt="Klubik" 
+     class="logo-img logo-img--footer" width="182" height="60" loading="lazy" />
+```
+*(Les valeurs width sont calculées en gardant les proportions de l'image originale 120/40 = 3:1)*
+
+---
+
+### 5. Exclure les pages internes des crawlers
+**Fichier :** `robots.txt`  
+**Problème :** `calendrier-editorial/`, `outils/`, `contrats/` sont potentiellement indexables — contenu inutile pour Google.
+
+```
+User-agent: *
+Allow: /
+Disallow: /calendrier-editorial/
+Disallow: /outils/
+Disallow: /contrats/
+
+Sitemap: https://klubik.pro/sitemap.xml
+```
 
 ---
 
@@ -12,10 +84,15 @@
 - [x] Script vidéo intégral rédigé (Module 0 à Bonus)
 
 ### 🔜 À faire (dans l'ordre)
-- [ ] **Page de vente** — argumentaire, bénéfices, public cible, CTA d'achat
+- [x] **Page de vente** — `formation-canva.html` en ligne sur klubik.pro
 - [ ] **PDF d'accompagnement** — guide livré avec les templates : checklist, captures d'écran, raccourcis clavier
 - [ ] **Enregistrement vidéo** — module par module (écran + voix), montage
-- [ ] **Hébergement & vente** — choisir la plateforme (Gumroad, Stan, Systeme.io…) et mettre en ligne
+- [ ] **Hébergement & vente — Systeme.io** (plan gratuit, 0% de commission) :
+  1. Créer le cours sur Systeme.io
+  2. Connecter Stripe dans les réglages Systeme.io
+  3. Uploader les vidéos + PDF dans l'espace membres
+  4. Récupérer le lien de checkout généré par Systeme.io
+  5. Remplacer le `href` du bouton CTA dans `formation-canva.html` par ce lien
 
 ---
 
@@ -42,7 +119,9 @@
 
 ---
 
-## Medium — À traiter avant le lancement
+---
+
+## 🟡 Medium — À traiter avant le lancement
 
 ### 1. Créer l'image Open Graph
 **Action :** Créer `assets/images/og-image.jpg` en 1200×630px sur Canva  
@@ -94,7 +173,32 @@
 
 ---
 
-## Low — Backlog
+### 6. Corriger le schéma Organization/LocalBusiness
+**Fichier :** `index.html` — bloc `<script type="application/ld+json">`  
+**Problème :** `LocalBusiness` sans `address` est invalide pour Google. Le double type `["Organization", "LocalBusiness"]` est redondant.  
+**Solution :** Utiliser uniquement `"@type": "ProfessionalService"` (sous-type de LocalBusiness adapté aux agences) ou `"@type": "Organization"` si pas d'adresse fixe à déclarer.
+
+---
+
+### 7. Corriger le schéma Course — formation-canva.html
+**Ajouter :**
+```json
+"educationalCredentialAwarded": "Attestation de complétion",
+"coursePrerequisites": "Aucun prérequis technique nécessaire",
+"teaches": ["Créer des visuels Canva", "Templates Instagram sport", "Identité visuelle club"],
+"image": "https://klubik.pro/assets/images/og-image.jpg"
+```
+
+---
+
+### 8. Enrichir le H1 de l'index avec les mots-clés cibles
+**Fichier :** `index.html` ligne 79  
+**Problème :** "On aide les clubs amateurs à avoir une image plus professionnelle." — zéro mot-clé SEO  
+**Suggestion :** Conserver le style mais intégrer les mots-clés dans le reste de la section Hero (H1 peut rester humain, mais les premiers 200 mots de la page doivent contenir "agence marketing sportif", "logo club amateur", "templates Canva sport").
+
+---
+
+## ⚪ Low — Backlog
 
 ### 6. Convertir le logo en WebP
 ```html
@@ -142,12 +246,30 @@ Même une seule vraie création (logo, maillot, template Instagram) suffit à re
 
 ---
 
-## Impact estimé après correction des points Medium
+### 14. Ajouter un schéma Person pour le fondateur
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Timothé Leclercq",
+  "jobTitle": "Fondateur",
+  "worksFor": { "@type": "Organization", "name": "Klubik" },
+  "description": "Handballeur et fondateur de Klubik, agence de marketing sportif pour clubs amateurs.",
+  "url": "https://klubik.pro"
+}
+```
 
-| Catégorie | Maintenant | Après | Gain |
-|---|---|---|---|
-| SEO Technique | 85 | 95 | +10 |
-| On-Page SEO | 88 | 93 | +5 |
-| Performance | 65 | 78 | +13 |
-| Images | 65 | 80 | +15 |
-| **Score global** | **74** | **~85** | **+11** |
+---
+
+## Impact estimé après correction des points Critiques + Medium
+
+| Catégorie | Maintenant | Après Critiques | Après Medium | Gain total |
+|---|---|---|---|---|
+| SEO Technique | 65 | 82 | 90 | +25 |
+| E-E-A-T / Contenu | 45 | 48 | 60 | +15 |
+| On-Page SEO | 75 | 80 | 85 | +10 |
+| Schémas | 50 | 55 | 70 | +20 |
+| Performance | 60 | 70 | 75 | +15 |
+| Images | 60 | 65 | 78 | +18 |
+| GEO | 35 | 38 | 45 | +10 |
+| **Score global** | **58** | **~68** | **~78** | **+20** |

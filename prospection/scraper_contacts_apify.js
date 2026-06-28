@@ -12,8 +12,25 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-require('dotenv').config({ path: path.join(__dirname, '.env') });
-const APIFY_TOKEN = process.env.APIFY_TOKEN;
+// Lecture du .env parent sans dépendance externe
+function lireEnv(fichier) {
+  try {
+    return fs.readFileSync(fichier, 'utf8').split('\n')
+      .filter(l => l.trim() && !l.startsWith('#') && l.includes('='))
+      .reduce((acc, l) => {
+        const [k, ...v] = l.split('=');
+        acc[k.trim()] = v.join('=').trim();
+        return acc;
+      }, {});
+  } catch { return {}; }
+}
+const ENV = lireEnv(path.join(__dirname, '.env'))
+         || lireEnv(path.join(__dirname, '..', '.env'));
+const APIFY_TOKEN = ENV.APIFY_TOKEN || process.env.APIFY_TOKEN;
+if (!APIFY_TOKEN) {
+  console.error('❌ Token Apify manquant. Ajoute APIFY_TOKEN=... dans le fichier .env');
+  process.exit(1);
+}
 const CSV_INPUT  = path.join(__dirname, 'klubik_scored.csv');
 const CSV_OUTPUT = path.join(__dirname, 'klubik_contacts_enrichis.csv');
 
@@ -143,15 +160,6 @@ async function pageFunction(context) {
     return null;
   };
 
-  // Mise en file des pages contact/bureau (seulement depuis la page d'accueil)
-  if (request.userData.isHomepage) {
-    const subpages = ['/contact', '/bureau', '/le-club', '/notre-club', '/club', '/equipe', '/presentation', '/comite-directeur'];
-    const base = new URL(request.url).origin;
-    for (const sub of subpages) {
-      await enqueueRequest({ url: base + sub, userData: { ...request.userData, isHomepage: false } });
-    }
-  }
-
   return {
     url:          request.url,
     siteOriginal: request.userData.siteOriginal,
@@ -165,24 +173,29 @@ async function pageFunction(context) {
 
 // ─── Lancement du run Apify ───────────────────────────────────────────────────
 
+// Sous-pages les plus susceptibles de contenir contacts/bureau
+const SOUS_PAGES = ['/contact', '/bureau', '/le-club', '/notre-club'];
+
 async function lancerScraper(clubs) {
   console.log(`\n📋 Clubs à traiter : ${clubs.length}`);
 
-  const startUrls = clubs.map(c => ({
-    url: c['Site web'].replace(/\/$/, ''),
-    userData: {
-      siteOriginal: c['Site web'],
-      nomClub: c['Nom du club'],
-      isHomepage: true,
-    },
-  }));
+  // Toutes les URLs générées d'avance → pas d'écriture dans la file Apify (4× moins cher)
+  const startUrls = [];
+  for (const c of clubs) {
+    const base = c['Site web'].replace(/\/$/, '');
+    const userData = { siteOriginal: c['Site web'], nomClub: c['Nom du club'] };
+    startUrls.push({ url: base, userData });
+    for (const sub of SOUS_PAGES) {
+      startUrls.push({ url: base + sub, userData });
+    }
+  }
 
   const input = {
     startUrls,
     pageFunction: PAGE_FUNCTION,
-    maxPagesPerCrawl: clubs.length * 8, // homepage + 7 sous-pages max par club
-    maxConcurrency: 10,
-    pageLoadTimeoutSecs: 15,
+    maxPagesPerCrawl: startUrls.length,
+    maxConcurrency: 20,
+    pageLoadTimeoutSecs: 12,
     ignoreSslErrors: true,
     useApifyProxy: false,
   };
@@ -303,17 +316,34 @@ async function main() {
     } catch { return false; }
   });
 
-  const clubs = TEST_MODE ? avecSite.slice(0, TEST_LIMIT) : avecSite;
+  // En mode --all, on saute les clubs déjà enrichis (email direct déjà trouvé)
+  let dejaEnrichis = new Set();
+  if (!TEST_MODE && fs.existsSync(CSV_OUTPUT)) {
+    const existants = parseCSV(CSV_OUTPUT);
+    existants.filter(c => c['Email direct']).forEach(c => dejaEnrichis.add(c['Nom du club']));
+    console.log(`⏩ ${dejaEnrichis.size} clubs déjà enrichis → ignorés`);
+  }
+
+  const aTraiter = TEST_MODE
+    ? avecSite.slice(0, TEST_LIMIT)
+    : avecSite.filter(c => !dejaEnrichis.has(c['Nom du club']));
 
   if (TEST_MODE) {
     console.log(`\n⚠️  MODE TEST — ${TEST_LIMIT} clubs seulement.`);
     console.log('   Lance avec --all pour traiter tous les clubs.\n');
-    console.log('Clubs testés :');
-    clubs.forEach(c => console.log(`  - ${c['Nom du club']} → ${c['Site web']}`));
+  } else {
+    console.log(`📋 À scraper : ${aTraiter.length} clubs (${avecSite.length - aTraiter.length} déjà faits)`);
   }
 
-  const items = await lancerScraper(clubs);
-  const enrichis = fusionner(tousLesClubs, items);
+  const items = await lancerScraper(aTraiter);
+
+  // Fusionner avec les données existantes si on fait un run partiel
+  let baseClubs = tousLesClubs;
+  if (!TEST_MODE && fs.existsSync(CSV_OUTPUT)) {
+    // Repartir du fichier déjà enrichi pour ne pas écraser les emails trouvés avant
+    baseClubs = parseCSV(CSV_OUTPUT);
+  }
+  const enrichis = fusionner(baseClubs, items);
   exporterCSV(enrichis);
 
   console.log('\n✅ Terminé !');
