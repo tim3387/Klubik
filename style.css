@@ -2309,6 +2309,7 @@ img, svg { display: block; }
 
 @media (max-width: 480px) {
   .kubo-intro-title { font-size: 1.75rem; }
+  .hide-mobile { display: none; }
 }
 
 /* ══════════════════ FAQ ══════════════════ */
