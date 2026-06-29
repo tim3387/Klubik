@@ -1594,12 +1594,25 @@ img, svg { display: block; }
   font-size: 0.85rem; font-weight: 500;
 }
 .fondateur-placeholder-icon { width: 40px; height: 40px; stroke: var(--border); stroke-width: 1.5; }
+.fondateur-credit {
+  margin-top: 8px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-align: right;
+}
+.fondateur-credit a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.fondateur-credit a:hover { color: var(--blue); }
+.fondateur-text .eyebrow { margin-bottom: 6px; }
 .fondateur-name {
   font-size: clamp(1.9rem, 3vw, 2.6rem);
   font-weight: 900;
   letter-spacing: -0.04em;
   color: var(--black);
-  margin: 10px 0 4px;
+  margin: 4px 0 4px;
 }
 .fondateur-role {
   font-size: 0.88rem;
