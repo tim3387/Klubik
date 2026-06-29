@@ -2294,6 +2294,10 @@ img, svg { display: block; }
   .popup-title { font-size: 1.4rem; }
 }
 
+@media (max-width: 480px) {
+  .kubo-intro-title { font-size: 1.75rem; }
+}
+
 /* ══════════════════ FAQ ══════════════════ */
 .faq { padding: 76px 0; background: var(--white); }
 
