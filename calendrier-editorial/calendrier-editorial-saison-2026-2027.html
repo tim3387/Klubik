@@ -369,6 +369,46 @@
     }
 
     /* ── IMPRESSION ── */
+    /* ── RESPONSIVE MOBILE ── */
+    @media screen and (max-width: 768px) {
+      body { font-size: 12px; }
+
+      /* Couverture */
+      .cover { flex-direction: column; height: auto; }
+      .cover-left { flex: none; width: 100%; padding: 28px 20px; gap: 20px; }
+      .cover h1 { font-size: 28px; letter-spacing: -0.5px; }
+      .cover-sub { font-size: 12px; }
+      .cover-right { height: 160px; justify-content: flex-end; }
+      .cover-kubo { height: 160px; }
+
+      /* Légende */
+      .legend { padding: 20px 16px; }
+      .legend-grid { grid-template-columns: 1fr; gap: 16px; }
+
+      /* Guide */
+      .guide { padding: 24px 16px; }
+      .guide-header { flex-direction: column; gap: 10px; }
+      .guide-title { font-size: 18px; padding: 6px 12px; }
+      .guide-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .guide-stat-num { font-size: 22px; }
+      .guide-cols { grid-template-columns: 1fr; gap: 16px; }
+      .guide-day { grid-template-columns: 72px 1fr; }
+
+      /* En-tête de mois */
+      .month-wrap { padding: 20px 12px 0; }
+      .month-header { flex-wrap: wrap; gap: 8px; }
+      .month-specials { margin-left: 0; width: 100%; }
+
+      /* Tableau — scroll horizontal */
+      .cal-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .cal { min-width: 540px; }
+      .cal thead th { font-size: 9px; padding: 6px 5px; }
+      .cal tbody td { padding: 5px 5px; }
+      .cell-date { font-size: 10px; margin-bottom: 3px; }
+      .badge { font-size: 9px; padding: 2px 4px; }
+      .cat-note { font-size: 8px; }
+    }
+
     @media print {
       body { background: #fff; }
       .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 40px 40px 0; }
@@ -496,9 +536,10 @@
       <div class="guide-block">
         <div class="guide-block-title">Contenus spéciaux dans l'année</div>
         <div class="guide-tips">
-          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Chaque mois, 1 ou 2 contenus bonus apparaissent (bilan mi-saison, buteur, JPO, détection…). Ils viennent en plus du rythme habituel.</span></div>
-          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Juin–juillet : rythme réduit à 2 posts/semaine — recrutement, bilans de saison, remerciements.</span></div>
-          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Août : reprise de prépa — matchs amicaux, nouveau staff jeunes, Journée Portes Ouvertes.</span></div>
+          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Chaque mois, 4 à 6 contenus bonus apparaissent les mardi et jeudi libres : marronniers du calendrier civil (Octobre Rose, Halloween, Noël, Galette, 8 mars, Pâques…) et temps forts sportifs (tournoi, matchs décisifs, remise de trophées).</span></div>
+          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Contenus "à la carte" — nouvelle recrue, nouveau partenaire : ces templates existent dans votre pack mais ne sont pas planifiés à date fixe. Utilisez-les dès que l'info arrive, en remplacement d'un post de la semaine.</span></div>
+          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Juin–juillet : rythme réduit à 2 posts/semaine — bilans, recrutement pour la saison suivante, remerciements.</span></div>
+          <div class="guide-tip"><div class="guide-tip-dot"></div><span>Août : reprise de prépa — matchs amicaux, présentation du staff, Journée Portes Ouvertes, campagne de licences.</span></div>
         </div>
       </div>
 
@@ -593,68 +634,89 @@ function getContent(date) {
   const add = (name, cat) => res.push({name, cat: cat || null});
 
   /* ──────────────────────────────────────────────
-     HORS-SAISON : juin & juillet
-     Rythme réduit : 2 posts/semaine
-     Pas de matchs — recrutement, bilans, transitions
+     HORS-SAISON : juin & juillet — rythme 2 posts/semaine
+     Pas de matchs — bilans, recrutement, transitions
   ────────────────────────────────────────────── */
   if (OFF_SEASON.has(m)) {
-    if (day === 1) { // LUNDI
-      if (wom === 1) add('Rétrospective de saison',         m === 5 ? 'Bilan fin de saison' : 'Point avant reprise');
-      if (wom === 2) add('Signature joueur',                'Nouvelle recrue');
-      if (wom === 3) add('Bénévole du mois',                'Meilleur·e de la saison');
-      if (wom === 4) add('Interview joueur / éducateur',    'Message de fin de saison');
+
+    if (m === 5) { // JUIN
+      if (day === 1) {
+        if (wom === 1) add('Rétrospective de saison',      'Bilan final de la saison');
+        if (wom === 2) add('Soirée partenaires',           'Assemblée Générale du club');
+        if (wom === 3) add('Inscriptions saison',          'Inscriptions 2027/2028 — c\'est ouvert !');
+        if (wom === 4) add('Interview joueur / éducateur', 'Message de fin de saison');
+      }
+      if (day === 4) {
+        if (wom === 1) add('Journée club',                 'Cérémonie de remise des trophées');
+        if (wom === 2) add('Album photo événement',        'Les meilleurs moments de la saison');
+        if (wom === 3) add('Détection / Recrutement',      'Rejoignez-nous pour 2027/2028');
+        if (wom === 4) add('Événement du club',            'Tournoi de fin d\'année');
+      }
     }
-    if (day === 4) { // JEUDI
-      if (wom === 1) add('Détection / Recrutement',         'Saison 2026/2027');
-      if (wom === 2) add('Mise en avant partenaire',        m === 5 ? 'Remerciements partenaires' : 'Nos partenaires 26/27');
-      if (wom === 3) add('Détection / Recrutement',         'Catégories jeunes');
-      if (wom === 4) add(m === 5 ? 'Mise en avant partenaire' : 'Événement du club',
-                         m === 5 ? 'Remerciements sponsors' : 'Reprise de la saison');
+
+    if (m === 6) { // JUILLET
+      if (day === 1) {
+        if (wom === 1) add('Mise en avant partenaire',     'Merci à nos partenaires de la saison');
+        if (wom === 2) add('Détection / Recrutement',      'Saison 2027/2028 — places disponibles');
+        if (wom === 3) add('Détection / Recrutement',      'Catégories jeunes — inscriptions');
+        if (wom === 4) add('Événement du club',            'Reprise de prépa bientôt !');
+      }
+      if (day === 4) {
+        if (wom === 1) add('Rétrospective de saison',      'Nos meilleurs souvenirs de la saison');
+        if (wom === 2) add('Interview joueur / éducateur', 'Objectifs pour la saison prochaine');
+        if (wom === 3) add('Inscriptions saison',          'Encore temps de s\'inscrire');
+        if (wom === 4) add('Calendrier mensuel',           'Planning de la prépa estivale');
+      }
     }
+
     return res;
   }
 
   /* ──────────────────────────────────────────────
-     AOÛT : prépa estivale
+     AOÛT : prépa estivale — rythme 4 posts/semaine
      Matchs amicaux + présentation staff + JPO
-     Rythme : ven + sam + dim + 1 post en semaine
   ────────────────────────────────────────────── */
   if (m === 7) {
-    // Post en semaine (mercredi, 1 par semaine)
     if (day === 3) {
-      if (wom === 1) add('Interview joueur / éducateur', 'Nouveaux éducateurs');
-      if (wom === 2) add('Calendrier mensuel',           'Planning prépa estivale');
-      if (wom === 3) add('Portes ouvertes',              'Journée Portes Ouvertes');
-      if (wom === 4) add('Nouveau partenaire',           'Nouveau partenariat 26/27');
+      if (wom === 1) add('Interview joueur / éducateur', 'Présentation des nouveaux éducateurs');
+      if (wom === 2) add('Calendrier mensuel',           'Planning de la prépa estivale');
+      if (wom === 3) add('Portes ouvertes',              'Journée Portes Ouvertes — infos et inscriptions');
+      if (wom === 4) add('Campagne licences',            'Dernier appel — licences encore disponibles');
     }
-    // Week-end amical
-    if (day === 5) add('Planning du week-end', 'Match amical');
-    if (day === 6) add('Match du week-end',    'Amical · Prépa');
+    if (day === 4) {
+      if (wom === 1) add('Inscriptions saison',          'Rentrée sportive — rejoignez le club');
+      if (wom === 2) add('Détection / Recrutement',      'Séance de détection jeunes — infos');
+      if (wom === 3) add('Boutique du club',             'Nouveaux équipements pour la saison');
+      if (wom === 4) add('Événement du club',            'Le championnat démarre la semaine prochaine !');
+    }
+    if (day === 5) add('Planning du week-end', 'Match amical · Prépa');
+    if (day === 6) add('Match du week-end',    'Amical · Prépa estivale');
     if (day === 0) {
-      add('Résultat du match', 'Amical');
-      if (wom === 4) add('Événement du club', 'Début de championnat');
+      add('Résultat du match', 'Match amical');
+      if (wom === 4) add('Événement du club', 'On est prêts — le championnat commence !');
     }
     return res;
   }
 
   /* ──────────────────────────────────────────────
-     SAISON : septembre → mai
-     Rythme : 3 fixes (ven + sam + dim)
-              + 1 post en semaine (lun W1/W2, mer W3/W4)
-              + contenu saisonnier 1×/mois (bonus)
+     SAISON : septembre → mai — rythme 4 posts/semaine
+     + marronniers et contenus saisonniers enrichis
+     Slots libres utilisés : mardi (day=2) et jeudi (day=4)
   ────────────────────────────────────────────── */
 
-  /* --- VENDREDI : annonce du week-end --- */
+  /* --- VENDREDI : annonce du week-end (toujours) --- */
   if (day === 5) {
     add('Planning du week-end', 'Sam ou dim selon votre calendrier');
   }
 
-  /* --- SAM ou DIM : match day + résultat (à adapter selon les jours de match) --- */
-  if (day === 6) { // Samedi — match day séniors
+  /* --- SAMEDI : match day séniors --- */
+  if (day === 6) {
     add('Match du week-end', 'Séniors');
     if (wom === 2) add('Résultats du week-end', 'Mi-temps live');
   }
-  if (day === 0) { // Dimanche — résultats toutes catégories
+
+  /* --- DIMANCHE : résultats toutes catégories --- */
+  if (day === 0) {
     add('Résultat du match', 'Toutes catégories');
     if (wom === 4) add('Rétrospective de saison', 'Bilan du mois');
   }
@@ -670,48 +732,106 @@ function getContent(date) {
   /* --- MERCREDI : contenu variable (toujours) --- */
   if (day === 3) {
     if (wom === 1) add('Calendrier mensuel',           'Programme du mois');
-    if (wom === 2) add('Classement',                   'Séniors');
+    if (wom === 2) add('Classement',                   'Où en est-on ?');
     if (wom === 3) add('Interview joueur / éducateur', null);
     if (wom === 4) add('Bénévole du mois',             'Vote communauté');
   }
 
-  /* --- CONTENUS SAISONNIERS : 1 bonus/mois sur un jour libre --- */
+  /* ──────────────────────────────────────────────
+     MARRONNIERS ET CONTENUS SAISONNIERS
+     4 à 6 contenus bonus par mois sur les mardi/jeudi libres
+  ────────────────────────────────────────────── */
 
-  // Septembre : ouverture de saison
-  if (m === 8 && wom === 1 && day === 4) add('Match événement',        '1re journée');
-  if (m === 8 && wom === 3 && day === 2) add('Détection / Recrutement','Catégories jeunes');
+  // SEPTEMBRE : rentrée sportive — inscriptions + ouverture du championnat
+  if (m === 8) {
+    if (wom === 1 && day === 2) add('Campagne licences',       'La saison commence — prenez votre licence !');
+    if (wom === 1 && day === 4) add('Inscriptions saison',     'Rentrée sportive — toutes les infos');
+    if (wom === 2 && day === 4) add('Match événement',         '1re journée de championnat');
+    if (wom === 3 && day === 2) add('Détection / Recrutement', 'Catégories jeunes — places disponibles');
+    if (wom === 3 && day === 4) add('Stage vacances',          'Stage Toussaint — inscriptions ouvertes');
+    if (wom === 4 && day === 4) add('Album photo événement',   'Les premières images de la saison');
+  }
 
-  // Octobre : tops joueurs mi-parcours aller
-  if (m === 9 && wom === 2 && day === 2) add('Équipe du week-end', 'Top joueurs');
-  if (m === 9 && wom === 4 && day === 2) add('Bénévole du mois',   'Bénévole du mois');
+  // OCTOBRE : Octobre Rose + vacances Toussaint + Halloween
+  if (m === 9) {
+    if (wom === 1 && day === 2) add('Événement du club',       'Octobre Rose — le sport se mobilise');
+    if (wom === 1 && day === 4) add('Équipe du week-end',      'Top joueurs du mois');
+    if (wom === 2 && day === 4) add('Stage vacances',          'Stage Toussaint — dernières places');
+    if (wom === 3 && day === 2) add('Bénévole du mois',        'Bénévole du mois');
+    if (wom === 3 && day === 4) add('Boutique du club',        'Équipez-vous avant l\'hiver');
+    if (wom === 4 && day === 2) add('Événement du club',       'Halloween — esprit d\'équipe !');
+  }
 
-  // Novembre : mercato hivernal + portrait joueur
-  if (m === 10 && wom === 1 && day === 4) add('Interview joueur / éducateur', 'Portrait joueur');
-  if (m === 10 && wom === 3 && day === 4) add('Détection / Recrutement',      'Mercato hivernal');
+  // NOVEMBRE : Movember + 11 novembre + soirée club + mercato
+  if (m === 10) {
+    if (wom === 1 && day === 2) add('Événement du club',            'Movember — le club se mobilise');
+    if (wom === 1 && day === 4) add('Interview joueur / éducateur', 'Portrait du mois');
+    if (wom === 2 && day === 2) add('Événement du club',            'Commémoration du 11 novembre');
+    if (wom === 2 && day === 4) add('Boutique du club',             'Équipements aux couleurs du club');
+    if (wom === 3 && day === 4) add('Détection / Recrutement',      'Mercato hivernal — vous cherchez un club ?');
+    if (wom === 4 && day === 2) add('Soirée partenaires',           'Soirée bénévoles et partenaires');
+    if (wom === 4 && day === 4) add('Recherche sponsors',           'Partenariats 2027 — contactez-nous');
+  }
 
-  // Décembre : bilan automne
-  if (m === 11 && wom === 2 && day === 4) add('Mise en avant partenaire', 'Bilan partenariats');
-  if (m === 11 && wom === 4 && day === 2) add('Rétrospective de saison',  'Bilan automne');
+  // DÉCEMBRE : Tournoi de Noël + bilan automne + voeux
+  if (m === 11) {
+    if (wom === 1 && day === 4) add('Tournoi',                 'Tournoi de Noël — inscriptions');
+    if (wom === 2 && day === 2) add('Rétrospective de saison', 'Bilan de la phase aller');
+    if (wom === 2 && day === 4) add('Mise en avant partenaire','Merci à nos partenaires');
+    if (wom === 3 && day === 2) add('Événement du club',       'Voeux de Noël du club');
+    if (wom === 3 && day === 4) add('Recherche sponsors',      'Soutenez le club en 2027');
+    if (wom === 4 && day === 2) add('Calendrier mensuel',      'Programme de la reprise de janvier');
+  }
 
-  // Janvier : reprise + présentation staff
-  if (m === 0 && wom === 1 && day === 4) add('Rétrospective de saison',       'Bilan aller');
-  if (m === 0 && wom === 3 && day === 4) add('Interview joueur / éducateur',  'Corps technique');
+  // JANVIER : bonne année + galette des rois + mercato + bilan aller
+  if (m === 0) {
+    if (wom === 1 && day === 2) add('Événement du club',            'Bonne année — tous nos voeux pour 2027 !');
+    if (wom === 1 && day === 4) add('Rétrospective de saison',      'Bilan complet de la phase aller');
+    if (wom === 2 && day === 2) add('Événement du club',            'Galette des rois au club !');
+    if (wom === 2 && day === 4) add('Détection / Recrutement',      'Mercato hivernal — toujours en recherche ?');
+    if (wom === 3 && day === 4) add('Interview joueur / éducateur', 'Objectifs pour la phase retour');
+    if (wom === 4 && day === 2) add('Classement',                   'Mi-saison — le classement complet');
+  }
 
-  // Février : top joueurs retour + portrait
-  if (m === 1 && wom === 1 && day === 4) add('Interview joueur / éducateur', 'Portrait joueur');
-  if (m === 1 && wom === 3 && day === 2) add('Équipe du week-end',            'Top joueurs');
+  // FÉVRIER : Saint-Valentin + stage hiver + top joueurs
+  if (m === 1) {
+    if (wom === 1 && day === 2) add('Événement du club',            'Saint-Valentin — on aime notre club !');
+    if (wom === 1 && day === 4) add('Interview joueur / éducateur', 'Portrait du mois');
+    if (wom === 2 && day === 2) add('Stage vacances',               'Stage vacances d\'hiver — inscriptions');
+    if (wom === 2 && day === 4) add('Boutique du club',             'Nouveautés boutique — collection hiver');
+    if (wom === 3 && day === 2) add('Équipe du week-end',           'Top joueurs de la phase aller');
+    if (wom === 3 && day === 4) add('Bénévole du mois',             'Bénévole du mois');
+  }
 
-  // Mars : bénévole + match décisif
-  if (m === 2 && wom === 1 && day === 2) add('Bénévole du mois',  'Bénévole du mois');
-  if (m === 2 && wom === 3 && day === 4) add('Match événement',   'Match décisif');
+  // MARS : Journée des droits des femmes + play-offs + recrutement
+  if (m === 2) {
+    if (wom === 1 && day === 2) add('Événement du club',            '8 mars — nos équipes féminines à l\'honneur');
+    if (wom === 1 && day === 4) add('Bénévole du mois',             'Bénévole du mois');
+    if (wom === 2 && day === 4) add('Album photo événement',        'Meilleures photos de la phase retour');
+    if (wom === 3 && day === 2) add('Match événement',              'Match décisif — maintien ou montée ?');
+    if (wom === 3 && day === 4) add('Interview joueur / éducateur', 'Coup de projo — jeune du mois');
+    if (wom === 4 && day === 4) add('Détection / Recrutement',      'Recrutement saison prochaine — anticipez !');
+  }
 
-  // Avril : recrutement saison suivante
-  if (m === 3 && wom === 1 && day === 4) add('Signature joueur',       'Recrue confirmée');
-  if (m === 3 && wom === 3 && day === 4) add('Détection / Recrutement','Saison suivante');
+  // AVRIL : Pâques + vacances printemps + fin de championnat
+  if (m === 3) {
+    if (wom === 1 && day === 2) add('Événement du club',       'Joyeuses Pâques !');
+    if (wom === 1 && day === 4) add('Stage vacances',          'Stage de printemps — inscriptions');
+    if (wom === 2 && day === 4) add('Recherche sponsors',      'Devenez partenaire du club');
+    if (wom === 3 && day === 2) add('Détection / Recrutement', 'Saison 2027/2028 — premières recrues');
+    if (wom === 3 && day === 4) add('Match événement',         'Dernières journées — tout se joue !');
+    if (wom === 4 && day === 2) add('Soirée partenaires',      'Bilan de la phase retour');
+  }
 
-  // Mai : fin de saison régulière
-  if (m === 4 && wom === 1 && day === 4) add('Détection / Recrutement', 'Saison 26/27');
-  if (m === 4 && wom === 3 && day === 2) add('Rétrospective de saison', 'Fin de saison régulière');
+  // MAI : 1er mai + matchs décisifs + fête de fin de saison
+  if (m === 4) {
+    if (wom === 1 && day === 2) add('Événement du club',       '1er Mai — bonne fête du Travail !');
+    if (wom === 1 && day === 4) add('Détection / Recrutement', 'Saison 2027/2028 — rejoignez-nous');
+    if (wom === 2 && day === 4) add('Match événement',         'Matchs décisifs — maintien ou montée ?');
+    if (wom === 3 && day === 2) add('Rétrospective de saison', 'Fin de la saison régulière');
+    if (wom === 3 && day === 4) add('Journée club',            'Journée de fin de saison — programme');
+    if (wom === 4 && day === 2) add('Album photo événement',   'Remise des trophées — les photos');
+  }
 
   return res;
 }
@@ -727,18 +847,18 @@ const DAY_LABELS = ['LUNDI','MARDI','MERCREDI','JEUDI','VENDREDI','SAMEDI','DIMA
 
 // Contenus saisonniers à mettre en avant dans l'en-tête du mois
 const MONTH_HIGHLIGHTS = {
-  0:  ['Rétrospective de saison','Interview joueur / éducateur'],
-  1:  ['Équipe du week-end','Interview joueur / éducateur'],
-  2:  ['Bénévole du mois','Match événement'],
-  3:  ['Signature joueur','Détection / Recrutement'],
-  4:  ['Détection / Recrutement','Rétrospective de saison'],
-  5:  ['Rétrospective de saison','Détection / Recrutement','Mise en avant partenaire'],
-  6:  ['Signature joueur','Interview joueur / éducateur','Événement du club'],
-  7:  ['Portes ouvertes','Interview joueur / éducateur','Calendrier mensuel','Planning du week-end','Événement du club'],
-  8:  ['Match événement','Détection / Recrutement'],
-  9:  ['Équipe du week-end','Bénévole du mois'],
-  10: ['Interview joueur / éducateur','Détection / Recrutement'],
-  11: ['Mise en avant partenaire','Rétrospective de saison'],
+  0:  ['Événement du club','Rétrospective de saison','Détection / Recrutement'],
+  1:  ['Événement du club','Stage vacances','Équipe du week-end'],
+  2:  ['Événement du club','Match événement','Détection / Recrutement'],
+  3:  ['Événement du club','Stage vacances','Match événement','Détection / Recrutement'],
+  4:  ['Match événement','Rétrospective de saison','Journée club','Album photo événement'],
+  5:  ['Rétrospective de saison','Soirée partenaires','Inscriptions saison','Journée club'],
+  6:  ['Mise en avant partenaire','Détection / Recrutement','Inscriptions saison'],
+  7:  ['Portes ouvertes','Campagne licences','Boutique du club','Inscriptions saison'],
+  8:  ['Campagne licences','Match événement','Stage vacances','Détection / Recrutement'],
+  9:  ['Événement du club','Stage vacances','Boutique du club','Bénévole du mois'],
+  10: ['Événement du club','Soirée partenaires','Détection / Recrutement','Boutique du club'],
+  11: ['Tournoi','Rétrospective de saison','Événement du club','Recherche sponsors'],
 };
 
 function renderMonth(year, month) {
@@ -761,6 +881,7 @@ function renderMonth(year, month) {
         <span class="month-year">${year}</span>
         ${hlHTML}
       </div>
+      <div class="cal-scroll">
       <table class="cal">
         <thead>
           <tr>
@@ -792,7 +913,7 @@ function renderMonth(year, month) {
     html += '</tr>';
   }
 
-  html += '</tbody></table></div>';
+  html += '</tbody></table></div></div>';
   return html;
 }
 
