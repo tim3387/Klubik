@@ -409,6 +409,41 @@ if (window.matchMedia('(hover: hover)').matches) {
   requestAnimationFrame(tick);
 })();
 
+// ─── Modales détail pack ─────────────────────────────
+(function () {
+  const overlay = document.getElementById('packModalOverlay');
+  const content = document.getElementById('packModalContent');
+  if (!overlay || !content) return;
+
+  function openModal(packId) {
+    const tpl = document.getElementById('modal-' + packId);
+    if (!tpl) return;
+    content.innerHTML = '';
+    content.appendChild(tpl.content.cloneNode(true));
+    content.querySelector('.pack-modal-close')
+      ?.addEventListener('click', closeModal);
+    overlay.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    overlay.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-pack-modal]').forEach(btn => {
+    btn.addEventListener('click', () => openModal(btn.dataset.packModal));
+  });
+
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeModal();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !overlay.hasAttribute('hidden')) closeModal();
+  });
+})();
+
 // ─── FAQ accordéon ───────────────────────────────────
 (function () {
   document.querySelectorAll('.faq-question').forEach(btn => {
