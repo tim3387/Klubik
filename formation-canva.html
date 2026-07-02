@@ -6,13 +6,14 @@
   <title>Formation Canva pour clubs sportifs — Klubik</title>
   <meta name="description" content="Apprenez à créer vos visuels sportifs avec Canva : posts Instagram, affiches de match, flyers de recrutement. 10 modules vidéo + guide PDF — 179€ accès à vie." />
   <link rel="canonical" href="https://klubik.pro/formation-canva.html" />
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://klubik.pro/formation-canva.html" />
   <meta property="og:title" content="Formation Canva pour clubs sportifs — Klubik" />
   <meta property="og:description" content="10 modules vidéo + guide PDF pour créer tous vos visuels sport avec Canva. Accès à vie — 179€." />
-  <meta property="og:image" content="https://klubik.pro/assets/images/og-image.jpg" />
+  <meta property="og:image" content="https://klubik.pro/assets/images/og-image.png" />
   <meta property="og:locale" content="fr_FR" />
   <meta name="twitter:card" content="summary_large_image" />
 
@@ -354,7 +355,7 @@
     /* ─── Ce qui est inclus ─── */
     .f-includes-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
     .f-include-card {
@@ -423,17 +424,22 @@
       display: grid;
       grid-template-columns: 220px 1fr;
       gap: 56px;
-      align-items: start;
+      align-items: stretch;
       max-width: 860px;
       margin: 0 auto;
+    }
+    .f-founder-photo-col {
+      display: flex;
+      flex-direction: column;
     }
     .f-founder-photo-wrap {
       border-radius: var(--radius-lg);
       overflow: hidden;
+      flex: 1;
     }
     .f-founder-photo-wrap img {
       width: 100%;
-      height: 290px;
+      height: 100%;
       object-fit: cover;
       object-position: top center;
       display: block;
@@ -466,39 +472,58 @@
       gap: 24px;
     }
     .f-testi-card {
+      position: relative;
+      overflow: hidden;
       background: white;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(19, 83, 244, 0.1);
       border-radius: var(--radius-lg);
-      padding: 28px 24px;
+      padding: 32px 28px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
+      transition: box-shadow 0.2s ease;
     }
-    .f-testi-stars { display: flex; gap: 3px; }
-    .f-testi-star { color: var(--gold); font-size: 1rem; }
+    .f-testi-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+    .f-testi-quote {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-family: Georgia, serif;
+      font-size: 5rem;
+      line-height: 1;
+      color: var(--border);
+      pointer-events: none;
+      user-select: none;
+    }
+    .f-testi-stars { display: flex; gap: 4px; }
+    .f-testi-star { color: #facc15; font-size: 1rem; }
+    .f-testi-star--empty { color: var(--border); }
     .f-testi-text {
-      font-size: 0.92rem;
-      color: var(--ink);
-      line-height: 1.65;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
       flex: 1;
     }
     .f-testi-author {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
     }
     .f-testi-avatar {
       width: 40px;
       height: 40px;
-      background: var(--surface);
+      background: var(--blue-light);
       border-radius: 50%;
-      border: 1px solid var(--border);
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--blue);
     }
-    .f-testi-name { font-size: 0.85rem; font-weight: 700; color: var(--black); }
-    .f-testi-club { font-size: 0.75rem; color: var(--muted); }
+    .f-testi-name { font-size: 0.9rem; font-weight: 700; color: var(--black); }
+    .f-testi-club { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
 
     /* ─── Garantie ─── */
     .f-guarantee {
@@ -569,8 +594,9 @@
       .f-mastery-grid { grid-template-columns: 1fr; }
       .f-includes-grid { grid-template-columns: 1fr; }
       .f-testimonials-grid { grid-template-columns: 1fr; }
-      .f-founder-inner { grid-template-columns: 1fr; gap: 32px; }
-      .f-founder-photo-wrap { max-width: 200px; }
+      .f-founder-inner { grid-template-columns: 1fr; gap: 32px; align-items: start; }
+      .f-founder-photo-col { flex-direction: row; align-items: flex-end; gap: 12px; }
+      .f-founder-photo-wrap { max-width: 200px; flex: none; }
       .f-founder-photo-wrap img { height: 240px; }
     }
     @media (max-width: 768px) {
@@ -597,7 +623,7 @@
   <nav id="navbar">
     <div class="nav-inner">
       <a href="index.html" class="logo">
-        <img src="assets/images/logo.png" alt="Klubik — Marketing sportif pour clubs amateurs" class="logo-img" width="120" height="40" />
+        <img src="assets/images/logo.png" alt="Klubik — Marketing sportif pour clubs amateurs" class="logo-img" width="208" height="52" />
       </a>
       <ul class="nav-links" id="navLinks">
         <li>
@@ -923,15 +949,6 @@
           </ul>
         </div>
 
-        <!-- Carte upsell — lier le href vers la page ou la section des packs quand elle existera -->
-        <div class="f-include-card f-include-card--upsell reveal-item">
-          <div class="f-include-icon">
-            <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-          </div>
-          <h3>Tu veux aussi les templates ?</h3>
-          <p>30 templates sport prêts à l'emploi sont disponibles dans le pack Formation + Templates. Tu les reçois dans ton Canva, tu changes les couleurs et c'est publié.</p>
-          <a href="#" class="f-include-upsell-link">Voir le pack Formation + Templates →</a>
-        </div>
 
         <div class="f-include-card reveal-item">
           <div class="f-include-icon">
@@ -982,29 +999,28 @@
   </section>
 
   <!-- ══════════════ QUI JE SUIS ══════════════
-       ⚠️ Remplacer la photo, le prénom/nom, le rôle et la bio du formateur.
-       Ce n'est pas Timothé : le formateur et le fondateur sont deux personnes différentes.
+       ⚠️ Remplacer le placeholder photo par une vraie photo de Tom dès qu'elle est disponible.
   ══════════════════════════════════════════════ -->
   <section class="f-section" id="formateur">
     <div class="container">
       <div class="f-founder-inner">
 
-        <!-- ⚠️ Remplacer par la photo du formateur -->
-        <div class="f-founder-photo-wrap reveal-item">
-          <div style="width:220px;height:290px;background:var(--surface);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;border:2px dashed var(--border);">
-            <svg width="56" height="56" fill="none" stroke="var(--muted)" stroke-width="1.4" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <div class="f-founder-photo-col reveal-item">
+          <div class="f-founder-photo-wrap">
+            <img src="assets/images/fondateur.jpeg"
+                 alt="Timothé Leclercq, fondateur de Klubik, en maillot de handball"
+                 width="1771" height="2657"
+                 loading="lazy" />
           </div>
+          <p class="fondateur-credit">© <a href="https://ojunix.fr/" target="_blank" rel="noopener noreferrer">Julie Salles — ojunix.fr</a></p>
         </div>
 
         <div class="f-founder-text reveal-item">
           <span class="eyebrow">Le formateur</span>
-          <!-- ⚠️ Remplacer par le prénom et nom du formateur -->
-          <h2 class="f-founder-name">Prénom NOM</h2>
-          <!-- ⚠️ Remplacer par son rôle / sa spécialité -->
-          <p class="f-founder-role">Rôle · Spécialité</p>
-          <!-- ⚠️ Remplacer par la bio du formateur (2-3 paragraphes) -->
-          <p>Présentation du formateur à rédiger ici : son parcours, pourquoi il est légitime pour enseigner Canva aux clubs sportifs, ce qui l'a amené à créer cette formation.</p>
-          <p>Ce texte doit répondre à la question implicite du visiteur : "Pourquoi lui et pas quelqu'un d'autre ?"</p>
+          <h2 class="f-founder-name">Timothé LECLERCQ</h2>
+          <p class="f-founder-role">Handballeur &amp; fondateur de Klubik</p>
+          <p>J'ai joué au handball pendant des années — du Haillan jusqu'à la JA Isle, en passant par Saint-Médard, Saint-Flour et Saint-Étienne. Au fil des matchs et des clubs adverses croisés, j'ai mis des mots sur quelque chose que je ressentais sans vraiment l'analyser : le sport amateur est presque invisible.</p>
+          <p>La vérité, c'est que je connais les contraintes de l'intérieur. Les entraînements à 21h après le boulot, les budgets serrés, les bénévoles qui font déjà trois postes à la fois. Personne n'a deux heures à consacrer à Canva un mardi soir. Cette formation, c'est ce que j'aurais voulu avoir dès le départ.</p>
         </div>
 
       </div>
@@ -1024,15 +1040,16 @@
       </div>
       <div class="f-testimonials-grid">
 
-        <div class="f-testi-card">
-          <div class="f-testi-stars">
+        <div class="f-testi-card reveal-item">
+          <span class="f-testi-quote" aria-hidden="true">"</span>
+          <div class="f-testi-stars" aria-label="5 étoiles sur 5">
             <span class="f-testi-star">★</span><span class="f-testi-star">★</span>
             <span class="f-testi-star">★</span><span class="f-testi-star">★</span>
             <span class="f-testi-star">★</span>
           </div>
-          <p class="f-testi-text">"À remplacer par un vrai avis."</p>
+          <p class="f-testi-text">À remplacer par un vrai avis client.</p>
           <div class="f-testi-author">
-            <div class="f-testi-avatar" aria-hidden="true"></div>
+            <div class="f-testi-avatar" aria-hidden="true">P</div>
             <div>
               <p class="f-testi-name">Prénom Nom</p>
               <p class="f-testi-club">Rôle · Nom du club</p>
@@ -1040,15 +1057,16 @@
           </div>
         </div>
 
-        <div class="f-testi-card">
-          <div class="f-testi-stars">
+        <div class="f-testi-card reveal-item">
+          <span class="f-testi-quote" aria-hidden="true">"</span>
+          <div class="f-testi-stars" aria-label="5 étoiles sur 5">
             <span class="f-testi-star">★</span><span class="f-testi-star">★</span>
             <span class="f-testi-star">★</span><span class="f-testi-star">★</span>
             <span class="f-testi-star">★</span>
           </div>
-          <p class="f-testi-text">"À remplacer par un vrai avis."</p>
+          <p class="f-testi-text">À remplacer par un vrai avis client.</p>
           <div class="f-testi-author">
-            <div class="f-testi-avatar" aria-hidden="true"></div>
+            <div class="f-testi-avatar" aria-hidden="true">P</div>
             <div>
               <p class="f-testi-name">Prénom Nom</p>
               <p class="f-testi-club">Rôle · Nom du club</p>
@@ -1056,15 +1074,16 @@
           </div>
         </div>
 
-        <div class="f-testi-card">
-          <div class="f-testi-stars">
+        <div class="f-testi-card reveal-item">
+          <span class="f-testi-quote" aria-hidden="true">"</span>
+          <div class="f-testi-stars" aria-label="5 étoiles sur 5">
             <span class="f-testi-star">★</span><span class="f-testi-star">★</span>
             <span class="f-testi-star">★</span><span class="f-testi-star">★</span>
             <span class="f-testi-star">★</span>
           </div>
-          <p class="f-testi-text">"À remplacer par un vrai avis."</p>
+          <p class="f-testi-text">À remplacer par un vrai avis client.</p>
           <div class="f-testi-author">
-            <div class="f-testi-avatar" aria-hidden="true"></div>
+            <div class="f-testi-avatar" aria-hidden="true">P</div>
             <div>
               <p class="f-testi-name">Prénom Nom</p>
               <p class="f-testi-club">Rôle · Nom du club</p>
@@ -1205,11 +1224,7 @@
         <span class="f-price-once">Satisfait ou remboursé 14 jours</span>
       </div>
 
-      <!--
-        ⚠️  Remplacer le href="#" par ton lien systeme.io dès qu'il est prêt.
-            Ex : href="https://ton-compte.systeme.io/formation-canva"
-      -->
-      <a href="#" class="f-hero-cta" rel="noopener nofollow">
+      <a href="https://buy.stripe.com/dRm14maix7xr1pK8502go06" class="f-hero-cta" target="_blank" rel="noopener nofollow">
         Accéder à la formation
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
@@ -1228,7 +1243,7 @@
     <div class="container footer-inner">
       <div class="footer-brand">
         <a href="index.html" class="logo">
-          <img src="assets/images/logo.png" alt="Klubik" class="logo-img logo-img--footer" width="100" height="33" loading="lazy" />
+          <img src="assets/images/logo.png" alt="Klubik" class="logo-img logo-img--footer" width="240" height="60" loading="lazy" />
         </a>
         <p>Le marketing sportif pensé pour les clubs amateurs.</p>
       </div>

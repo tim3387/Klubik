@@ -2082,6 +2082,35 @@ img, svg { display: block; }
 .pstep h4 { font-size: 0.98rem; font-weight: 700; color: var(--black); margin-bottom: 10px; }
 .pstep p { font-size: 0.87rem; color: var(--muted); line-height: 1.65; }
 
+
+/* ══════════════════ TÉMOIGNAGES ══════════════════ */
+.testi { padding: 96px 0; }
+.testi-head { text-align: center; margin-bottom: 64px; }
+.testi-head h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 12px; color: var(--black); }
+.testi-head p { font-size: 1rem; color: var(--muted); max-width: 520px; margin: 0 auto; }
+.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.testi-card {
+  position: relative;
+  overflow: hidden;
+  background: white;
+  border: 1px solid rgba(19, 83, 244, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: box-shadow 0.2s ease;
+}
+.testi-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+.testi-quote { position: absolute; top: 16px; right: 20px; font-family: Georgia, serif; font-size: 5rem; line-height: 1; color: var(--border); pointer-events: none; user-select: none; }
+.testi-stars { display: flex; gap: 4px; }
+.testi-star { color: #facc15; font-size: 1rem; }
+.testi-text { font-size: 0.95rem; color: var(--muted); line-height: 1.7; flex: 1; }
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar { width: 40px; height: 40px; background: var(--blue-light); border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: var(--blue); }
+.testi-name { font-size: 0.9rem; font-weight: 700; color: var(--black); }
+.testi-club { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• CONTACT â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .contact { padding: 76px 0; background: var(--surface); }
 .contact-inner {
@@ -2353,6 +2382,7 @@ img, svg { display: block; }
 }
 
 @media (max-width: 1024px) {
+  .testi-grid { grid-template-columns: 1fr 1fr; }
   .hero { grid-template-columns: 1fr; gap: 56px; padding-top: 130px; text-align: center; }
   .hero-sub { margin: 0 auto 40px; }
   .hero-actions { justify-content: center; }
@@ -2389,6 +2419,7 @@ img, svg { display: block; }
 }
 
 @media (max-width: 768px) {
+  .testi-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   .nav-links.open {
     display: flex;

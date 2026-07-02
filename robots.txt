@@ -1,4 +1,13 @@
 User-agent: *
 Allow: /
 
+Disallow: /calendrier-editorial/
+Disallow: /outils/
+Disallow: /contrats/
+Disallow: /prospection/
+Disallow: /FULL-AUDIT-REPORT.md
+Disallow: /ACTION-PLAN.md
+Disallow: /CLAUDE.md
+Disallow: /PACKS DESIGN GRAPHIC SPORT.pdf
+
 Sitemap: https://klubik.pro/sitemap.xml
