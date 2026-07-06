@@ -8,6 +8,6 @@ Disallow: /prospection/
 Disallow: /FULL-AUDIT-REPORT.md
 Disallow: /ACTION-PLAN.md
 Disallow: /CLAUDE.md
-Disallow: /PACKS DESIGN GRAPHIC SPORT.pdf
+Disallow: /PACKS%20DESIGN%20GRAPHIC%20SPORT.pdf
 
 Sitemap: https://klubik.pro/sitemap.xml

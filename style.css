@@ -674,6 +674,20 @@ img, svg { display: block; }
   padding: 2px 8px;
   border-radius: 50px;
 }
+.sfeat-available {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--blue);
+  background: var(--blue-light);
+  border: 1px solid rgba(19,83,244,.2);
+  padding: 2px 8px;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: background 0.18s;
+}
+.sfeat-available:hover { background: rgba(19,83,244,.15); }
 .feat-cta { margin-top: 4px; }
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• FONCTIONNALITÃ‰S â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
