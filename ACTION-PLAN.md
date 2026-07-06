@@ -67,17 +67,20 @@ Capturer la 1ère frame de `hero-kubo.mp4` → `assets/images/hero-kubo-poster.w
 
 ---
 
-## ⚪ BACKLOG
+## ✅ BACKLOG — Items résolus
 
-- **llms.txt** à la racine — citabilité IA (ChatGPT, Claude, Perplexity)
-- **Schéma `Person`** pour Timothé Leclercq (fondateur) — signal E-E-A-T
-- **`og:site_name`** sur index.html + formation-canva.html (affichage LinkedIn/Facebook)
+- [x] `llms.txt` créé à la racine (citabilité IA : ChatGPT, Claude, Perplexity)
+- [x] Schéma `Person` Timothé Leclercq ajouté sur index.html
+- [x] `og:site_name` sur index.html + formation-canva.html
+- [x] Orbital `document.hidden` : boucle `requestAnimationFrame` pausée si onglet inactif
+
+## ⚪ BACKLOG — Restant
+
 - **Page 404** personnalisée
 - **Auto-hébergement police Inter** (−2 connexions DNS, gain LCP)
 - **Logo en WebP** avec balise `<picture>`
 - **IndexNow** — notification instantanée Bing/Yandex
-- **Orbital `document.hidden`** — pause `requestAnimationFrame` si onglet inactif
-- **Email pro** `@klubik.pro` au lieu de Gmail
+- **Email pro** `@klubik.pro` au lieu de Gmail (décision commerciale)
 
 ---
 

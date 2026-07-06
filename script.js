@@ -375,11 +375,21 @@ if (window.matchMedia('(hover: hover)').matches) {
     });
   }
 
+  let rafId;
+
   function tick() {
     if (rotating) offset = (offset + 0.25) % 360;
     update();
-    requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
   }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      cancelAnimationFrame(rafId);
+    } else {
+      rafId = requestAnimationFrame(tick);
+    }
+  });
 
   nodes.forEach(node => {
     node.addEventListener('click', e => {
@@ -406,7 +416,7 @@ if (window.matchMedia('(hover: hover)').matches) {
   });
 
   update();
-  requestAnimationFrame(tick);
+  rafId = requestAnimationFrame(tick);
 })();
 
 // ─── Modales détail pack ─────────────────────────────
