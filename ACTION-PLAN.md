@@ -20,34 +20,14 @@
 
 ---
 
-## 🔴 RAPIDE — Corrections 1 ligne (< 30 min au total)
+## ✅ RAPIDE — Tout résolu
 
-### 1. Logo navbar — `href="#"` → `href="/"`
-**Fichier :** `index.html` ligne ~47  
-**Problème :** Lien du logo pointe vers `#` (ancre vide) — lien interne mort, non canonique.  
-**Correctif :** `<a href="/" class="logo">`
-
-### 2. `defer` sur Lucide + EmailJS + script.js
-**Fichier :** `index.html` lignes ~1540-1542  
-**Problème :** 2 scripts tiers sans `defer` → bloquent le thread principal (INP/TTI).  
-**Correctif :** Ajouter `defer` sur `lucide.min.js`, `email.min.js` et `script.js`.
-
-### 3. Twitter Card complète — formation-canva.html
-**Fichier :** `formation-canva.html` lignes ~18-22  
-**Problème :** Seule `twitter:card` présente. Manquent `twitter:title`, `twitter:description`, `twitter:image`.
-
-### 4. Instagram — sécurité liens
-**Fichier :** `index.html` ligne ~986 (section Contact)  
-**Correctif :** Ajouter `target="_blank" rel="noopener noreferrer"` sur le lien Instagram.
-
-### 5. robots.txt — espace dans nom PDF
-**Fichier :** `robots.txt` ligne 11  
-**Correctif :** `Disallow: /PACKS%20DESIGN%20GRAPHIC%20SPORT.pdf`
-
-### 6. sitemap.xml — lastmod à jour
-**Fichier :** `sitemap.xml`  
-**Problème :** Dates périmées pour index.html (`2026-06-15`) et formation-canva.html (`2026-06-28`).  
-**Correctif :** Mettre à jour avec `2026-07-03`.
+- [x] Logo navbar + footer `href="#"` → `href="/"`
+- [x] `defer` sur Lucide + EmailJS + script.js (index.html + formation-canva.html)
+- [x] Twitter Card complète sur formation-canva.html (title/description/image)
+- [x] Instagram `target="_blank" rel="noopener noreferrer"`
+- [x] robots.txt : espace encodé `/PACKS%20DESIGN%20GRAPHIC%20SPORT.pdf`
+- [x] sitemap.xml : lastmod → `2026-07-03`
 
 ---
 
@@ -59,7 +39,7 @@
 **Action :** Ajouter au minimum 3 vraies réalisations (logo, maillot, template Instagram). Même des projets tests offerts à des clubs locaux suffisent.
 
 ### ~~2. Formation — badge "À venir"~~ ✅ résolu
-Badge supprimé de la carte formation dans la section services. La formation a déjà sa propre section plus bas sur la page — pas de lien redondant.
+Badge supprimé de la carte formation dans la section services. La formation a déjà sa propre section plus bas sur la page.
 
 ### 3. Témoignages — activer dès 1 avis
 **Fichier :** `index.html` + `formation-canva.html`, section `#avis`  
@@ -73,61 +53,19 @@ Badge supprimé de la carte formation dans la section services. La formation a d
 **Action :** Remplacer par la photo de Tom + bio dès que disponibles.  
 **Bio rédigée :** joueur N1 à Bruges 33 Handball, ex-responsable comm Saint-Médard HB et Eysines HBC.
 
-### 5. Schéma Course — compléter pour rich results Google
-**Fichier :** `formation-canva.html`  
-**Problème :** Manque `instructor` (dans `hasCourseInstance`), `image`, `url`, `educationalCredentialAwarded`. Sans ces propriétés, Google ignore le rich result Course.  
-**Action :** Remplacer le bloc JSON-LD Course existant par ce schéma corrigé :
+### ~~5. Schéma Course~~ ✅ résolu
+Schéma corrigé dans `formation-canva.html` : `instructor`, `image`, `url`, `educationalCredentialAwarded`, `courseMode` correct, `seller` ajouté.
 
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "Course",
-  "name": "Formation Canva pour clubs sportifs",
-  "description": "10 modules vidéo (~3h) + guide PDF pour créer tous vos visuels sport avec Canva : posts Instagram, affiches de match, flyers de recrutement. Accès à vie, garantie 14 jours.",
-  "url": "https://klubik.pro/formation-canva.html",
-  "image": "https://klubik.pro/assets/images/og-image.png",
-  "inLanguage": "fr",
-  "provider": { "@type": "Organization", "name": "Klubik", "url": "https://klubik.pro" },
-  "offers": {
-    "@type": "Offer",
-    "price": "179",
-    "priceCurrency": "EUR",
-    "availability": "https://schema.org/InStock",
-    "url": "https://buy.stripe.com/dRm14maix7xr1pK8502go06",
-    "seller": { "@type": "Organization", "name": "Klubik" }
-  },
-  "hasCourseInstance": {
-    "@type": "CourseInstance",
-    "courseMode": "https://schema.org/OnlineEventAttendanceMode",
-    "courseWorkload": "PT3H",
-    "instructor": {
-      "@type": "Person",
-      "name": "Timothé Leclercq",
-      "description": "Handballeur et fondateur de Klubik, agence de marketing sportif pour clubs amateurs.",
-      "image": "https://klubik.pro/assets/images/fondateur.jpeg"
-    }
-  },
-  "educationalCredentialAwarded": "Certificat de complétion"
-}
-```
+### ~~6. Google Fonts — chargement non-bloquant~~ ✅ résolu
+Technique `media="print" onload` appliquée sur `index.html` + `formation-canva.html`. Graisses réduites de 7 à 5 (300 et 500 supprimées — inutilisées dans le CSS).
 
-### 6. Google Fonts — chargement non-bloquant
-**Fichier :** `index.html` + `formation-canva.html` (balise dans `<head>`)  
-**Problème :** Google Fonts bloquant → retarde le LCP. 7 graisses chargées, 5 suffisent (300 et 500 inutilisées dans le CSS).  
-**Action :** Technique `media="print" onload` + réduire à `wght@400;600;700;800;900`.
+### ~~9. Schéma WebSite~~ ✅ résolu
+Schéma `WebSite` ajouté dans `index.html`.
 
-```html
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap"
-      media="print" onload="this.media='all'" />
-<noscript>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" />
-</noscript>
-```
+### ~~10. FAQPage — formation-canva.html~~ ✅ résolu
+Schéma `FAQPage` ajouté dans `formation-canva.html` avec les 6 vraies questions/réponses extraites du HTML.
 
-### 7. Photo fondateur — JPEG → WebP
+### 6. Photo fondateur — JPEG → WebP
 **Fichier :** `index.html` ligne ~500, `formation-canva.html` ligne ~1010  
 **Problème :** Photo haute résolution (1771×2657) en JPEG. Gain -30 à -50% de poids avec WebP.  
 **Action :** Exporter `fondateur.webp`, utiliser `<picture>` avec fallback JPEG :
@@ -141,7 +79,7 @@ Badge supprimé de la carte formation dans la section services. La formation a d
 </picture>
 ```
 
-### 8. Poster vidéo Kubo
+### 7. Poster vidéo Kubo
 **Fichier :** `index.html` video `.hero-video`  
 **Problème :** Pas d'attribut `poster` → frame noire visible à l'arrivée sur la section.  
 **Action :** Capturer la 1ère frame → `assets/images/hero-kubo-poster.webp` + ajouter `poster="assets/images/hero-kubo-poster.webp"` à la balise `<video>`.

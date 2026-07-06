@@ -23,7 +23,9 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" /></noscript>
 
   <style>
     :root {
@@ -1296,7 +1298,10 @@
     "@context": "https://schema.org",
     "@type": "Course",
     "name": "Formation Canva pour clubs sportifs",
-    "description": "10 modules vidéo + guide PDF pour créer tous vos visuels sport avec Canva. Posts Instagram, affiches de match, flyers de recrutement. Accès à vie.",
+    "description": "10 modules vidéo (~3h) + guide PDF pour créer tous vos visuels sport avec Canva : posts Instagram, affiches de match, flyers de recrutement. Accès à vie, garantie 14 jours.",
+    "url": "https://klubik.pro/formation-canva.html",
+    "image": "https://klubik.pro/assets/images/og-image.png",
+    "inLanguage": "fr",
     "provider": {
       "@type": "Organization",
       "name": "Klubik",
@@ -1306,14 +1311,80 @@
       "@type": "Offer",
       "price": "179",
       "priceCurrency": "EUR",
-      "availability": "https://schema.org/InStock"
+      "availability": "https://schema.org/InStock",
+      "url": "https://buy.stripe.com/dRm14maix7xr1pK8502go06",
+      "seller": { "@type": "Organization", "name": "Klubik" }
     },
     "hasCourseInstance": {
       "@type": "CourseInstance",
-      "courseMode": "online",
-      "courseWorkload": "PT3H"
+      "courseMode": "https://schema.org/OnlineEventAttendanceMode",
+      "courseWorkload": "PT3H",
+      "instructor": {
+        "@type": "Person",
+        "name": "Timothé Leclercq",
+        "description": "Handballeur et fondateur de Klubik, agence de marketing sportif pour clubs amateurs.",
+        "image": "https://klubik.pro/assets/images/fondateur.jpeg"
+      }
     },
-    "inLanguage": "fr"
+    "educationalCredentialAwarded": "Certificat de complétion"
+  }
+  </script>
+
+  <!-- Schema.org FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Faut-il un abonnement Canva Pro pour suivre la formation ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. L'intégralité de la formation est compatible avec Canva gratuit. Si tu as Canva Pro, un module bonus t'en montrera les fonctions avancées utiles, mais tout le programme principal fonctionne sans abonnement payant."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Où est-ce que j'accède à la formation après l'achat ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Dès ton paiement confirmé, tu reçois un email avec tes accès. Tout est en ligne : vidéos et PDF, accessibles depuis ton téléphone, ta tablette ou ton ordinateur, sans téléchargement requis."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "La formation est-elle adaptée à mon sport ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui. Les techniques enseignées s'appliquent à tous les sports. Les exemples utilisent le handball, le football et le basket, mais les compétences Canva sont adaptables à n'importe quelle discipline en quelques minutes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Combien de temps faut-il pour suivre toute la formation ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La formation dure environ 3h en tout. Tu peux la suivre en une seule session ou la répartir sur plusieurs soirées. Chaque module est indépendant, tu peux aller directement à ce dont tu as besoin sans suivre l'ordre."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quelle différence entre la formation seule et le pack Formation + Templates ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La formation seule (179€) inclut les 10 modules vidéo, le guide PDF et l'accès à vie. Tu apprends à créer tes propres visuels de A à Z. Le pack ajoute 30 templates sport prêts à l'emploi : tu les reçois directement dans ton espace Canva et tu n'as plus qu'à personnaliser les couleurs et les textes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Plusieurs personnes du club peuvent-elles utiliser la formation ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "L'accès est nominatif. Si plusieurs personnes de ton club souhaitent suivre la formation, chacun doit avoir son propre accès. Contacte-nous sur WhatsApp si tu veux un accès pour plusieurs membres de ton staff, on trouve une solution."
+        }
+      }
+    ]
   }
   </script>
 
