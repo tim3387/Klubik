@@ -76,7 +76,7 @@ Capturer la 1ère frame de `hero-kubo.mp4` → `assets/images/hero-kubo-poster.w
 
 ## ⚪ BACKLOG — Restant
 
-- **Page 404** personnalisée
+- [x] **Page 404** personnalisée (`404.html` créée, noindex, navbar + footer + bouton retour accueil)
 - **Auto-hébergement police Inter** (−2 connexions DNS, gain LCP)
 - **Logo en WebP** avec balise `<picture>`
 - **IndexNow** — notification instantanée Bing/Yandex

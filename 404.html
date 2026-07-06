@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page introuvable — Klubik</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" /></noscript>
+
+  <style>
+    .page-404 {
+      min-height: calc(100vh - 72px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .page-404__inner {
+      max-width: 520px;
+    }
+    .page-404__number {
+      font-size: clamp(6rem, 20vw, 10rem);
+      font-weight: 900;
+      line-height: 1;
+      color: var(--blue);
+      opacity: .12;
+      letter-spacing: -0.04em;
+      margin-bottom: -1rem;
+      user-select: none;
+    }
+    .page-404__title {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .page-404__sub {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+    .page-404__links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar" class="scrolled">
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <img src="assets/images/logo.png" alt="Klubik — Marketing sportif pour clubs amateurs" class="logo-img" width="208" height="52" />
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#services">Services</a></li>
+        <li><a href="/#packs">Packs</a></li>
+        <li><a href="formation-canva.html">Formation</a></li>
+        <li><a href="/#contact" class="nav-cta">Démarrer un projet</a></li>
+      </ul>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="page-404">
+    <div class="page-404__inner">
+      <p class="page-404__number" aria-hidden="true">404</p>
+      <h1 class="page-404__title">Cette page n'existe pas.</h1>
+      <p class="page-404__sub">
+        Elle a peut-être été déplacée ou supprimée.<br/>
+        Pas de panique — retournez à l'accueil et on vous trouve ce qu'il vous faut.
+      </p>
+      <div class="page-404__links">
+        <a href="/" class="btn-blue">← Retour à l'accueil</a>
+        <a href="/#packs" class="btn-ghost">Voir les packs</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="logo">
+          <img src="assets/images/logo.png" alt="Klubik" class="logo-img logo-img--footer" width="240" height="60" loading="lazy" />
+        </a>
+        <p>Le marketing sportif pensé pour les clubs amateurs.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Services</h5>
+          <ul>
+            <li><a href="/#services">Identité visuelle</a></li>
+            <li><a href="/#services">Design maillots</a></li>
+            <li><a href="/#services">Templates Canva</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Agence</h5>
+          <ul>
+            <li><a href="/#packs">Nos packs</a></li>
+            <li><a href="formation-canva.html">Formation</a></li>
+            <li><a href="/#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Klubik. Tous droits réservés.</p>
+      <div class="footer-legal">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="cgv.html">CGV</a>
+        <a href="cgu.html">CGU</a>
+        <a href="confidentialite.html">Confidentialité</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
