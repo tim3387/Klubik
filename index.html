@@ -478,17 +478,23 @@
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">Portfolio</span>
-        <h2>Ce que l'on crée<br/>pour les clubs.</h2>
-        <p class="section-sub">Aperçu de nos créations — chaque projet est unique et pensé pour le club.</p>
+        <h2>Le style de rendu<br/>que l'on peut créer.</h2>
+        <p class="section-sub">Un aperçu du niveau de finition possible pour vos visuels de communication.</p>
       </div>
-      <div class="portfolio-placeholder reveal-item">
-        <div class="portfolio-placeholder-icon">
-          <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M5 2h14M5 22h14M6 2v4l5 5-5 5v4M18 2v4l-5 5 5 5v4"/></svg>
+      <p class="portfolio-note">Visuels réalisés par notre graphiste, publiés avec son accord — à titre d'exemple de style, pas de réalisations pour un club en particulier.</p>
+      <div class="portfolio-featured reveal-item">
+        <div class="pcard">
+          <button type="button" class="pcard-visual" data-portfolio-open aria-label="Voir les 4 réalisations en entier">
+            <img src="assets/images/portfolio-match-day-france.jpg" alt="Exemple d'affiche 'Match Day' avec effets de découpe dynamiques autour d'un portrait de joueur" width="1080" height="1350" loading="lazy">
+          </button>
+          <div class="pcard-info">
+            <span class="pcard-tag">Affiche Match Day</span>
+            <button type="button" class="pcard-title-btn" data-portfolio-open>Composition en éclats →</button>
+            <p>Mise en scène du joueur entourée de vignettes découpées pour une affiche d'avant-match percutante.</p>
+          </div>
         </div>
-        <p class="portfolio-placeholder-title">Les visuels arrivent bientôt</p>
-        <p class="portfolio-placeholder-sub">Nos premières réalisations seront publiées ici prochainement. En attendant, n'hésitez pas à nous contacter pour discuter de votre projet.</p>
-        <a href="#contact" class="btn-blue">Parlons de votre club →</a>
       </div>
+      <p class="portfolio-disclaimer">Klubik n'est affilié à, ni sponsorisé par le FC Barcelone, le PSG, l'Olympiacos, l'Atalanta, la FFF, l'UEFA ou Qatar Airways — logos et maillots appartiennent à leurs détenteurs respectifs.</p>
     </div>
   </section>
 
@@ -981,9 +987,9 @@
               <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.4a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.44 16z"/></svg>
               +33 6 95 97 17 15
             </a>
-            <a href="mailto:contact.klubik@gmail.com" class="reach-item">
+            <a href="mailto:contact@klubik.pro" class="reach-item">
               <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              contact.klubik@gmail.com
+              contact@klubik.pro
             </a>
             <a href="https://instagram.com/klubik.pro" class="reach-item" target="_blank" rel="noopener noreferrer">
               <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
@@ -1054,6 +1060,24 @@
   </section>
 
   </main>
+
+  <!-- ══════════════ MODALE PORTFOLIO ══════════════ -->
+  <div class="portfolio-modal-overlay" id="portfolioModalOverlay" hidden aria-modal="true" role="dialog" aria-label="Réalisations du portfolio">
+    <div class="portfolio-modal">
+      <div class="portfolio-modal-header">
+        <h3>Exemples de rendus — Match Day</h3>
+        <button type="button" class="portfolio-modal-close" aria-label="Fermer la fenêtre">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="portfolio-modal-grid">
+        <img src="assets/images/portfolio-match-day-france.jpg" alt="Exemple d'affiche 'Match Day' avec effets de découpe dynamiques autour d'un portrait de joueur" width="1080" height="1350" loading="lazy">
+        <img src="assets/images/portfolio-match-day-barca-olympiacos.jpg" alt="Exemple d'affiche 'Match Day' aux couleurs contrastées avec typographie XXL" width="1080" height="1350" loading="lazy">
+        <img src="assets/images/portfolio-match-day-barca-psg.jpg" alt="Exemple d'affiche 'Next Match' aux formes organiques et couleurs vives" width="1080" height="1350" loading="lazy">
+        <img src="assets/images/portfolio-match-day-psg-atalanta.jpg" alt="Exemple d'affiche 'Match Day' avec bandeau latéral et fond dégradé bleu-rouge" width="1080" height="1350" loading="lazy">
+      </div>
+    </div>
+  </div>
 
   <!-- ══════════════ MODALE DÉTAIL PACK ══════════════ -->
   <div class="pack-modal-overlay" id="packModalOverlay" hidden aria-modal="true" role="dialog" aria-label="Détail du pack">
@@ -1408,7 +1432,7 @@
     "logo": "https://klubik.pro/assets/images/logo.png",
     "description": "Agence de marketing sportif pour clubs amateurs : logos, maillots, templates Canva et supports de communication.",
     "telephone": "+33695971715",
-    "email": "contact.klubik@gmail.com",
+    "email": "contact@klubik.pro",
     "sameAs": ["https://instagram.com/klubik.pro"],
     "areaServed": { "@type": "Country", "name": "France" },
     "founder": {

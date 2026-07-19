@@ -454,6 +454,37 @@ if (window.matchMedia('(hover: hover)').matches) {
   });
 })();
 
+// ─── Modale portfolio (lightbox) ─────────────────────
+(function () {
+  const overlay = document.getElementById('portfolioModalOverlay');
+  if (!overlay) return;
+
+  function openModal() {
+    overlay.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    overlay.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-portfolio-open]').forEach(btn => {
+    btn.addEventListener('click', openModal);
+  });
+
+  overlay.querySelector('.portfolio-modal-close')
+    ?.addEventListener('click', closeModal);
+
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeModal();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !overlay.hasAttribute('hidden')) closeModal();
+  });
+})();
+
 // ─── FAQ accordéon ───────────────────────────────────
 (function () {
   document.querySelectorAll('.faq-question').forEach(btn => {
