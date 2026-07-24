@@ -75,6 +75,16 @@
     .sval { font-size: 24px; font-weight: 800; color: var(--ink); line-height: 1.1; }
     .ssub { font-size: 11px; color: var(--muted); margin-top: 4px; }
 
+    /* ── Courbe d'évolution ── */
+    .chart-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px 6px; margin-bottom: 20px; }
+    .chart-legend { display: flex; gap: 18px; margin-bottom: 6px; font-size: 12px; color: var(--muted); }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-item .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+    .legend-item .dot.blue   { background: var(--blue); }
+    .legend-item .dot.orange { background: var(--orange); }
+    .legend-item .dot.green  { background: var(--green); }
+    .legend-item .dot.red    { background: var(--red); }
+
     /* ── Filtres ── */
     .filters { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
     .filter-btn { padding: 5px 13px; border: 1.5px solid var(--border); border-radius: 20px; background: white; font-size: 12.5px; font-family: inherit; cursor: pointer; color: var(--ink); transition: all 0.15s; }
@@ -234,6 +244,16 @@
       <div class="sval" id="s-count">0</div>
       <div class="ssub" id="s-count-sub">sur la période</div>
     </div>
+  </div>
+
+  <!-- Évolution -->
+  <div class="section-label" id="chart-title">Net estimé</div>
+  <div class="chart-card">
+    <div class="chart-legend">
+      <span class="legend-item"><span class="dot green"></span>Net positif</span>
+      <span class="legend-item"><span class="dot red"></span>Net négatif</span>
+    </div>
+    <div id="chart-evolution"></div>
   </div>
 
   <!-- Filtres -->
@@ -529,8 +549,129 @@
       : 'Stripe + URSSAF + IR + coûts + dépenses';
   }
 
+  /* ── Courbe d'évolution (suit les 4 boutons de période) ── */
+  function buildBuckets(per) {
+    const now = new Date();
+    const buckets = [];
+
+    if (per === 'month') {
+      const y = now.getFullYear(), m = now.getMonth();
+      const daysInMonth = new Date(y, m + 1, 0).getDate();
+      for (let d = 1; d <= daysInMonth; d++) {
+        buckets.push({
+          start: new Date(y, m, d),
+          end:   new Date(y, m, d + 1),
+          label: (d === 1 || d % 5 === 0) ? String(d) : ''
+        });
+      }
+    } else if (per === 'quarter') {
+      const q = Math.floor(now.getMonth() / 3);
+      const qStart = new Date(now.getFullYear(), q * 3, 1);
+      for (let w = 0; w < 13; w++) {
+        const start = new Date(qStart); start.setDate(start.getDate() + w * 7);
+        const end   = new Date(qStart); end.setDate(end.getDate() + (w + 1) * 7);
+        buckets.push({ start, end, label: 'S' + (w + 1) });
+      }
+    } else if (per === 'year') {
+      const y = now.getFullYear();
+      for (let m = 0; m < 12; m++) {
+        const start = new Date(y, m, 1);
+        buckets.push({ start, end: new Date(y, m + 1, 1), label: start.toLocaleDateString('fr-FR', { month: 'short' }).replace('.', '') });
+      }
+    } else { // 'all'
+      const allDates = [...ventes.map(v => v.date), ...depenses.map(d => d.date)];
+      if (!allDates.length) {
+        const y = now.getFullYear(), m = now.getMonth();
+        buckets.push({ start: new Date(y, m, 1), end: new Date(y, m + 1, 1), label: now.toLocaleDateString('fr-FR', { month: 'short' }).replace('.', '') });
+      } else {
+        const minDate = new Date(Math.min(...allDates.map(d => new Date(d))));
+        let cursor = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+        const endCursor = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+        while (cursor < endCursor) {
+          const start = new Date(cursor);
+          const end   = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
+          buckets.push({ start, end, label: start.toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }).replace('.', '') });
+          cursor = end;
+        }
+      }
+    }
+    return buckets;
+  }
+
+  function renderChart() {
+    const chartLabel = { all: 'Historique complet', year: 'Cette année', quarter: 'Ce trimestre', month: 'Ce mois-ci' };
+    document.getElementById('chart-title').textContent = 'Net estimé — ' + chartLabel[periode];
+
+    const buckets = buildBuckets(periode);
+    if (!buckets.length) { document.getElementById('chart-evolution').innerHTML = ''; return; }
+
+    const netData = buckets.map(b => {
+      let net = 0;
+      ventes.forEach(v => {
+        const d = new Date(v.date);
+        if (d >= b.start && d < b.end) {
+          net += v.ca - calcStripe(v.ca) - v.ca * URSSAF_RATE - calcIR(v.ca) - v.cout;
+        }
+      });
+      depenses.forEach(dep => {
+        const d = new Date(dep.date);
+        if (d >= b.start && d < b.end) net -= dep.montant;
+      });
+      return net;
+    });
+
+    const maxAbs = Math.max(1, ...netData.map(v => Math.abs(v)));
+
+    const W = 900, H = 220, padL = 46, padR = 10, padT = 14, padB = 24;
+    const chartW = W - padL - padR;
+    const chartH = H - padT - padB;
+    const stepX  = buckets.length > 1 ? chartW / (buckets.length - 1) : 0;
+    const yZero  = padT + chartH / 2;
+    const yFor   = v => yZero - (v / maxAbs) * (chartH / 2);
+
+    const points  = netData.map((v, i) => [padL + i * stepX, yFor(v)]);
+    const lineStr = points.map(p => p.join(',')).join(' ');
+    const areaD   = `M ${points[0][0]},${yZero} ` +
+      points.map(p => `L ${p[0]},${p[1]}`).join(' ') +
+      ` L ${points[points.length - 1][0]},${yZero} Z`;
+
+    function fmtAxis(val) {
+      const abs = Math.abs(val);
+      return (val < 0 ? '−' : '') + (abs >= 1000 ? Math.round(abs / 1000) + 'k' : Math.round(abs));
+    }
+
+    const gridlines = `
+      <line x1="${padL}" y1="${padT}" x2="${W - padR}" y2="${padT}" stroke="#E8EAED" stroke-width="1" />
+      <text x="${padL - 8}" y="${padT + 3}" text-anchor="end" font-size="10" fill="#6B7280">${fmtAxis(maxAbs)}</text>
+      <text x="${padL - 8}" y="${yZero + 3}" text-anchor="end" font-size="10" fill="#6B7280">0</text>
+      <text x="${padL - 8}" y="${padT + chartH + 3}" text-anchor="end" font-size="10" fill="#6B7280">${fmtAxis(-maxAbs)}</text>`;
+
+    const xLabels = buckets.map((b, i) => {
+      if (!b.label) return '';
+      const x = padL + i * stepX;
+      return `<text x="${x}" y="${H - 6}" text-anchor="middle" font-size="10" fill="#6B7280">${b.label}</text>`;
+    }).join('');
+
+    document.getElementById('chart-evolution').innerHTML = `
+      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%; height:220px; display:block;">
+        <defs>
+          <linearGradient id="netGrad" x1="0" y1="${padT}" x2="0" y2="${padT + chartH}" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="#16A34A" />
+            <stop offset="50%"  stop-color="#16A34A" />
+            <stop offset="50%"  stop-color="#DC2626" />
+            <stop offset="100%" stop-color="#DC2626" />
+          </linearGradient>
+        </defs>
+        ${gridlines}
+        <line x1="${padL}" y1="${yZero}" x2="${W - padR}" y2="${yZero}" stroke="#9CA3AF" stroke-width="1" stroke-dasharray="4,3" />
+        <path d="${areaD}" fill="url(#netGrad)" fill-opacity="0.15" stroke="none" />
+        <polyline points="${lineStr}" fill="none" stroke="url(#netGrad)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+        ${xLabels}
+      </svg>`;
+  }
+
   /* ── Render tout ── */
-  function renderAll() { renderVentes(); renderDepenses(); renderSummary(); }
+  function renderAll() { renderVentes(); renderDepenses(); renderSummary(); renderChart(); }
 
   /* ── Suppression (délégation) ── */
   document.addEventListener('click', e => {

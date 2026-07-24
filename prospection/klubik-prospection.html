@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Klubik — Suivi de prospection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue: #1353F4;
+    --blue-dark: #0C3ECC;
+    --blue-light: #EEF3FF;
+    --black: #0A0A0A;
+    --ink: #1A1A1A;
+    --muted: #6B7280;
+    --border: #E8EAED;
+    --surface: #F8F9FC;
+    --white: #FFFFFF;
+
+    --teal: #0F9E97;
+    --teal-light: #E6F7F6;
+    --green: #16A34A;
+    --green-light: #E9F8EF;
+    --red: #DC2626;
+    --red-light: #FDECEC;
+
+    --shadow-sm: 0 2px 8px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.07), 0 8px 32px rgba(0,0,0,.05);
+    --shadow-blue: 0 8px 24px rgba(19, 83, 244, .22);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background: var(--surface);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    padding-bottom: 100px;
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  .wrap{ max-width: 640px; margin: 0 auto; padding: 20px 16px 8px; }
+
+  /* Header */
+  .eyebrow{
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--blue);
+    text-transform: uppercase;
+    margin: 0 0 4px;
+  }
+  h1{
+    font-weight: 800;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    margin: 0 0 18px;
+  }
+
+  /* Scoreboard */
+  .scoreboard{
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: flex;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  .seg{
+    flex: 1;
+    padding: 14px 8px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .seg:last-child{ border-right: none; }
+  .seg .num{
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--blue);
+    line-height: 1.1;
+  }
+  .seg .lbl{
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Filters */
+  .filters{
+    display:flex; gap:8px; overflow-x:auto;
+    padding-bottom: 4px; margin-bottom: 14px;
+    scrollbar-width: none;
+  }
+  .filters::-webkit-scrollbar{ display:none; }
+  .chip{
+    flex: 0 0 auto;
+    font-family:'Inter';
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .15s ease;
+  }
+  .chip.active{
+    background: var(--blue);
+    color: var(--white);
+    border-color: var(--blue);
+    font-weight: 600;
+  }
+
+  /* Cards */
+  .list{ display:flex; flex-direction:column; gap:10px; }
+  .card{
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--muted);
+    border-radius: 12px;
+    padding: 14px 14px;
+    cursor: pointer;
+    transition: border-color .15s ease;
+  }
+  .card[data-status="Répondu"]{ border-left-color: var(--teal); }
+  .card[data-status="Converti"]{ border-left-color: var(--green); }
+  .card[data-status="Décliné"]{ border-left-color: var(--red); }
+
+  .card-top{
+    display:flex; justify-content:space-between; align-items:flex-start; gap: 10px;
+  }
+  .club-name{ font-weight: 600; font-size: 15px; color: var(--black); }
+  .meta{
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .angle{
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+  .status-pill{
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 100px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .status-pill.Envoyé{ background: var(--surface); color: var(--muted); }
+  .status-pill.Répondu{ background: var(--teal-light); color: var(--teal); }
+  .status-pill.Converti{ background: var(--green-light); color: var(--green); }
+  .status-pill.Décliné{ background: var(--red-light); color: var(--red); }
+
+  .card-body{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .2s ease;
+  }
+  .card.open .card-body{ max-height: 300px; margin-top: 12px; }
+
+  .field-row{ display:flex; gap:8px; margin-bottom: 8px; }
+  .field-row label{
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--muted); display:block; margin-bottom: 4px;
+  }
+  select, input[type="text"], input[type="date"], textarea{
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: 'Inter';
+    font-size: 13px;
+  }
+  textarea{ resize: vertical; min-height: 50px; }
+  .card-actions{ display:flex; justify-content: flex-end; margin-top: 8px; }
+  .delete-btn{
+    font-size: 12px; color: var(--red); background: none; border: none;
+    cursor: pointer; padding: 6px 8px;
+  }
+
+  .empty{
+    text-align:center; color: var(--muted); font-size: 14px; padding: 40px 20px;
+  }
+
+  /* FAB */
+  .fab{
+    position: fixed; bottom: 24px; right: 20px;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--blue); color: var(--white);
+    font-size: 28px; font-weight: 400;
+    border: none; box-shadow: var(--shadow-blue);
+    cursor: pointer; z-index: 20;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .fab:hover{ background: var(--blue-dark); }
+
+  /* Modal */
+  .overlay{
+    position: fixed; inset: 0; background: rgba(10,10,10,0.45);
+    display: none; align-items: flex-end; z-index: 30;
+  }
+  .overlay.show{ display:flex; }
+  .modal{
+    background: var(--white);
+    width: 100%; max-width: 640px; margin: 0 auto;
+    border-radius: 16px 16px 0 0;
+    padding: 20px 16px 24px;
+    max-height: 85vh; overflow-y: auto;
+    box-shadow: var(--shadow-md);
+  }
+  .modal h2{
+    font-weight: 700; font-size: 18px; color: var(--black);
+    margin: 0 0 14px;
+  }
+  .btn-row{ display:flex; gap:10px; margin-top: 14px; }
+  .btn{
+    flex:1; padding: 11px; border-radius: 10px; border: none;
+    font-weight: 600; font-size: 14px; cursor: pointer;
+  }
+  .btn-primary{ background: var(--blue); color: var(--white); }
+  .btn-primary:hover{ background: var(--blue-dark); }
+  .btn-secondary{ background: var(--surface); color: var(--ink); border: 1px solid var(--border); }
+
+  .loading{ text-align:center; color: var(--muted); padding: 40px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Klubik</p>
+  <h1>Suivi de prospection</h1>
+
+  <div class="scoreboard">
+    <div class="seg"><div class="num" id="stat-total">0</div><div class="lbl">Envoyés</div></div>
+    <div class="seg"><div class="num" id="stat-reponses">0</div><div class="lbl">Réponses</div></div>
+    <div class="seg"><div class="num" id="stat-taux">0%</div><div class="lbl">Taux</div></div>
+  </div>
+
+  <div class="filters" id="filters">
+    <div class="chip active" data-filter="Tous">Tous</div>
+    <div class="chip" data-filter="Envoyé">Envoyé</div>
+    <div class="chip" data-filter="Répondu">Répondu</div>
+    <div class="chip" data-filter="Converti">Converti</div>
+    <div class="chip" data-filter="Décliné">Décliné</div>
+  </div>
+
+  <div id="content"><div class="loading">Chargement…</div></div>
+</div>
+
+<button class="fab" id="addBtn">+</button>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2 id="modalTitle">Nouveau prospect</h2>
+    <input type="hidden" id="editId">
+    <div class="field-row"><div style="flex:1">
+      <label>Club</label>
+      <input type="text" id="f-club" placeholder="Nom du club">
+    </div></div>
+    <div class="field-row">
+      <div style="flex:1">
+        <label>Canal</label>
+        <select id="f-canal">
+          <option>Mail</option>
+          <option>DM Instagram</option>
+        </select>
+      </div>
+      <div style="flex:1">
+        <label>Date</label>
+        <input type="date" id="f-date">
+      </div>
+    </div>
+    <div class="field-row"><div style="flex:1">
+      <label>Angle utilisé</label>
+      <input type="text" id="f-angle" placeholder="Ex: cohérence visuelle, renfort spécialisé...">
+    </div></div>
+    <div class="field-row"><div style="flex:1">
+      <label>Statut</label>
+      <select id="f-statut">
+        <option>Envoyé</option>
+        <option>Répondu</option>
+        <option>Converti</option>
+        <option>Décliné</option>
+      </select>
+    </div></div>
+    <div class="field-row"><div style="flex:1">
+      <label>Notes</label>
+      <textarea id="f-notes" placeholder="Notes libres..."></textarea>
+    </div></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" id="cancelBtn">Annuler</button>
+      <button class="btn btn-primary" id="saveBtn">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'klubik-prospects-v1';
+let prospects = [];
+let currentFilter = 'Tous';
+let openCardId = null;
+
+const seed = [
+  { id: 's1', club: 'La Seyne Var Handball', canal: 'Mail', date: '2026-07-07', angle: 'Prospection classique, lien site', statut: 'Envoyé', notes: '' },
+  { id: 's2', club: 'Nord Béarn Handball', canal: 'DM Instagram', date: '2026-07-07', angle: 'Compliment général + ouverture', statut: 'Envoyé', notes: '' },
+  { id: 's3', club: 'AS Handball Club Chalon', canal: 'Mail', date: '2026-07-09', angle: 'Renfort spécialisé (déjà une alternante en comm)', statut: 'Envoyé', notes: '' },
+  { id: 's4', club: 'Sanary Handball Club', canal: 'Mail', date: '2026-07-09', angle: 'Cohérence et reconnaissabilité visuelle', statut: 'Envoyé', notes: '' },
+  { id: 's5', club: 'US La Crau Handball', canal: 'Mail', date: '2026-07-09', angle: 'Incohérence multi-styles (mélange de templates)', statut: 'Envoyé', notes: '' },
+];
+
+function load(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    prospects = raw ? JSON.parse(raw) : null;
+  }catch(e){
+    prospects = null;
+  }
+  if(!prospects){
+    prospects = seed;
+    save();
+  }
+  render();
+}
+
+function save(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(prospects));
+  }catch(e){
+    console.error('Erreur de sauvegarde', e);
+  }
+}
+
+function fmtDate(d){
+  if(!d) return '';
+  const [y,m,day] = d.split('-');
+  return `${day}/${m}`;
+}
+
+function updateStats(){
+  const total = prospects.length;
+  const reponses = prospects.filter(p => p.statut !== 'Envoyé').length;
+  const taux = total ? Math.round((reponses/total)*100) : 0;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-reponses').textContent = reponses;
+  document.getElementById('stat-taux').textContent = taux + '%';
+}
+
+function render(){
+  updateStats();
+  const content = document.getElementById('content');
+  const filtered = currentFilter === 'Tous' ? prospects : prospects.filter(p => p.statut === currentFilter);
+
+  if(filtered.length === 0){
+    content.innerHTML = '<div class="empty">Aucun prospect ici. Ajoute-en un avec le bouton +.</div>';
+    return;
+  }
+
+  content.innerHTML = '<div class="list">' + filtered.map(p => `
+    <div class="card ${openCardId===p.id?'open':''}" data-status="${p.statut}" data-id="${p.id}">
+      <div class="card-top">
+        <div>
+          <div class="club-name">${escapeHtml(p.club)}</div>
+          <div class="meta">${p.canal} · ${fmtDate(p.date)}</div>
+          <div class="angle">${escapeHtml(p.angle)}</div>
+        </div>
+        <div class="status-pill ${p.statut}">${p.statut}</div>
+      </div>
+      <div class="card-body">
+        <div class="field-row">
+          <div style="flex:1">
+            <label>Statut</label>
+            <select class="quick-statut" data-id="${p.id}">
+              <option ${p.statut==='Envoyé'?'selected':''}>Envoyé</option>
+              <option ${p.statut==='Répondu'?'selected':''}>Répondu</option>
+              <option ${p.statut==='Converti'?'selected':''}>Converti</option>
+              <option ${p.statut==='Décliné'?'selected':''}>Décliné</option>
+            </select>
+          </div>
+        </div>
+        ${p.notes ? `<div class="angle" style="margin-bottom:8px">${escapeHtml(p.notes)}</div>` : ''}
+        <div class="card-actions">
+          <button class="delete-btn" data-edit="${p.id}">Modifier</button>
+          <button class="delete-btn" data-delete="${p.id}">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  `).join('') + '</div>';
+
+  content.querySelectorAll('.card-top').forEach(el => {
+    el.addEventListener('click', (e) => {
+      const card = el.closest('.card');
+      const id = card.dataset.id;
+      openCardId = openCardId === id ? null : id;
+      render();
+    });
+  });
+
+  content.querySelectorAll('.quick-statut').forEach(el => {
+    el.addEventListener('click', e => e.stopPropagation());
+    el.addEventListener('change', (e) => {
+      const id = e.target.dataset.id;
+      const p = prospects.find(x => x.id === id);
+      p.statut = e.target.value;
+      save();
+      render();
+    });
+  });
+
+  content.querySelectorAll('[data-delete]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = e.target.dataset.delete;
+      prospects = prospects.filter(p => p.id !== id);
+      save();
+      render();
+    });
+  });
+
+  content.querySelectorAll('[data-edit]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = e.target.dataset.edit;
+      openModal(prospects.find(p => p.id === id));
+    });
+  });
+}
+
+function escapeHtml(s){
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+function openModal(p){
+  document.getElementById('modalTitle').textContent = p ? 'Modifier le prospect' : 'Nouveau prospect';
+  document.getElementById('editId').value = p ? p.id : '';
+  document.getElementById('f-club').value = p ? p.club : '';
+  document.getElementById('f-canal').value = p ? p.canal : 'Mail';
+  document.getElementById('f-date').value = p ? p.date : new Date().toISOString().slice(0,10);
+  document.getElementById('f-angle').value = p ? p.angle : '';
+  document.getElementById('f-statut').value = p ? p.statut : 'Envoyé';
+  document.getElementById('f-notes').value = p ? p.notes : '';
+  document.getElementById('overlay').classList.add('show');
+}
+
+function closeModal(){
+  document.getElementById('overlay').classList.remove('show');
+}
+
+document.getElementById('addBtn').addEventListener('click', () => openModal(null));
+document.getElementById('cancelBtn').addEventListener('click', closeModal);
+document.getElementById('overlay').addEventListener('click', (e) => {
+  if(e.target.id === 'overlay') closeModal();
+});
+
+document.getElementById('saveBtn').addEventListener('click', () => {
+  const club = document.getElementById('f-club').value.trim();
+  if(!club){ alert('Le nom du club est requis.'); return; }
+  const id = document.getElementById('editId').value;
+  const data = {
+    id: id || 'p' + Date.now(),
+    club,
+    canal: document.getElementById('f-canal').value,
+    date: document.getElementById('f-date').value,
+    angle: document.getElementById('f-angle').value.trim(),
+    statut: document.getElementById('f-statut').value,
+    notes: document.getElementById('f-notes').value.trim(),
+  };
+  if(id){
+    const idx = prospects.findIndex(p => p.id === id);
+    prospects[idx] = data;
+  }else{
+    prospects.unshift(data);
+  }
+  save();
+  closeModal();
+  render();
+});
+
+document.getElementById('filters').addEventListener('click', (e) => {
+  if(!e.target.classList.contains('chip')) return;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  e.target.classList.add('active');
+  currentFilter = e.target.dataset.filter;
+  render();
+});
+
+load();
+</script>
+</body>
+</html>

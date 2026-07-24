@@ -457,9 +457,16 @@ if (window.matchMedia('(hover: hover)').matches) {
 // ─── Modale portfolio (lightbox) ─────────────────────
 (function () {
   const overlay = document.getElementById('portfolioModalOverlay');
-  if (!overlay) return;
+  const content = document.getElementById('portfolioModalContent');
+  if (!overlay || !content) return;
 
-  function openModal() {
+  function openModal(galleryId) {
+    const tpl = document.getElementById('portfolio-modal-' + galleryId);
+    if (!tpl) return;
+    content.innerHTML = '';
+    content.appendChild(tpl.content.cloneNode(true));
+    content.querySelector('.portfolio-modal-close')
+      ?.addEventListener('click', closeModal);
     overlay.removeAttribute('hidden');
     document.body.style.overflow = 'hidden';
   }
@@ -470,11 +477,8 @@ if (window.matchMedia('(hover: hover)').matches) {
   }
 
   document.querySelectorAll('[data-portfolio-open]').forEach(btn => {
-    btn.addEventListener('click', openModal);
+    btn.addEventListener('click', () => openModal(btn.dataset.portfolioOpen));
   });
-
-  overlay.querySelector('.portfolio-modal-close')
-    ?.addEventListener('click', closeModal);
 
   overlay.addEventListener('click', e => {
     if (e.target === overlay) closeModal();

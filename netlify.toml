@@ -3,6 +3,12 @@
   command = ""
 
 [[redirects]]
+  from = "/prospection/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/404.html"
   status = 404
