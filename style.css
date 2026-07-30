@@ -373,7 +373,7 @@ img, svg { display: block; }
 .jersey-number { font-size: 2.8rem; font-weight: 900; color: white; letter-spacing: -3px; line-height: 1; text-shadow: 0 2px 12px rgba(0,0,0,.2); position: relative; z-index: 1; }
 .jersey-name { font-size: 0.58rem; font-weight: 700; letter-spacing: 4px; color: rgba(255,255,255,.7); margin-top: 3px; text-transform: uppercase; position: relative; z-index: 1; }
 
-/* Match card — visuel réseaux sociaux */
+/* Match card, visuel réseaux sociaux */
 .hcard-photo {
   width: 100%;
   height: 124px;
@@ -525,7 +525,7 @@ img, svg { display: block; }
   position: relative;
 }
 .sfeat ul li::before {
-  content: '—';
+  content: '-';
   position: absolute;
   left: 0;
   color: rgba(19,83,244,.35);
@@ -814,7 +814,7 @@ img, svg { display: block; }
 }
 .pack-card--featured .pack-insight svg { color: rgba(255,255,255,.7); }
 
-/* TEMPORAIRE : contenus des modales et liens Stripe en cours de mise à jour — à retirer une fois les packs finalisés */
+/* TEMPORAIRE : contenus des modales et liens Stripe en cours de mise à jour, à retirer une fois les packs finalisés */
 .pack-cta,
 .pack-detail-btn,
 .f-hero-cta,
@@ -1114,7 +1114,7 @@ img, svg { display: block; }
 }
 
 /* â”€â”€â”€ Les KlubikitÃ©s â”€â”€â”€ */
-/* Pack Identité — variante bleu clair */
+/* Pack Identité, variante bleu clair */
 .pack-card--accent {
   background: linear-gradient(160deg, var(--blue-light) 0%, #F0F5FF 100%);
   border-color: rgba(19,83,244,.3);
@@ -1329,7 +1329,7 @@ img, svg { display: block; }
 }
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• POUR QUI â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
-/* ─── Pour qui — fond blanc ─── */
+/* ─── Pour qui, fond blanc ─── */
 .pour-qui { padding: 60px 0 28px; background: var(--white); }
 .pour-qui .section-head { margin-bottom: 0; }
 
@@ -1368,7 +1368,7 @@ img, svg { display: block; }
   margin: 20px auto 16px;
 }
 
-/* Anneau de l'orbite — couleur Pack Identité */
+/* Anneau de l'orbite, couleur Pack Identité */
 .orbital-ring {
   position: absolute;
   top: 50%; left: 50%;
@@ -1379,7 +1379,7 @@ img, svg { display: block; }
   pointer-events: none;
 }
 
-/* Noyau central — bleu Klubik */
+/* Noyau central, bleu Klubik */
 .orbital-core {
   position: absolute;
   top: 50%; left: 50%;

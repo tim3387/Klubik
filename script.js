@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   KLUBIK — script.js
+   KLUBIK : script.js
 ═══════════════════════════════════════════════════════ */
 
 // ─── Consentement cookies (RGPD/CNIL) ────────────────
@@ -112,7 +112,7 @@ const revealObs = new IntersectionObserver((entries) => {
 
 revealItems.forEach(el => revealObs.observe(el));
 
-// ─── Hero cards — subtle parallax on mouse move ──────
+// ─── Hero cards, subtle parallax on mouse move ──────
 const heroCards = document.querySelectorAll('.hcard');
 const heroSection = document.querySelector('.hero');
 
@@ -185,7 +185,7 @@ if (form) {
       }, 3000);
 
     } catch {
-      btn.textContent      = 'Erreur — réessayez';
+      btn.textContent      = 'Erreur, réessayez';
       btn.style.opacity    = '1';
       btn.style.background = '#ef4444';
 
@@ -248,7 +248,7 @@ if (window.matchMedia('(hover: hover)').matches) {
     sessionStorage.setItem('guide-popup-seen', '1');
   }
 
-  // Affiche le popup après 17 secondes — une seule fois par session
+  // Affiche le popup après 17 secondes, une seule fois par session
   if (!sessionStorage.getItem('guide-popup-seen')) {
     setTimeout(openPopup, 17000);
   }

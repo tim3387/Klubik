@@ -1,4 +1,4 @@
-# Klubik — Agence de marketing sportif pour clubs amateurs
+# Klubik : Agence de marketing sportif pour clubs amateurs
 
 ## À propos
 Klubik est une agence française spécialisée dans le design et la communication pour les clubs sportifs amateurs. Fondée par Timothé Leclercq, handballeur amateur, Klubik aide les clubs à se donner une image professionnelle sans avoir besoin de compétences en design ni de budget conséquent.
@@ -9,20 +9,20 @@ Création de packs design clés en main pour clubs sportifs amateurs : logos, ma
 ## Produits et services
 
 ### Packs design
-- **Pack Klubik** — templates Canva sport + calendrier éditorial
-- **Pack Klubik+** — version étendue avec plus de templates
-- **Pack Terrain** — templates Canva + design de maillot sur-mesure
-- **Pack Identité** — création de logo + charte graphique du club
-- **Pack Saison** — offre complète : logo, maillot, templates, calendrier
+- **Pack Klubik** : templates Canva sport + calendrier éditorial
+- **Pack Klubik+** : version étendue avec plus de templates
+- **Pack Terrain** : templates Canva + design de maillot sur-mesure
+- **Pack Identité** : création de logo + charte graphique du club
+- **Pack Saison** : offre complète : logo, maillot, templates, calendrier
 
 ### Formation
-- **Formation Canva pour clubs sportifs** — 10 modules vidéo (~3h) + guide PDF, accès à vie, 179€. Apprenez à créer tous vos visuels sport (posts, affiches, flyers) avec Canva, sans compétences préalables.
+- **Formation Canva pour clubs sportifs** : 10 modules vidéo (~3h) + guide PDF, accès à vie, 179€. Apprenez à créer tous vos visuels sport (posts, affiches, flyers) avec Canva, sans compétences préalables.
 
 ## Cible
 Clubs sportifs amateurs français, toutes disciplines confondues (football, handball, basketball, rugby, volleyball, arts martiaux, etc.). Convient aux petits clubs comme aux clubs de taille moyenne, aux bénévoles et dirigeants sans formation graphique.
 
 ## Fondateur
-Timothé Leclercq — handballeur amateur ayant évolué dans plusieurs clubs (Haillan, JA Isle, Saint-Médard, Saint-Flour, Saint-Étienne). Il a fondé Klubik après avoir constaté que la plupart des clubs amateurs manquaient d'outils simples pour communiquer de façon professionnelle.
+Timothé Leclercq, handballeur amateur ayant évolué dans plusieurs clubs (Haillan, JA Isle, Saint-Médard, Saint-Flour, Saint-Étienne). Il a fondé Klubik après avoir constaté que la plupart des clubs amateurs manquaient d'outils simples pour communiquer de façon professionnelle.
 
 ## Contact
 - Site : https://klubik.pro

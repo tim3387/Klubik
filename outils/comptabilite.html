@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Klubik — Comptabilité</title>
+  <title>Klubik : Comptabilité</title>
   <meta name="robots" content="noindex, nofollow" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <style>
@@ -195,7 +195,7 @@
   <header>
     <div>
       <div class="brand">klubik <span>/ comptabilité</span></div>
-      <p>Outil interne — Données sauvegardées dans ce navigateur</p>
+      <p>Outil interne, données sauvegardées dans ce navigateur</p>
     </div>
     <a href="marges.html" style="font-size:12px;color:var(--blue);text-decoration:none;">← Voir les marges</a>
   </header>
@@ -204,7 +204,7 @@
   <div class="ir-bar">
     <span class="lbl">Impôt sur le revenu</span>
     <label class="ir-opt"><input type="radio" name="ir" value="none" checked /> Non inclus</label>
-    <label class="ir-opt"><input type="radio" name="ir" value="vl" /> Versement libératoire — 1,7 % du CA</label>
+    <label class="ir-opt"><input type="radio" name="ir" value="vl" /> Versement libératoire : 1,7 % du CA</label>
     <label class="ir-opt"><input type="radio" name="ir" value="tmi" /> Taux marginal (TMI)</label>
     <div class="tmi-wrap" id="tmiWrap">
       <input type="number" id="tmiInput" value="30" min="0" max="90" />
@@ -282,7 +282,7 @@
       <div class="form-group mid">
         <label>Produit</label>
         <select id="f-produit">
-          <option value="">— Choisir —</option>
+          <option value="">Choisir</option>
           <optgroup label="Packs">
             <option value="Pack Klubik|299|0">Pack Klubik</option>
             <option value="Pack Klubik+|599|0">Pack Klubik+</option>
@@ -389,8 +389,8 @@
 
   <!-- Export -->
   <div class="bottom-bar">
-    <button class="btn-export" id="btnExport">Exporter Excel — ventes</button>
-    <button class="btn-export" id="btnExportDep">Exporter Excel — dépenses</button>
+    <button class="btn-export" id="btnExport">Exporter Excel : ventes</button>
+    <button class="btn-export" id="btnExportDep">Exporter Excel : dépenses</button>
   </div>
 
   <footer>Outil interne Klubik · URSSAF auto-entrepreneur BIC prestation de services 2024-2025 · Non indexé</footer>
@@ -457,13 +457,13 @@
         const net    = v.ca - stripe - urssaf - ir - v.cout;
         return `<tr>
           <td class="td-date">${fmtDate(v.date)}</td>
-          <td class="td-client">${v.client || '—'}</td>
+          <td class="td-client">${v.client || '-'}</td>
           <td class="td-produit">${v.produit}</td>
           <td class="td-ca">${v.ca.toLocaleString('fr-FR')} €</td>
           <td class="td-neg">−${fmt(stripe)}</td>
           <td class="td-neg">−${fmt(urssaf)}</td>
-          <td class="td-neg">${ir > 0 ? '−'+fmt(ir) : '—'}</td>
-          <td class="td-neg">${v.cout > 0 ? '−'+fmtInt(v.cout) : '—'}</td>
+          <td class="td-neg">${ir > 0 ? '−'+fmt(ir) : '-'}</td>
+          <td class="td-neg">${v.cout > 0 ? '−'+fmtInt(v.cout) : '-'}</td>
           <td class="td-net${net<0?' negative':''}">${fmt(net)}</td>
           <td><button class="btn-del" data-type="vente" data-id="${v.id}">×</button></td>
         </tr>`;
@@ -481,8 +481,8 @@
         <td>${totCA.toLocaleString('fr-FR')} €</td>
         <td class="td-neg">−${fmt(totStripe)}</td>
         <td class="td-neg">−${fmt(totUrssaf)}</td>
-        <td class="td-neg">${totIR>0?'−'+fmt(totIR):'—'}</td>
-        <td class="td-neg">${totCout>0?'−'+fmtInt(totCout):'—'}</td>
+        <td class="td-neg">${totIR>0?'−'+fmt(totIR):'-'}</td>
+        <td class="td-neg">${totCout>0?'−'+fmtInt(totCout):'-'}</td>
         <td class="td-net${totNet<0?' negative':''}">${fmt(totNet)}</td>
         <td></td>
       </tr>`;
@@ -600,7 +600,7 @@
 
   function renderChart() {
     const chartLabel = { all: 'Historique complet', year: 'Cette année', quarter: 'Ce trimestre', month: 'Ce mois-ci' };
-    document.getElementById('chart-title').textContent = 'Net estimé — ' + chartLabel[periode];
+    document.getElementById('chart-title').textContent = 'Net estimé : ' + chartLabel[periode];
 
     const buckets = buildBuckets(periode);
     if (!buckets.length) { document.getElementById('chart-evolution').innerHTML = ''; return; }
