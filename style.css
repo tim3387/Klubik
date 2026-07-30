@@ -814,6 +814,12 @@ img, svg { display: block; }
 }
 .pack-card--featured .pack-insight svg { color: rgba(255,255,255,.7); }
 
+/* TEMPORAIRE : contenu des modales pas à jour, à retirer une fois les modales revues */
+.pack-detail-btn,
+.packs-detail-note {
+  display: none !important;
+}
+
 /* ─── CTA ─── */
 .pack-cta {
   display: flex;
