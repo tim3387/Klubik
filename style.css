@@ -814,15 +814,7 @@ img, svg { display: block; }
 }
 .pack-card--featured .pack-insight svg { color: rgba(255,255,255,.7); }
 
-/* TEMPORAIRE : contenus des modales et liens Stripe en cours de mise à jour, à retirer une fois les packs finalisés */
-.pack-cta,
-.pack-detail-btn,
-.f-hero-cta,
-.packs-detail-note {
-  display: none !important;
-}
-
-/* â”€â”€â”€ CTA â”€â”€â”€ */
+/* ─── CTA ─── */
 .pack-cta {
   display: flex;
   align-items: center;
