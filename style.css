@@ -292,8 +292,8 @@ img, svg { display: block; }
 }
 .hero-tags span:hover { color: var(--blue); border-color: var(--blue); background: var(--blue-light); }
 
-/* â”€ Hero right : 5 floating cards â”€ */
-.hero-right { height: 580px; }
+/* â”€ Hero right : 4 floating cards â”€ */
+.hero-right { height: 480px; }
 .hcard {
   position: absolute;
   background: var(--white);
@@ -326,12 +326,11 @@ img, svg { display: block; }
 .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .dot--blue { background: var(--blue); box-shadow: 0 0 0 3px rgba(19,83,244,.2); }
 
-/* Card positions â€” 5 cards */
+/* Card positions â€” 4 cards */
 .hcard--jersey   { top: 0;    left: 0;   width: 172px; animation-delay: 0s;    z-index: 3; }
 .hcard--match    { top: 24px; right: 0;  width: 190px; animation-delay: -1.6s; z-index: 3; }
-.hcard--brand    { top: 190px; left: 92px; width: 190px; animation-delay: -3.1s; z-index: 2; }
-.hcard--template { bottom: 68px; left: 4px; width: 186px; animation-delay: -2.4s; z-index: 3; }
-.hcard--sponsor  { bottom: 0;  right: 8px; width: 178px; animation-delay: -1.9s; z-index: 3; }
+.hcard--template { bottom: 40px; left: 4px; width: 186px; animation-delay: -2.4s; z-index: 3; }
+.hcard--brand    { bottom: 0;  right: 8px; width: 190px; animation-delay: -1.9s; z-index: 3; }
 
 /* Jersey card */
 .jersey-shape {
@@ -405,44 +404,6 @@ img, svg { display: block; }
   object-fit: cover;
   display: block;
 }
-
-/* Sponsor card */
-.sponsor-cover { display: flex; flex-direction: column; gap: 9px; }
-.sponsor-cover-header {
-  background: linear-gradient(135deg, #2b6bff 0%, var(--blue-dark) 100%);
-  border-radius: 8px;
-  padding: 10px 12px 12px;
-  color: white;
-}
-.sponsor-cover-season {
-  font-size: 0.44rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.6);
-  margin-bottom: 5px;
-}
-.sponsor-cover-title {
-  font-size: 0.85rem;
-  font-weight: 800;
-  line-height: 1.25;
-  color: white;
-}
-.sponsor-tiers { display: flex; flex-direction: column; gap: 4px; }
-.sponsor-tier {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 5px 8px;
-  border-radius: 6px;
-  background: var(--surface);
-}
-.tier-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.tier-dot--gold   { background: #F59E0B; }
-.tier-dot--silver { background: #94A3B8; }
-.tier-dot--bronze { background: #CD7C2F; }
-.tier-label { font-size: 0.6rem; font-weight: 700; color: var(--ink); flex: 1; }
-.tier-price { font-size: 0.58rem; font-weight: 700; color: var(--muted); }
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• SERVICES â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 /* ─── Section Kubo ─── */
@@ -852,6 +813,14 @@ img, svg { display: block; }
   color: rgba(255,255,255,.8);
 }
 .pack-card--featured .pack-insight svg { color: rgba(255,255,255,.7); }
+
+/* TEMPORAIRE : contenus des modales et liens Stripe en cours de mise à jour — à retirer une fois les packs finalisés */
+.pack-cta,
+.pack-detail-btn,
+.f-hero-cta,
+.packs-detail-note {
+  display: none !important;
+}
 
 /* â”€â”€â”€ CTA â”€â”€â”€ */
 .pack-cta {
@@ -2391,13 +2360,12 @@ img, svg { display: block; }
   .hero-actions { justify-content: center; }
   .hero-tags { justify-content: center; }
   .hero-eyebrow { margin-left: auto; margin-right: auto; }
-  /* 4 cards on tablet (hide template) */
+  /* 4 cards on tablet */
   .hero-right { height: 460px; max-width: 460px; margin: 0 auto; }
   .hcard--jersey   { top: 0;   left: 0;   width: 150px; }
   .hcard--match    { top: 22px; right: 0; width: 172px; }
-  .hcard--brand    { top: 165px; left: 82px; width: 168px; }
-  .hcard--template { display: none; }
-  .hcard--sponsor  { bottom: 0; right: 10px; width: 160px; }
+  .hcard--template { bottom: 54px; left: 4px; width: 160px; top: auto; }
+  .hcard--brand    { bottom: 0; right: 10px; width: 160px; }
   /* grids */
   .feat-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; }
   .feat-card { padding: 36px; }
@@ -2452,7 +2420,6 @@ img, svg { display: block; }
   .hcard--jersey  { top: 0; left: 0; width: 130px; }
   .hcard--match   { top: 18px; right: 0; width: 150px; }
   .hcard--brand   { top: 148px; left: 62px; width: 146px; }
-  .hcard--sponsor { bottom: 0; right: 4px; width: 142px; }
   .feat-grid { grid-template-columns: 1fr; gap: 24px; }
   .sfeat--desktop { display: none; }
   .feat-card { padding: 24px 20px; }
@@ -2486,7 +2453,6 @@ img, svg { display: block; }
   .hcard--jersey  { width: 112px; }
   .hcard--match   { width: 132px; top: 12px; }
   .hcard--brand   { width: 128px; top: 130px; left: 50px; }
-  .hcard--sponsor { width: 132px; }
   /* Divers */
   .ba-pair { flex-direction: column; }
   .ba-arrow { transform: rotate(90deg); }
