@@ -1,0 +1,8 @@
+# Données de prospection : jamais dans git
+data/*
+!data/README.md
+
+# Fichiers temporaires Excel / LibreOffice
+~$*
+.~lock.*#
+__pycache__/

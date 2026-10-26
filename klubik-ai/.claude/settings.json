@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "agent": "manager",
+  "permissions": {
+    "allow": [
+      "Bash(python3 crm/klubik_crm.py *)",
+      "Bash(python crm/klubik_crm.py *)",
+      "Bash(py crm/klubik_crm.py *)",
+      "Bash(python3 -m unittest discover -s crm/tests *)",
+      "Read(./connaissances/**)",
+      "Read(./crm/**)"
+    ],
+    "ask": [
+      "Bash(* --appliquer*)",
+      "Bash(* --remplacer*)",
+      "Bash(* --forcer*)"
+    ],
+    "deny": [
+      "Edit(./data/**)",
+      "Bash(rm *)",
+      "Bash(del *)",
+      "Bash(git push *)"
+    ]
+  }
+}
