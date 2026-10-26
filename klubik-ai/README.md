@@ -1,13 +1,19 @@
 # Klubik AI — V1
 
-Trois agents Claude Code qui travaillent sur **votre** fichier de prospection :
+Quatre agents Claude Code — les personnages internes de Klubik AI — qui travaillent sur **votre**
+fichier de prospection :
 
-- **Manager** (agent principal) : c'est à lui que vous parlez. Il fait le point, priorise, délègue et
-  vous présente des messages prêts à valider.
-- **CRM Manager** : retrouve les clubs, vérifie, enregistre les contacts/relances/réponses. Seul à écrire.
-- **Copywriter** : rédige les brouillons (DM, emails, SMS, relances, réponses aux objections).
-- **Club Intelligence** : cherche sur le web ce qui rend un club unique (résultats, projets,
-  dirigeants publics, actualités) et propose 3 accroches sourcées. Dossiers dans `data/intelligence/`.
+- **Kung** (panda, manager général) : c'est à lui que vous parlez. Il fait le point, priorise, délègue,
+  contrôle le travail des autres et vous propose des améliorations.
+- **Popi** (lapin, CRM) : retrouve les clubs et leur historique, enregistre les contacts, relances et
+  réponses, repère les relances. Seul à écrire dans le fichier.
+- **Jojo** (panda, Club Intelligence) : cherche sur le web ce qui rend un club unique (résultats,
+  projets, dirigeants publics, actualités) et propose 3 accroches sourcées. Dossiers dans `data/intelligence/`.
+- **Bililou** (bouvier bernois, copywriter) : rédige les brouillons (DM, emails, SMS, relances,
+  réponses aux objections) au nom de Timothé.
+
+Kubo reste la mascotte publique de Klubik ; les quatre agents n'apparaissent jamais dans les messages
+envoyés aux clubs. Leurs avatars viendront dans `equipe/avatars/` (voir `equipe/equipe.json`).
 
 Rien n'est jamais envoyé automatiquement. Rien n'est écrit dans le fichier sans votre autorisation.
 
@@ -46,7 +52,7 @@ cd klubik-ai
 claude
 ```
 
-L'en-tête affiche `@manager` : vous parlez directement au Manager (réglage `"agent": "manager"` dans
+L'en-tête affiche `@kung` : vous parlez directement à Kung (réglage `"agent": "kung"` dans
 `.claude/settings.json`). Pour travailler sur le code du site, lancez plutôt `claude` depuis la racine du dépôt.
 
 ## Au quotidien
@@ -63,12 +69,12 @@ Parlez normalement, par exemple :
 - « Analyse les 10 clubs prioritaires et trouve les meilleures accroches pour chacun. »
 - « Quels prospects sont les plus intéressants actuellement ? »
 - « Qu'est-ce qu'on pourrait améliorer dans notre prospection ? »
-- « Manager, regarde notre fichier de prospection, indique-moi les clubs à relancer, prépare les
+- « Kung, regarde notre fichier de prospection, indique-moi les clubs à relancer, prépare les
   messages adaptés et donne-moi tes recommandations. »
 
 Le cycle normal :
-1. Le Manager vous propose des brouillons → vous les copiez-collez et les envoyez **vous-même**.
-2. Vous lui dites ce que vous avez **réellement** envoyé → le CRM Manager prépare la mise à jour
+1. Kung vous propose des brouillons → vous les copiez-collez et les envoyez **vous-même**.
+2. Vous lui dites ce que vous avez **réellement** envoyé → Popi prépare la mise à jour
    (simulation affichée), puis Claude Code vous demande l'autorisation d'écrire → vous acceptez.
 3. La réponse finit par « ÉCRIT ET VÉRIFIÉ » : la modification est faite et relue dans le fichier.
 
@@ -84,7 +90,7 @@ Le cycle normal :
 | Formules, graphiques, tableaux, autres onglets jamais modifiés (vérifié après chaque écriture) | outil |
 | Sauvegarde avant écriture + journal avant/après | `data/sauvegardes/`, `data/journal-crm.jsonl` |
 | Aucune commande de suppression ; pas d'ajout/suppression de colonnes ou d'onglets | outil |
-| Copywriter sans accès au fichier ni au shell | `.claude/agents/copywriter.md` |
+| Bililou sans accès au fichier ni au shell | `.claude/agents/bililou.md` |
 | `data/` exclu de git, `/klubik-ai/*` bloqué sur le site public | `.gitignore`, `netlify.toml` |
 
 Revenir en arrière : fermer Excel, remplacer le fichier par la sauvegarde voulue de `data/sauvegardes/`.
@@ -95,7 +101,8 @@ Revenir en arrière : fermer Excel, remplacer le fichier par la sauvegarde voulu
 klubik-ai/
 ├── CLAUDE.md                     règles communes à tous les agents
 ├── .claude/settings.json         agent principal + permissions
-├── .claude/agents/               manager.md · crm-manager.md · copywriter.md · club-intelligence.md
+├── .claude/agents/               kung.md · popi.md · jojo.md · bililou.md
+├── equipe/                       registre des 4 agents (equipe.json) + avatars/ (à venir)
 ├── connaissances/                offre, style et ton, règles de prospection (sourcées)
 ├── crm/klubik_crm.py             accès au fichier (lecture, recherche, mises à jour sûres)
 ├── crm/tests/test_crm.py         20 tests, toujours sur copie temporaire

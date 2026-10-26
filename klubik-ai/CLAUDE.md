@@ -5,14 +5,23 @@ Système multi-agents de prospection de Klubik, agence de communication pour clu
 
 ## Agents
 
-| Agent | Fichier | Rôle | Écrit dans le CRM ? |
-|---|---|---|---|
-| Manager (agent principal) | `.claude/agents/manager.md` | Comprend les demandes, priorise, délègue, contrôle, synthétise | Non (délègue) |
-| CRM Manager | `.claude/agents/crm-manager.md` | Fiabilité du fichier, recherche, mises à jour, doublons | **Oui, seul** |
-| Copywriter | `.claude/agents/copywriter.md` | Rédige des brouillons de messages | Non (pas d'accès au fichier) |
-| Club Intelligence | `.claude/agents/club-intelligence.md` | Recherche web d'infos publiques sourcées, top 3 des accroches | Non (écrit seulement `data/intelligence/`) |
+Exactement quatre agents (registre : `equipe/equipe.json`, avatars à venir dans `equipe/avatars/`) :
 
-Kubo est la mascotte publique de Klubik : aucune fonction dans cette V1.
+| Agent | Animal | Rôle | Fichier | Écrit dans le CRM ? |
+|---|---|---|---|---|
+| **Kung** (agent principal) | panda | Manager général : coordonne, supervise, priorise, propose, contrôle | `.claude/agents/kung.md` | Non (délègue à Popi) |
+| **Popi** | lapin | CRM Manager : retrouve les clubs et leur historique, statuts, échanges, relances, doublons | `.claude/agents/popi.md` | **Oui, seul** |
+| **Jojo** | panda | Club Intelligence : recherche web publique sourcée, 3 meilleures accroches | `.claude/agents/jojo.md` | Non (écrit seulement `data/intelligence/`) |
+| **Bililou** | bouvier bernois | Copywriter : mails, DM, SMS, relances, réponses | `.claude/agents/bililou.md` | Non (pas d'accès au fichier) |
+
+Parcours type : Kung comprend la demande → Popi retrouve le club et son historique → Jojo cherche des
+informations vérifiées → Bililou rédige → Kung contrôle et présente à Timothé → Popi enregistre
+uniquement les actions que Timothé confirme avoir faites.
+
+Kubo est la mascotte **publique** de Klubik : aucune fonction dans Klubik AI. Kung, Jojo, Popi et
+Bililou sont des personnages **internes** : ils n'apparaissent jamais dans un message destiné à un club
+(les messages sont écrits et signés par Timothé). Leur personnalité colore leur façon de travailler,
+jamais au détriment des règles ci-dessous.
 
 ## Source unique de vérité
 
@@ -62,5 +71,5 @@ Kubo est la mascotte publique de Klubik : aucune fonction dans cette V1.
 - Tests (toujours sur copie temporaire, jamais sur le fichier réel) :
   `python3 -m unittest discover -s crm/tests -v`
 - Ajouter un agent : créer `.claude/agents/<nom>.md` (frontmatter `name`, `description`, `tools`
-  minimaux), l'ajouter à la ligne `tools: Agent(...)` du Manager et au tableau ci-dessus. Un nouvel
-  agent n'obtient l'écriture CRM qu'en passant par le crm-manager.
+  minimaux), l'ajouter à la ligne `tools: Agent(...)` de Kung et au tableau ci-dessus. Un nouvel
+  agent n'obtient l'écriture CRM qu'en passant par Popi.

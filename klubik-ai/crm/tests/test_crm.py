@@ -248,7 +248,7 @@ class TestCRM(unittest.TestCase):
 
 def dossier_type(club_id=51, club="ALC LONGVIC", verifie_le="2026-10-26"):
     return {
-        "club_id": club_id, "club": club, "verifie_le": verifie_le, "auteur": "club-intelligence",
+        "club_id": club_id, "club": club, "verifie_le": verifie_le, "auteur": "jojo",
         "sources_consultees": [{"url": "https://exemple.fr", "type": "presse", "consulte_le": verifie_le, "accessible": True}],
         "faits": [
             {"id": "F1", "categorie": "sportif", "fait": "Montée en N1F", "source_nom": "Presse",
@@ -264,7 +264,7 @@ def dossier_type(club_id=51, club="ALC LONGVIC", verifie_le="2026-10-26"):
 
 
 class TestIntel(unittest.TestCase):
-    """Validation des dossiers Club Intelligence (sans réseau, sans fichier CRM)."""
+    """Validation des dossiers Jojo (sans réseau, sans fichier CRM)."""
     J = dt.date(2026, 10, 26)
 
     def test_dossier_valide_avec_avertissement_actualite_ancienne(self):
@@ -320,6 +320,35 @@ class TestIntel(unittest.TestCase):
         finally:
             k.DOSSIER_INTEL = ancien
             shutil.rmtree(d, ignore_errors=True)
+
+
+class TestEquipe(unittest.TestCase):
+    """Cohérence entre le registre equipe/equipe.json, les fichiers d'agents et les réglages."""
+    RACINE = Path(__file__).resolve().parents[2]
+
+    def frontmatter(self, p: Path) -> dict:
+        bloc = p.read_text(encoding="utf-8").split("---")[1]
+        return {l.split(":", 1)[0].strip(): l.split(":", 1)[1].strip() for l in bloc.strip().splitlines() if ":" in l}
+
+    def test_quatre_agents_coherents(self):
+        reg = json.loads((self.RACINE / "equipe" / "equipe.json").read_text(encoding="utf-8"))
+        ids = [a["id"] for a in reg["agents"]]
+        self.assertEqual(sorted(ids), ["bililou", "jojo", "kung", "popi"])
+        fichiers = sorted(p.stem for p in (self.RACINE / ".claude" / "agents").glob("*.md"))
+        self.assertEqual(fichiers, sorted(ids), "un fichier d'agent sans entrée dans le registre (ou l'inverse)")
+        for a in reg["agents"]:
+            fm = self.frontmatter(self.RACINE / a["fichier_agent"])
+            self.assertEqual(fm["name"], a["id"])
+            self.assertEqual(fm["color"], a["couleur"])
+            self.assertIn(a["nom"], fm["description"])
+        principal = [a["id"] for a in reg["agents"] if a["agent_principal"]]
+        reglages = json.loads((self.RACINE / ".claude" / "settings.json").read_text(encoding="utf-8"))
+        self.assertEqual(principal, [reglages["agent"]])
+        kung = self.frontmatter(self.RACINE / ".claude" / "agents" / "kung.md")
+        self.assertIn("Agent(popi, jojo, bililou)", kung["tools"])
+        # Agents spécialisés : aucun ne peut déléguer (pas d'outil Agent)
+        for a in ("popi", "jojo", "bililou"):
+            self.assertNotIn("Agent", self.frontmatter(self.RACINE / ".claude" / "agents" / f"{a}.md")["tools"])
 
 
 if __name__ == "__main__":

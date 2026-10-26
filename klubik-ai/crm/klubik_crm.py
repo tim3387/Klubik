@@ -772,9 +772,9 @@ def cmd_qualite(crm: CRM, a):
     print(f"- canal recommandé « À vérifier » : {sum(1 for c in a_contacter if c.get('Canal recommandé') == 'À vérifier')}")
 
 
-# ─────────────────────────── renseignement (Club Intelligence) ──────────────
+# ─────────────────────────── renseignement (Jojo) ──────────────
 
-# Dossiers produits par l'agent club-intelligence, liés à l'ID du club, hors du xlsx
+# Dossiers produits par Jojo, liés à l'ID du club, hors du xlsx
 # (aucun changement de structure du CRM) : data/intelligence/<ID>_<AAAA-MM-JJ>.json
 DOSSIER_INTEL = Path(os.environ.get("KLUBIK_INTEL_DOSSIER", RACINE / "data" / "intelligence"))
 CATEGORIES_INTEL = {"identite", "dirigeants", "sportif", "actualite", "communication"}
@@ -901,7 +901,7 @@ def cmd_intel(crm: CRM, a):
     r = charger_intel(int(c["ID"]), crm.aujourd_hui)
     print(f"RENSEIGNEMENT — [ID {c['ID']}] {c['Club']}")
     if not r:
-        print("Aucun dossier. À demander à l'agent club-intelligence.")
+        print("Aucun dossier. À demander à Jojo.")
         return
     p, d, fr_ = r
     print(f"Dossier : {DOSSIER_INTEL.name}/{p.name} · vérifié le {d.get('verifie_le')} · fraîcheur : {fr_}")
@@ -934,7 +934,7 @@ def cmd_intel(crm: CRM, a):
     if d.get("ne_pas_utiliser"):
         print("Ne pas utiliser : " + " · ".join(f"{x.get('element')} ({x.get('raison')})" for x in d["ne_pas_utiliser"]))
     print(f"Limites : {d.get('limites')}")
-    print(f"Fichier complet (lisible par le Copywriter) : {p}")
+    print(f"Fichier complet (lisible par Bililou) : {p}")
 
 
 def cmd_intel_liste(crm: CRM, a):

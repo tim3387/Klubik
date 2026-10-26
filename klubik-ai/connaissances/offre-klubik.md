@@ -1,4 +1,4 @@
-# Offre Klubik — référence pour le Copywriter
+# Offre Klubik — référence pour Bililou
 
 Sources : `index.html` (section `#packs` et FAQ), `formation-canva.html`, `llms.txt`, fichier de prospection (onglet Clubs).
 Vérifié le 26/10/2026. **Si le site change, ce fichier doit être mis à jour : le site fait foi.**

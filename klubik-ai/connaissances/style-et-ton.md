@@ -28,7 +28,7 @@ appel à l'action mou (« Si ce sujet fait partie de vos réflexions… »).
   concret (pas de point d'exclamation, pas de majuscules criardes) · LinkedIn ≤ 100 mots.
 - Une seule idée et une seule demande par message.
 - Parler du club, pas de Klubik : au moins une phrase spécifique au club, tirée du CRM (signal, diagnostic,
-  angle). Si le CRM ne donne rien de spécifique, le dire au Manager plutôt que d'inventer.
+  angle). Si le CRM ne donne rien de spécifique, le dire à Kung plutôt que d'inventer.
 - Pas de « [Prénom] » dans un message final : si le prénom est inconnu, écrire « Bonjour, » et signaler que
   l'interlocuteur est à identifier.
 - Relance : ne jamais renvoyer le même message. Apporter un élément nouveau (mini-audit, exemple concret,
