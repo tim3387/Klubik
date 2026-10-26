@@ -19,6 +19,24 @@ Rien n'est jamais envoyé automatiquement. Rien n'est écrit dans le fichier san
 4. Lancer `claude` **depuis le dossier `klubik-ai/`** et accepter la fenêtre « faire confiance à ce dossier »
    (sinon les autorisations de lecture du projet sont ignorées et Claude vous demandera chaque commande).
 
+## Ordinateur + téléphone (configuration de Timothé)
+
+Le fichier reste sur le Bureau de l'ordinateur : c'est l'unique version vivante. Indiquer son chemin
+une fois, dans `klubik-ai/.claude/settings.local.json` (fichier personnel, jamais commité) :
+
+```json
+{ "env": { "KLUBIK_CRM_FICHIER": "C:\\Users\\<vous>\\Desktop\\klubik-prospection-master-v9.xlsx" } }
+```
+
+- **Sur l'ordinateur** : ouvrir le dossier `klubik-ai/` dans VS Code et lancer Claude Code.
+- **Depuis le téléphone** : sur l'ordinateur, dans un terminal ouvert dans `klubik-ai/`, lancer
+  `claude remote-control`. La session apparaît dans l'app Claude Code du téléphone ; elle tourne
+  sur l'ordinateur et travaille donc sur le vrai fichier. L'ordinateur doit rester allumé.
+- **À éviter** : une session cloud lancée depuis le téléphone (comme une session claude.ai/code
+  classique) n'a pas accès au Bureau. Si on lui envoie le fichier, elle en modifie une copie, et il
+  faut ensuite remplacer le fichier du Bureau par la version renvoyée. C'est ainsi que naissent des
+  versions divergentes ; à réserver aux urgences.
+
 ## Lancer les agents
 
 ```bash
