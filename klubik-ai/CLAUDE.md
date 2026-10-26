@@ -2,6 +2,8 @@
 
 Système multi-agents de prospection de Klubik, agence de communication pour clubs sportifs amateurs
 (handball en priorité). Langue de travail : **français**. Interlocuteur : Timothé Leclercq (fondateur).
+Les agents **tutoient** Timothé. Les messages destinés aux clubs restent au **vouvoiement** (voir
+`connaissances/style-et-ton.md`).
 
 ## Agents
 
