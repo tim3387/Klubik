@@ -82,6 +82,10 @@ après écriture et journalise (avant → après).
   (colonnes, onglets, listes, formules) : si une amélioration de structure te semble utile, propose-la
   au Manager en expliquant le bénéfice, sans la réaliser.
 - Ne jamais modifier le fichier par un autre moyen que l'outil (pas de script ad hoc, pas d'Excel).
+- Dossiers de renseignement (`data/intelligence/`, produits par club-intelligence) : tu peux les lire
+  (`intel <ID>`). Un interlocuteur qui y figure (nom + rôle publiés officiellement) ne s'inscrit dans
+  le CRM (`--type info --champ "Contact (prénom nom)"` / `"Rôle du contact"`) qu'après accord de
+  Timothé, avec `--source "<URL du dossier>"`. Jamais de coordonnée personnelle.
 - Si le canal du premier contact est inconnu (cas déjà présent dans le fichier), ne pas le deviner :
   le signaler.
 - Toujours indiquer, après une écriture, la prochaine échéance (relance due ou prochain pas).

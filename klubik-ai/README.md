@@ -6,6 +6,8 @@ Trois agents Claude Code qui travaillent sur **votre** fichier de prospection :
   vous présente des messages prêts à valider.
 - **CRM Manager** : retrouve les clubs, vérifie, enregistre les contacts/relances/réponses. Seul à écrire.
 - **Copywriter** : rédige les brouillons (DM, emails, SMS, relances, réponses aux objections).
+- **Club Intelligence** : cherche sur le web ce qui rend un club unique (résultats, projets,
+  dirigeants publics, actualités) et propose 3 accroches sourcées. Dossiers dans `data/intelligence/`.
 
 Rien n'est jamais envoyé automatiquement. Rien n'est écrit dans le fichier sans votre autorisation.
 
@@ -57,6 +59,8 @@ Parlez normalement, par exemple :
 - « Voici la réponse du président de X : "…". Propose une réponse. »
 - « J'ai envoyé un DM Instagram à ALC Longvic aujourd'hui. »
 - « Ajoute au CRM : le contact chez Rueil est Paul Martin, responsable comm (il me l'a dit par DM). »
+- « Trouve ce qui pourrait me permettre d'approcher intelligemment Annecy CSAV. »
+- « Analyse les 10 clubs prioritaires et trouve les meilleures accroches pour chacun. »
 - « Quels prospects sont les plus intéressants actuellement ? »
 - « Qu'est-ce qu'on pourrait améliorer dans notre prospection ? »
 - « Manager, regarde notre fichier de prospection, indique-moi les clubs à relancer, prépare les
@@ -91,9 +95,9 @@ Revenir en arrière : fermer Excel, remplacer le fichier par la sauvegarde voulu
 klubik-ai/
 ├── CLAUDE.md                     règles communes à tous les agents
 ├── .claude/settings.json         agent principal + permissions
-├── .claude/agents/               manager.md · crm-manager.md · copywriter.md
+├── .claude/agents/               manager.md · crm-manager.md · copywriter.md · club-intelligence.md
 ├── connaissances/                offre, style et ton, règles de prospection (sourcées)
 ├── crm/klubik_crm.py             accès au fichier (lecture, recherche, mises à jour sûres)
-├── crm/tests/test_crm.py         14 tests, toujours sur copie temporaire
-└── data/                         VOTRE fichier + sauvegardes + journal (hors git)
+├── crm/tests/test_crm.py         20 tests, toujours sur copie temporaire
+└── data/                         VOTRE fichier + sauvegardes + journal + intelligence/ (hors git)
 ```

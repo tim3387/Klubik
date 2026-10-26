@@ -622,6 +622,7 @@ def cmd_fiche(crm: CRM, a):
         print(f"- Relance due le : {fr(due)}{' (EN RETARD)' if due <= crm.aujourd_hui else ''}")
     if crm.alerte(c):
         print(f"- Alerte : {crm.alerte(c)}")
+    print(f"- Renseignement : {statut_intel(int(c['ID']), crm.aujourd_hui)} (détail : commande `intel {c['ID']}`)")
     j = lire_journal(crm, int(c["ID"]))
     if j:
         print("Journal des modifications (outil) :")
@@ -713,6 +714,7 @@ def cmd_prioritaires(crm: CRM, a):
     print(f"À CONTACTER — {len(cands)} clubs correspondent ; top {min(a.n, len(cands))} par score :")
     for c in cands[:a.n]:
         extra = (f" · {crm.contact_a_utiliser(c) or 'NON JOIGNABLE'} · prêt : {'Oui' if crm.pret_a_envoyer(c) else 'Non'}"
+                 f" · {statut_intel(int(c['ID']), crm.aujourd_hui)}"
                  f"{' · ⚠ ' + crm.alerte(c) if crm.alerte(c) else ''}")
         print("- " + ligne_club(crm, c, extra))
         if a.details:
@@ -768,6 +770,209 @@ def cmd_qualite(crm: CRM, a):
     print(f"- message avec [Prénom] à compléter : {sum(1 for c in a_contacter if '[Prénom]' in str(c.get('Message prêt à copier') or ''))}")
     print(f"- sans interlocuteur nommé : {sum(1 for c in a_contacter if not c.get('Contact (prénom nom)'))}")
     print(f"- canal recommandé « À vérifier » : {sum(1 for c in a_contacter if c.get('Canal recommandé') == 'À vérifier')}")
+
+
+# ─────────────────────────── renseignement (Club Intelligence) ──────────────
+
+# Dossiers produits par l'agent club-intelligence, liés à l'ID du club, hors du xlsx
+# (aucun changement de structure du CRM) : data/intelligence/<ID>_<AAAA-MM-JJ>.json
+DOSSIER_INTEL = Path(os.environ.get("KLUBIK_INTEL_DOSSIER", RACINE / "data" / "intelligence"))
+CATEGORIES_INTEL = {"identite", "dirigeants", "sportif", "actualite", "communication"}
+FIABILITES = {"haute", "moyenne", "faible"}
+STATUTS_FAIT = {"verifie", "interpretation"}
+FRAICHEUR = ((30, "FRAIS"), (90, "À REVÉRIFIER"))  # au-delà : PÉRIMÉ
+ACTUALITE_ANCIENNE_JOURS = 180
+
+
+def _date_iso(v):
+    if v in (None, ""):
+        return None
+    try:
+        return dt.date.fromisoformat(str(v))
+    except ValueError:
+        return False
+
+
+def valider_dossier(d: dict, aujourd_hui: dt.date) -> tuple[list[str], list[str]]:
+    """Retourne (erreurs bloquantes, avertissements)."""
+    err, avert = [], []
+    for cle in ("club_id", "club", "verifie_le", "sources_consultees", "faits", "top3", "ne_pas_utiliser", "limites"):
+        if cle not in d:
+            err.append(f"champ obligatoire absent : {cle}")
+    if err:
+        return err, avert
+    v = _date_iso(d["verifie_le"])
+    if not v:
+        err.append("verifie_le doit être une date AAAA-MM-JJ")
+    elif v > aujourd_hui:
+        err.append("verifie_le est dans le futur")
+    ids = {}
+    for f in d["faits"]:
+        fid = f.get("id", "?")
+        ids[fid] = f
+        for cle in ("fait", "categorie", "source_url", "fiabilite", "statut"):
+            if not f.get(cle):
+                err.append(f"fait {fid} : champ {cle} manquant")
+        if f.get("source_url") and not str(f["source_url"]).startswith(("http://", "https://")):
+            err.append(f"fait {fid} : source_url n'est pas une URL")
+        if f.get("categorie") and f["categorie"] not in CATEGORIES_INTEL:
+            err.append(f"fait {fid} : catégorie hors liste ({', '.join(sorted(CATEGORIES_INTEL))})")
+        if f.get("fiabilite") and f["fiabilite"] not in FIABILITES:
+            err.append(f"fait {fid} : fiabilité hors liste (haute/moyenne/faible)")
+        if f.get("statut") and f["statut"] not in STATUTS_FAIT:
+            err.append(f"fait {fid} : statut hors liste (verifie/interpretation)")
+        df = _date_iso(f.get("date_fait"))
+        if df is False:
+            err.append(f"fait {fid} : date_fait doit être AAAA-MM-JJ ou null")
+        elif df and df > aujourd_hui:
+            err.append(f"fait {fid} : date_fait dans le futur")
+        elif f.get("categorie") == "actualite":
+            if not df:
+                avert.append(f"fait {fid} : actualité sans date — ne pas la présenter comme récente")
+            elif (aujourd_hui - df).days > ACTUALITE_ANCIENNE_JOURS:
+                avert.append(f"fait {fid} : actualité de plus de {ACTUALITE_ANCIENNE_JOURS} jours ({df}) — ancienne")
+    if len(d["top3"]) > 3:
+        err.append("top3 contient plus de 3 éléments")
+    for t in d["top3"]:
+        f = ids.get(t.get("fait_id"))
+        if not f:
+            err.append(f"top3 : fait_id {t.get('fait_id')} inexistant")
+            continue
+        if f.get("statut") != "verifie":
+            avert.append(f"top3 : {t['fait_id']} est une interprétation, pas un fait vérifié")
+        if f.get("fiabilite") == "faible":
+            avert.append(f"top3 : {t['fait_id']} a une fiabilité faible")
+        for cle in ("interet", "angle", "accroche"):
+            if not t.get(cle):
+                err.append(f"top3 {t['fait_id']} : champ {cle} manquant")
+    if not d["top3"] and not d.get("aucune_info_pertinente"):
+        err.append("top3 vide : renseigner aucune_info_pertinente = true si rien de fiable n'a été trouvé")
+    for p in d.get("interlocuteurs", []):
+        if not p.get("source_url"):
+            err.append(f"interlocuteur {p.get('nom', '?')} : source_url obligatoire")
+    return err, avert
+
+
+def dossiers_intel(id_club: int | None = None) -> dict[int, list[Path]]:
+    out: dict[int, list[Path]] = {}
+    if not DOSSIER_INTEL.exists():
+        return out
+    for p in DOSSIER_INTEL.glob("*_*.json"):
+        m = re.fullmatch(r"(\d+)_(\d{4}-\d{2}-\d{2})", p.stem)
+        if m and (id_club is None or int(m.group(1)) == id_club):
+            out.setdefault(int(m.group(1)), []).append(p)
+    for k in out:
+        out[k].sort()
+    return out
+
+
+def fraicheur(verifie_le: dt.date, aujourd_hui: dt.date) -> str:
+    age = (aujourd_hui - verifie_le).days
+    for seuil, libelle in FRAICHEUR:
+        if age <= seuil:
+            return f"{libelle} ({age} j)"
+    return f"PÉRIMÉ ({age} j)"
+
+
+def charger_intel(id_club: int, aujourd_hui: dt.date):
+    """Dernier dossier du club : (chemin, dossier, fraîcheur) ou None."""
+    lst = dossiers_intel(id_club).get(id_club)
+    if not lst:
+        return None
+    p = lst[-1]
+    try:
+        d = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        raise ErreurCRM(f"Dossier {p.name} illisible (JSON invalide) : {e}")
+    v = _date_iso(d.get("verifie_le")) or None
+    return p, d, (fraicheur(v, aujourd_hui) if v else "date de vérification invalide")
+
+
+def statut_intel(id_club: int, aujourd_hui: dt.date) -> str:
+    try:
+        r = charger_intel(id_club, aujourd_hui)
+    except ErreurCRM:
+        return "dossier illisible"
+    return f"intel {r[2]}" if r else "pas d'intel"
+
+
+def cmd_intel(crm: CRM, a):
+    c = crm.club(a.id)
+    r = charger_intel(int(c["ID"]), crm.aujourd_hui)
+    print(f"RENSEIGNEMENT — [ID {c['ID']}] {c['Club']}")
+    if not r:
+        print("Aucun dossier. À demander à l'agent club-intelligence.")
+        return
+    p, d, fr_ = r
+    print(f"Dossier : {DOSSIER_INTEL.name}/{p.name} · vérifié le {d.get('verifie_le')} · fraîcheur : {fr_}")
+    if int(d.get("club_id", -1)) != int(c["ID"]):
+        print(f"⚠ Le dossier indique club_id {d.get('club_id')} : incohérence, ne pas l'utiliser.")
+    err, avert = valider_dossier(d, crm.aujourd_hui)
+    for e in err:
+        print(f"✗ {e}")
+    for w in avert:
+        print(f"⚠ {w}")
+    if d.get("aucune_info_pertinente"):
+        print("Aucune information fiable et pertinente trouvée (selon le dossier).")
+    faits = {f["id"]: f for f in d["faits"] if "id" in f}
+    for i, t in enumerate(d.get("top3", []), 1):
+        f = faits.get(t.get("fait_id"), {})
+        print(f"\n{i}. {f.get('fait')}")
+        print(f"   Source : {f.get('source_nom') or ''} {f.get('source_url')} · date : {f.get('date_fait') or 'non datée'}"
+              f" · fiabilité : {f.get('fiabilite')} · {f.get('statut')}")
+        print(f"   Intérêt : {t.get('interet')}")
+        print(f"   Angle Klubik : {t.get('angle')}")
+        print(f"   Accroche : {t.get('accroche')}")
+    for cle, titre in (("accroche_recommandee", "Accroche recommandée"), ("objectif_personnalisation", "Objectif")):
+        if d.get(cle):
+            print(f"\n{titre} : {d[cle]}")
+    if d.get("arguments"):
+        print("Arguments : " + " · ".join(d["arguments"]))
+    if d.get("interlocuteurs"):
+        print("Interlocuteurs publics : " + " · ".join(
+            f"{x.get('nom')} ({x.get('role')}, source {x.get('source_url')})" for x in d["interlocuteurs"]))
+    if d.get("ne_pas_utiliser"):
+        print("Ne pas utiliser : " + " · ".join(f"{x.get('element')} ({x.get('raison')})" for x in d["ne_pas_utiliser"]))
+    print(f"Limites : {d.get('limites')}")
+    print(f"Fichier complet (lisible par le Copywriter) : {p}")
+
+
+def cmd_intel_liste(crm: CRM, a):
+    tous = dossiers_intel()
+    if not tous:
+        print("Aucun dossier de renseignement.")
+        return
+    for cid, lst in sorted(tous.items()):
+        nom = crm.par_id.get(cid, [{"Club": "ID INCONNU DANS LE CRM"}])[0]["Club"]
+        print(f"[ID {cid}] {nom} · {len(lst)} version(s) · {statut_intel(cid, crm.aujourd_hui)}")
+
+
+def cmd_intel_verifier(crm: CRM, a):
+    cible = Path(a.cible)
+    if not cible.exists() and a.cible.isdigit():
+        r = charger_intel(int(a.cible), crm.aujourd_hui)
+        if not r:
+            raise ErreurCRM(f"Aucun dossier pour l'ID {a.cible}.")
+        cible = r[0]
+    try:
+        d = json.loads(cible.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        raise ErreurCRM(f"Dossier illisible : {e}")
+    err, avert = valider_dossier(d, crm.aujourd_hui)
+    if not err:
+        c = crm.club(int(d["club_id"]))
+        if normaliser(d["club"]) not in normaliser(c["Club"]) and normaliser(c["Club"]) not in normaliser(d["club"]):
+            err.append(f"club « {d['club']} » ≠ CRM « {c['Club']} » pour l'ID {d['club_id']}")
+        m = re.fullmatch(r"(\d+)_(\d{4}-\d{2}-\d{2})", cible.stem)
+        if not m or int(m.group(1)) != int(d["club_id"]) or m.group(2) != d["verifie_le"]:
+            err.append(f"nom de fichier attendu : {d['club_id']}_{d['verifie_le']}.json")
+    for e in err:
+        print(f"✗ {e}")
+    for w in avert:
+        print(f"⚠ {w}")
+    if err:
+        raise ErreurCRM(f"dossier {cible.name} NON VALIDE ({len(err)} erreur(s)).")
+    print(f"DOSSIER VALIDE : {cible.name} ({len(d['faits'])} faits, {len(d['top3'])} accroches, {len(avert)} avertissement(s)).")
 
 
 def lire_journal(crm: CRM, id_club: int | None = None) -> list[dict]:
@@ -1004,6 +1209,9 @@ def construire_parser() -> argparse.ArgumentParser:
     s.add_argument("--prets", action="store_true", help="seulement les messages prêts à envoyer")
     s.add_argument("--details", action="store_true")
     sp.add_parser("qualite", help="doublons, incohérences, informations manquantes")
+    s = sp.add_parser("intel", help="dernier dossier de renseignement d'un club"); s.add_argument("id", type=int)
+    sp.add_parser("intel-liste", help="clubs ayant un dossier de renseignement, avec fraîcheur")
+    s = sp.add_parser("intel-verifier", help="valider un dossier (chemin du JSON ou ID du club)"); s.add_argument("cible")
     s = sp.add_parser("journal", help="modifications effectuées par l'outil")
     s.add_argument("--club", type=int); s.add_argument("--n", type=int, default=30)
     s = sp.add_parser("enregistrer", help="préparer (simulation) ou appliquer une mise à jour")
@@ -1023,6 +1231,7 @@ COMMANDES = {
     "verifier": cmd_verifier, "structure": cmd_structure, "chercher": cmd_chercher, "fiche": cmd_fiche,
     "point": cmd_point, "relances": cmd_relances, "prioritaires": cmd_prioritaires, "qualite": cmd_qualite,
     "journal": cmd_journal, "enregistrer": cmd_enregistrer,
+    "intel": cmd_intel, "intel-liste": cmd_intel_liste, "intel-verifier": cmd_intel_verifier,
 }
 
 

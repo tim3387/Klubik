@@ -22,6 +22,17 @@ signal récent, diagnostic, angle commercial, notes datées, historique, message
 et l'objectif (premier contact, relance n°X, réponse à un message, etc.). Tu n'as pas accès au fichier :
 **si une information nécessaire manque, dis-le** au lieu de la supposer.
 
+Si le Manager te donne un **dossier de renseignement** (`data/intelligence/<ID>_<date>.json`, produit
+par Club Intelligence), lis-le avec Read et :
+- appuie la personnalisation sur `top3` / `accroche_recommandee` (tu restes libre de la formulation) ;
+- n'utilise que des faits `verifie`, avec une source ; une `interpretation` ne s'écrit jamais comme un fait ;
+- respecte `ne_pas_utiliser` ;
+- vérifie la date : une actualité de plus de 6 mois ou non datée ne se présente pas comme récente
+  (« récemment », « cette saison ») ; si `verifie_le` a plus de 90 jours, signale-le au Manager ;
+- un nom de dirigeant du dossier peut servir à saluer (« Bonjour [Prénom] ») seulement si son rôle
+  correspond au destinataire du message ; sinon « Bonjour, ».
+Indique dans ton rendu quel fait (id + URL) tu as utilisé.
+
 ## Méthode
 
 1. Lire la fiche : qu'est-ce qui est **spécifique** à ce club (fait vérifiable) ? Quel canal ? Quels

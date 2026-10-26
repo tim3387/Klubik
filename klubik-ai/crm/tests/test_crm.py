@@ -246,5 +246,81 @@ class TestCRM(unittest.TestCase):
         self.assertIn("--source obligatoire", out)
 
 
+def dossier_type(club_id=51, club="ALC LONGVIC", verifie_le="2026-10-26"):
+    return {
+        "club_id": club_id, "club": club, "verifie_le": verifie_le, "auteur": "club-intelligence",
+        "sources_consultees": [{"url": "https://exemple.fr", "type": "presse", "consulte_le": verifie_le, "accessible": True}],
+        "faits": [
+            {"id": "F1", "categorie": "sportif", "fait": "Montée en N1F", "source_nom": "Presse",
+             "source_url": "https://exemple.fr/a", "date_fait": "2026-06-01", "fiabilite": "haute", "statut": "verifie"},
+            {"id": "F2", "categorie": "actualite", "fait": "Tournoi de Noël", "source_url": "https://exemple.fr/b",
+             "date_fait": "2025-12-20", "fiabilite": "moyenne", "statut": "verifie"},
+        ],
+        "interlocuteurs": [],
+        "top3": [{"fait_id": "F1", "interet": "i", "angle": "a", "accroche": "x"}],
+        "accroche_recommandee": "x", "objectif_personnalisation": "o", "arguments": [],
+        "ne_pas_utiliser": [], "aucune_info_pertinente": False, "limites": "Instagram non lisible",
+    }
+
+
+class TestIntel(unittest.TestCase):
+    """Validation des dossiers Club Intelligence (sans réseau, sans fichier CRM)."""
+    J = dt.date(2026, 10, 26)
+
+    def test_dossier_valide_avec_avertissement_actualite_ancienne(self):
+        err, avert = k.valider_dossier(dossier_type(), self.J)
+        self.assertEqual(err, [])
+        self.assertTrue(any("F2" in w and "ancienne" in w for w in avert))
+
+    def test_fait_sans_url_ou_top3_inexistant_refuse(self):
+        d = dossier_type()
+        d["faits"][0]["source_url"] = "presse locale"
+        d["top3"].append({"fait_id": "F9", "interet": "i", "angle": "a", "accroche": "x"})
+        err, _ = k.valider_dossier(d, self.J)
+        self.assertTrue(any("URL" in e for e in err))
+        self.assertTrue(any("F9" in e for e in err))
+
+    def test_dates_futures_et_top3_vide_refuses(self):
+        d = dossier_type(verifie_le="2027-01-01")
+        d["top3"] = []
+        err, _ = k.valider_dossier(d, self.J)
+        self.assertTrue(any("futur" in e for e in err))
+        self.assertTrue(any("aucune_info_pertinente" in e for e in err))
+        d = dossier_type(); d["top3"] = []; d["aucune_info_pertinente"] = True
+        self.assertEqual(k.valider_dossier(d, self.J)[0], [])
+
+    def test_interpretation_en_top3_signalee(self):
+        d = dossier_type(); d["faits"][0]["statut"] = "interpretation"
+        self.assertTrue(any("interprétation" in w for w in k.valider_dossier(d, self.J)[1]))
+
+    def test_fraicheur(self):
+        self.assertTrue(k.fraicheur(dt.date(2026, 10, 1), self.J).startswith("FRAIS"))
+        self.assertTrue(k.fraicheur(dt.date(2026, 8, 1), self.J).startswith("À REVÉRIFIER"))
+        self.assertTrue(k.fraicheur(dt.date(2026, 1, 1), self.J).startswith("PÉRIMÉ"))
+
+    @unittest.skipUnless(SOURCE.exists(), "fichier source absent")
+    def test_cli_intel_dernier_dossier_et_verifier(self):
+        d = Path(tempfile.mkdtemp(prefix="klubik-intel-"))
+        ancien, k.DOSSIER_INTEL = k.DOSSIER_INTEL, d
+        try:
+            (d / "51_2026-08-01.json").write_text(json.dumps(dossier_type(verifie_le="2026-08-01")), encoding="utf-8")
+            (d / "51_2026-10-20.json").write_text(json.dumps(dossier_type(verifie_le="2026-10-20")), encoding="utf-8")
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                code = k.main(["--fichier", str(SOURCE), "--aujourdhui", JOUR, "intel", "51"])
+            self.assertEqual(code, 0, out.getvalue())
+            self.assertIn("51_2026-10-20.json", out.getvalue())
+            self.assertIn("FRAIS (6 j)", out.getvalue())
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(k.main(["--fichier", str(SOURCE), "--aujourdhui", JOUR, "intel-verifier", "51"]), 0)
+            mauvais = dossier_type(club_id=51, club="AUTRE CLUB", verifie_le="2026-10-21")
+            (d / "51_2026-10-21.json").write_text(json.dumps(mauvais), encoding="utf-8")
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(k.main(["--fichier", str(SOURCE), "--aujourdhui", JOUR, "intel-verifier", "51"]), 2)
+        finally:
+            k.DOSSIER_INTEL = ancien
+            shutil.rmtree(d, ignore_errors=True)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -8,7 +8,11 @@
       "Bash(py crm/klubik_crm.py *)",
       "Bash(python3 -m unittest discover -s crm/tests *)",
       "Read(./connaissances/**)",
-      "Read(./crm/**)"
+      "Read(./crm/**)",
+      "Read(./data/intelligence/**)",
+      "Edit(./data/intelligence/**)",
+      "WebSearch",
+      "WebFetch"
     ],
     "ask": [
       "Bash(* --appliquer*)",
@@ -16,7 +20,9 @@
       "Bash(* --forcer*)"
     ],
     "deny": [
-      "Edit(./data/**)",
+      "Edit(./data/*.xlsx)",
+      "Edit(./data/sauvegardes/**)",
+      "Edit(./data/journal-crm.jsonl)",
       "Bash(rm *)",
       "Bash(del *)",
       "Bash(git push *)"
