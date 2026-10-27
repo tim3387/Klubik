@@ -1,0 +1,36 @@
+# Klubik AI HQ — hébergement Render (Blueprint). Le site vitrine reste sur Netlify, rien à voir avec ce fichier.
+# Coût : offre Starter (7 $/mois, toujours allumée : les missions continuent quand ton iPhone est verrouillé).
+# Les secrets ne sont JAMAIS écrits ici : Render les demande à la création (sync: false) ou les génère lui-même.
+services:
+  - type: web
+    name: klubik-ai-hq
+    runtime: node
+    plan: starter
+    region: frankfurt # données hébergées en UE ; non modifiable après création
+    rootDir: klubik-ai-hq
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=256 # garde le serveur sous les 512 Mo de l'offre Starter
+      - key: DATABASE_URL # chaîne « Session pooler » de Supabase
+        sync: false
+      - key: ANTHROPIC_API_KEY # clé de la console Anthropic (peut être ajoutée plus tard)
+        sync: false
+      - key: OWNER_EMAIL # ton email de connexion
+        sync: false
+      - key: SESSION_SECRET # signature des sessions, générée par Render
+        generateValue: true
+      - key: SETUP_TOKEN # code à usage unique pour choisir ton mot de passe sur /setup
+        generateValue: true
+      - key: MONTHLY_BUDGET_USD
+        value: "30"
+      - key: MISSION_BUDGET_USD
+        value: "3"
+      - key: AGENT_MODEL
+        value: claude-opus-5-5
+      - key: WORKER_CONCURRENCY
+        value: "3"

@@ -15,6 +15,18 @@
   force = true
 
 [[redirects]]
+  from = "/klubik-ai-hq/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/render.yaml"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/404.html"
   status = 404

@@ -12,6 +12,7 @@ Klubik is a one-page marketing website for a French sports agency targeting amat
 - `script.js` — all JS in one file
 - `mentions-legales.html`, `cgv.html`, `cgu.html` — standalone legal pages (share navbar/footer markup)
 - `klubik-ai/` — internal multi-agent prospecting system (Manager, CRM Manager, Copywriter), not part of the website; start Claude Code from that folder to use it (see `klubik-ai/README.md`). Blocked from the public site in `netlify.toml`.
+- `klubik-ai-hq/` — Klubik AI HQ, the cloud web app (Next.js 15 + Postgres, deployed on Render via the root `render.yaml`) that runs the same four agents without Claude Code. Separate from the website, has its own `package.json`, blocked from Netlify in `netlify.toml`. See `klubik-ai-hq/README.md`.
 - `assets/images/` — logo, hero video (`hero kubo.mp4`), and a set of Kubo character PNGs (not yet wired into the HTML — available for future use)
 
 ## CSS architecture
