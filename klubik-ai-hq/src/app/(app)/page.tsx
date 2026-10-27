@@ -1,17 +1,28 @@
 import Link from "next/link";
 import Avatar from "@/components/Avatar";
-import { quand, STATUT_TACHE } from "@/components/format";
-import { AGENT_IDS, PROFILES } from "@/lib/agents/definitions";
+import KungLauncher from "@/components/KungLauncher";
+import { quand } from "@/components/format";
+import { activite } from "@/lib/agents/activity";
+import { AGENT_IDS, PROFILES, profil, type AgentId } from "@/lib/agents/profiles";
 import { fr, toDate, todayUtc } from "@/lib/crm/rules";
 import { getSql } from "@/lib/db";
-import { crmSummary, missions, monthCost, pendingActions, recentConversations } from "@/lib/queries";
+import { activeTasks, crmSummary, missions, monthCost, pendingActions, recentConversations } from "@/lib/queries";
 import { getSettings } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
 export default async function Accueil() {
-  const [crm, actions, mis, convs, cout, settings] = await Promise.all([crmSummary(), pendingActions(5), missions(20), recentConversations(5), monthCost(), getSettings(getSql())]);
+  const [crm, actions, mis, convs, cout, settings, actives] = await Promise.all([
+    crmSummary(), pendingActions(5), missions(20), recentConversations(5), monthCost(), getSettings(getSql()), activeTasks(),
+  ]);
   const enCours = mis.filter((m) => m.open > 0);
+  // Activité réelle par mission : la tâche la plus récente qui n'attend pas ses collègues, sinon celle qui coordonne.
+  const activiteDe = (root: string) => {
+    const t = actives.filter((x) => x.root_id === root);
+    const cible = [...t].reverse().find((x) => x.status !== "waiting") ?? t[0];
+    return cible ? { texte: activite(cible), agent: cible.agent_id } : null;
+  };
+  const equipe: AgentId[] = ["jojo", "popi", "bililou"];
   const heure = Number(new Intl.DateTimeFormat("fr-FR", { hour: "numeric", hour12: false, timeZone: "Europe/Paris" }).format(new Date()));
   const salut = heure < 18 ? "Bonjour" : "Bonsoir";
   return (
@@ -28,8 +39,30 @@ export default async function Accueil() {
       {cout < settings.monthlyBudget && cout >= 0.8 * settings.monthlyBudget && <div className="banner warn">{Math.round((cout / settings.monthlyBudget) * 100)} % du plafond mensuel utilisé ({cout.toFixed(2)} $ / {settings.monthlyBudget} $).</div>}
       {!crm && <div className="banner info">Le CRM n'est pas encore importé. <Link href="/reglages">Importer le fichier de prospection</Link></div>}
 
+      <KungLauncher />
+
+      <section className="section">
+        <div className="section-head"><h2>Ton équipe</h2></div>
+        <div className="team">
+          {equipe.map((id) => {
+            const a = PROFILES[id];
+            return (
+              <Link key={id} href={`/agents/${id}`} className="team-card" aria-label={`Ouvrir la conversation avec ${a.nom}, ${a.role}`}>
+                <div className="team-stage"><Avatar agent={a} forme="entier" size={96} decorative /></div>
+                <div className="team-id">
+                  <div className="name">{a.nom}</div>
+                  <div className="role">{a.role}</div>
+                  <div className="desc">{a.description}</div>
+                </div>
+                <svg className="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M9 6l6 6-6 6" /></svg>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
       {crm && (
-        <section className="section" style={{ marginTop: 8 }}>
+        <section className="section">
           <div className="kpis">
             <div className="kpi"><b>{crm.stats.relancesEnRetard}</b><span>relance{crm.stats.relancesEnRetard > 1 ? "s" : ""} en retard</span></div>
             <div className="kpi"><b>{crm.relances.avenir.length}</b><span>relances sous 7 jours</span></div>
@@ -46,35 +79,13 @@ export default async function Accueil() {
       )}
 
       <section className="section">
-        <div className="section-head"><h2>Ton équipe</h2></div>
-        <div className="agents">
-          {AGENT_IDS.map((id) => {
-            const a = PROFILES[id];
-            return (
-              <Link key={id} href={`/agents/${id}`} className="agent-card">
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <Avatar agent={a} size={44} />
-                  <div>
-                    <div className="name">{a.nom}</div>
-                    <div className="animal">{a.animal}</div>
-                  </div>
-                </div>
-                <div className="role" style={{ color: a.couleur }}>{a.role}</div>
-                <div className="desc">{a.description}</div>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      <section className="section">
         <div className="section-head"><h2>Actions à valider</h2><Link href="/actions">Tout voir</Link></div>
         {actions.length === 0 ? <div className="empty">Rien à valider pour l'instant.</div> : (
           <div className="list">
             {actions.map((a) => (
               <Link key={a.id} href="/actions" className="row">
-                <span className={`chip ${a.kind === "crm_update" ? "orange" : "blue"}`}>{a.kind === "crm_update" ? "CRM" : "Brouillon"}</span>
-                <div className="grow"><div className="title">{a.title}</div><div className="meta">par {PROFILES[a.agent_id as keyof typeof PROFILES]?.nom ?? a.agent_id} · {quand(a.created_at)}</div></div>
+                {profil(a.agent_id) && <Avatar agent={profil(a.agent_id)!} size={36} decorative />}
+                <div className="grow"><div className="title">{a.title}</div><div className="meta">{a.kind === "crm_update" ? "Mise à jour CRM" : "Brouillon"} · par {profil(a.agent_id)?.nom ?? a.agent_id} · {quand(a.created_at)}</div></div>
               </Link>
             ))}
           </div>
@@ -85,26 +96,34 @@ export default async function Accueil() {
         <div className="section-head"><h2>Missions en cours</h2><Link href="/missions">Historique</Link></div>
         {enCours.length === 0 ? <div className="empty">Aucune mission en cours.</div> : (
           <div className="list">
-            {enCours.map((m) => (
-              <Link key={m.id} href={`/missions/${m.id}`} className="row">
-                <span className="chip blue"><span className="dot pulse" />{STATUT_TACHE[m.status]?.label ?? m.status}</span>
-                <div className="grow"><div className="title">{m.title}</div><div className="meta">{m.agents.map((x) => PROFILES[x as keyof typeof PROFILES]?.nom ?? x).join(", ")} · {quand(m.created_at)}</div></div>
-              </Link>
-            ))}
+            {enCours.map((m) => {
+              const act = activiteDe(m.id);
+              return (
+                <Link key={m.id} href={`/missions/${m.id}`} className="row">
+                  <span className="avatar-stack">
+                    {[...m.agents].sort((a, b) => AGENT_IDS.indexOf(a as AgentId) - AGENT_IDS.indexOf(b as AgentId)).map((x) => profil(x)).filter((p) => !!p).map((p) => <Avatar key={p!.id} agent={p!} size={32} decorative />)}
+                  </span>
+                  <div className="grow">
+                    <div className="title">{m.title}</div>
+                    <div className="meta live">{act ? <><span className="dot pulse" />{act.texte}</> : quand(m.created_at)}</div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
       </section>
 
       <section className="section">
         <div className="section-head"><h2>Dernières conversations</h2></div>
-        {convs.length === 0 ? <div className="empty">Écris à Kung pour commencer.</div> : (
+        {convs.length === 0 ? <div className="empty">Confie ta première mission à Kung ci-dessus.</div> : (
           <div className="list">
             {convs.map((c) => {
-              const a = PROFILES[c.agent_id as keyof typeof PROFILES];
+              const a = profil(c.agent_id);
               return (
                 <Link key={c.id} href={`/agents/${c.agent_id}?c=${c.id}`} className="row">
-                  {a && <Avatar agent={a} size={36} />}
-                  <div className="grow"><div className="title">{c.title ?? "Conversation"}</div><div className="meta">{a?.nom} · {quand(c.updated_at)} · {c.last?.slice(0, 80)}</div></div>
+                  {a && <Avatar agent={a} size={40} decorative />}
+                  <div className="grow"><div className="title">{c.title ?? "Conversation"}</div><div className="meta">{a?.nom} · {quand(c.updated_at)} · {c.last?.replace(/[*_`#>]/g, "").slice(0, 80)}</div></div>
                 </Link>
               );
             })}

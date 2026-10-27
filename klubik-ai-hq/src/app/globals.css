@@ -66,17 +66,71 @@ h1, h2, h3 { color: var(--ink); line-height: 1.2; margin: 0; }
 .kpi span { color: var(--muted); font-size: 13px; }
 @media (min-width: 640px) { .kpis { grid-template-columns: repeat(4, 1fr); } }
 
-/* Agents */
-.agents { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.agent-card { display: flex; flex-direction: column; gap: 10px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow); color: inherit; transition: transform 0.15s ease, box-shadow 0.15s ease; }
-.agent-card:active { transform: scale(0.98); }
-@media (hover: hover) { .agent-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(11, 81, 253, 0.12); } }
-.agent-card .name { font-weight: 800; color: var(--ink); font-size: 17px; }
-.agent-card .role { font-size: 13px; font-weight: 600; }
-.agent-card .desc { font-size: 13px; color: var(--muted); line-height: 1.4; }
+/* Agents — carte de Kung (manager, mise en avant) */
+.kung-card { background: var(--white); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow); padding: 16px; margin-top: 4px; }
+.kung-head { display: flex; align-items: center; gap: 14px; color: inherit; }
+.kung-stage { flex: none; width: 132px; height: 132px; border-radius: 20px; background: var(--surface); display: grid; place-items: center; overflow: hidden; }
+.kung-id { min-width: 0; }
+.eyebrow { display: inline-block; font-size: 11px; font-weight: 750; letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); background: var(--blue-soft); border-radius: 999px; padding: 3px 9px; }
+.kung-name { font-size: 26px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; margin-top: 6px; line-height: 1.1; }
+.kung-role { font-size: 14px; font-weight: 650; color: var(--blue); margin-top: 2px; }
+.kung-id p { margin: 6px 0 0; font-size: 13.5px; color: var(--muted); line-height: 1.45; }
+.kung-ask { display: flex; gap: 8px; align-items: flex-end; margin-top: 14px; }
+.kung-ask textarea { flex: 1; resize: none; border: 1px solid var(--border); border-radius: 16px; padding: 11px 14px; font-size: 16px; font-family: inherit; color: var(--ink); background: var(--surface); outline: none; min-height: 48px; }
+.kung-ask textarea:focus { border-color: var(--blue); background: var(--white); box-shadow: 0 0 0 3px rgba(11, 81, 253, 0.12); }
+.kung-chips { display: flex; gap: 8px; overflow-x: auto; margin: 10px -16px 0; padding: 0 16px 2px; scrollbar-width: none; }
+.kung-chips::-webkit-scrollbar { display: none; }
+.chip-btn { flex: none; max-width: 260px; text-align: left; border: 1px solid var(--border); background: var(--white); color: var(--ink); border-radius: 14px; padding: 8px 12px; font-size: 13px; line-height: 1.35; cursor: pointer; }
+.chip-btn:disabled { opacity: 0.5; }
+.eyebrow { white-space: nowrap; }
+@media (max-width: 379px) {
+  .kung-head { gap: 12px; }
+  .kung-stage { width: 100px; height: 100px; }
+  .kung-stage .avatar { width: 100px !important; height: 100px !important; }
+  .kung-name { font-size: 22px; }
+  .team-stage { width: 80px; height: 80px; }
+  .team-stage .avatar { width: 80px !important; height: 80px !important; }
+}
+@media (min-width: 640px) {
+  .kung-stage { width: 168px; height: 168px; }
+  .kung-stage .avatar { width: 168px !important; height: 168px !important; }
+  .kung-head { gap: 20px; }
+}
+
+/* Agents — Jojo, Popi, Bililou */
+.team { display: flex; flex-direction: column; gap: 10px; }
+.team-card { display: flex; align-items: center; gap: 12px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px 10px 10px; color: inherit; box-shadow: var(--shadow); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.team-card:active { transform: scale(0.985); }
+.team-stage { flex: none; width: 96px; height: 96px; border-radius: 16px; background: var(--surface); display: grid; place-items: center; overflow: hidden; }
+.team-id { flex: 1; min-width: 0; }
+.team-id .name { font-weight: 800; color: var(--ink); font-size: 18px; letter-spacing: -0.01em; }
+.team-id .role { font-size: 13px; font-weight: 650; color: var(--blue); }
+.team-id .desc { font-size: 13px; color: var(--muted); line-height: 1.4; margin-top: 3px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.team-card .chev { flex: none; color: var(--muted); }
+@media (hover: hover) { .team-card:hover, .kung-head:hover .kung-stage { box-shadow: 0 12px 28px rgba(11, 81, 253, 0.12); } }
+@media (min-width: 760px) {
+  .team { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .team-card { flex-direction: column; align-items: stretch; text-align: center; padding: 12px 12px 16px; }
+  .team-stage { width: 100%; height: 168px; }
+  .team-stage .avatar { width: 160px !important; height: 160px !important; }
+  .team-card .chev { display: none; }
+  .team-id .desc { -webkit-line-clamp: 4; }
+}
+.animal { font-size: 12px; color: var(--muted); }
+.meta.live { display: flex; align-items: center; gap: 6px; color: var(--blue-dark); }
+.meta.live .dot { flex: none; }
 .avatar { flex: none; display: grid; place-items: center; border-radius: 50%; color: var(--white); font-weight: 800; position: relative; overflow: hidden; }
-.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; -webkit-user-select: none; user-select: none; }
 .avatar .initial { position: relative; z-index: 1; }
+/* Pastille portrait : fond identique à celui des visuels (#F7F8FD ≈ --surface), liseré discret. */
+.avatar.portrait.has-img { background: var(--surface); box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.06); }
+/* Personnage entier : jamais recadré ni déformé. */
+.avatar.entier { border-radius: 22px; }
+.avatar.entier.has-img { border-radius: 0; overflow: visible; background: transparent; }
+.avatar.entier img { object-fit: contain; }
+.avatar-stack { display: inline-flex; }
+.avatar-stack > * + * { margin-left: -8px; }
+.avatar-stack .avatar { box-shadow: 0 0 0 2px var(--white); }
 .animal { font-size: 12px; color: var(--muted); }
 
 /* Listes */
@@ -132,8 +186,20 @@ h1, h2, h3 { color: var(--ink); line-height: 1.2; margin: 0; }
 .bubble { max-width: 88%; padding: 10px 14px; border-radius: 18px; font-size: 15.5px; line-height: 1.5; word-wrap: break-word; overflow-wrap: anywhere; }
 .bubble.user { align-self: flex-end; background: var(--blue); color: var(--white); border-bottom-right-radius: 6px; white-space: pre-wrap; }
 .bubble.agent { align-self: flex-start; background: var(--white); border: 1px solid var(--border); border-bottom-left-radius: 6px; box-shadow: var(--shadow); }
-.event { align-self: center; max-width: 92%; font-size: 12.5px; color: var(--muted); background: #eef1f6; border-radius: 999px; padding: 5px 12px; text-align: center; }
-.working { align-self: flex-start; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); padding: 4px 4px; }
+.event { align-self: center; max-width: 92%; font-size: 12.5px; color: var(--muted); background: #eef1f6; border-radius: 16px; padding: 5px 12px 5px 6px; display: flex; align-items: center; gap: 6px; text-align: left; }
+.event .avatar { flex: none; }
+.working { align-self: stretch; display: flex; flex-direction: column; gap: 6px; padding: 4px 2px; }
+.working-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink); }
+.ring { display: inline-grid; border-radius: 50%; padding: 2px; background: var(--border); flex: none; }
+.ring.on { background: conic-gradient(var(--blue), #8fb0ff, var(--blue)); animation: ring 1.6s linear infinite; }
+.ring > .avatar { box-shadow: 0 0 0 2px var(--surface); }
+@keyframes ring { to { transform: rotate(360deg); } }
+.ring.on > .avatar { animation: ring-back 1.6s linear infinite; }
+@keyframes ring-back { to { transform: rotate(-360deg); } }
+@media (prefers-reduced-motion: reduce) { .ring.on, .ring.on > .avatar { animation: none; } }
+.msg-agent { display: flex; align-items: flex-end; gap: 8px; align-self: flex-start; max-width: 94%; }
+.msg-agent .bubble.agent { max-width: 100%; min-width: 0; }
+.hero-stage { width: 176px; height: 176px; border-radius: 28px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); display: grid; place-items: center; overflow: hidden; }
 .composer-wrap { position: sticky; bottom: calc(var(--tabbar) + var(--safe-bottom)); background: rgba(248, 249, 252, 0.95); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--border); }
 .composer { padding: 10px 12px; display: flex; gap: 6px; align-items: flex-end; }
 .tool-btn { width: 40px; height: 44px; border: none; background: transparent; color: var(--muted); display: grid; place-items: center; cursor: pointer; flex: none; border-radius: 12px; }

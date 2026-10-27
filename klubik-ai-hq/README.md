@@ -39,6 +39,19 @@ Supabase Postgres (Francfort)   API Claude (Anthropic)          Stockage S3 exte
 | **Sécurité** | Appareils de confiance : une attaque ne peut pas bloquer tes appareils. Révocation des appareils, déconnexion générale, changement de mot de passe, protection contre les requêtes venant d'autres sites. |
 | **Diagnostic** | Réglages → mémoire, moteur, base, sauvegardes (aussi en JSON sur `/api/diagnostic`). |
 
+## Les agents et leurs avatars
+
+Kung (manager), Jojo (club intelligence), Popi (CRM) et Bililou (copywriter) ont chacun leur avatar officiel :
+- sur l'accueil (carte de Kung mise en avant, avec un champ pour lui confier une mission) ;
+- dans leur conversation (en-tête, présentation, pastille à côté de chaque réponse) ;
+- dans l'activité en cours, avec des libellés tirés des opérations réelles enregistrées en base (outils appelés, collègues attendus) ;
+- dans les missions et les actions.
+
+- **Configuration unique** : `src/lib/agents/profiles.ts` contient l'identifiant, le prénom, le rôle, la description, le texte alternatif, le dossier de l'image, le cadrage du visage et la version.
+- **Fichiers** : `public/avatars/<id>/original.png` est l'image officielle, jamais modifiée. Les versions web (`entier-320/640.webp`, `portrait-96/256.webp`) sont générées par `npm run avatars`, en redimensionnant uniquement.
+- **Changer un avatar** : remplacer `original.png`, ajuster si besoin le `cadrage`, incrémenter `version`, puis lancer `npm run avatars`. Aucun autre fichier n'est à modifier.
+- **Secours** : si une image ne charge pas, l'initiale de l'agent s'affiche sur sa couleur.
+
 ## Modèles et coûts
 
 | Poste | Type | Prix |

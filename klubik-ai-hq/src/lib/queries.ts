@@ -4,7 +4,16 @@ import { loadClubs, loadSettings, crmCount } from "./crm/repo";
 import { stats, relances, todayUtc } from "./crm/rules";
 
 export interface ChatMessage { id: number; role: "user" | "agent" | "event"; agent_id: string | null; content: string; created_at: string; attachments: string[] | null; meta: Record<string, unknown> }
-export interface TaskInfo { id: string; agent_id: string; status: string; title: string; steps: number; error: string | null }
+export interface TaskInfo { id: string; agent_id: string; status: string; title: string; steps: number; error: string | null; root_id: string; last_tools: string[]; waiting_for: string[] }
+
+// Faits réels d'une tâche en cours : outils appelés à sa dernière étape, collègues attendus (voir agents/activity.ts).
+const ACTIVITE = `t.id, t.agent_id, t.status, t.title, t.steps, t.error, coalesce(t.root_id, t.id) as root_id,
+  (select coalesce(array_agg(b->>'name'), '{}') from jsonb_array_elements(coalesce(
+     (select e->'content' from jsonb_array_elements(t.transcript) with ordinality x(e, i)
+      where e->>'role' = 'assistant' and jsonb_typeof(e->'content') = 'array' order by i desc limit 1), '[]'::jsonb)) b
+   where b->>'type' in ('tool_use', 'server_tool_use')) as last_tools,
+  (select coalesce(array_agg(c.agent_id order by c.created_at), '{}') from tasks c
+   where c.parent_id = t.id and c.status in ('ready', 'running', 'waiting')) as waiting_for`;
 
 export async function crmSummary() {
   const sql = getSql();
@@ -76,7 +85,16 @@ export async function conversationMessages(conversationId: string, after = 0): P
 }
 
 export async function conversationActivity(conversationId: string): Promise<TaskInfo[]> {
-  return getSql()<TaskInfo[]>`
-    select t.id, t.agent_id, t.status, t.title, t.steps, t.error from tasks t
+  const sql = getSql();
+  return sql<TaskInfo[]>`
+    select ${sql.unsafe(ACTIVITE)} from tasks t
     where t.conversation_id = ${conversationId} and t.status in ('ready', 'running', 'waiting') order by t.created_at`;
+}
+
+/** Tâches en cours, toutes missions confondues (accueil). */
+export async function activeTasks(): Promise<TaskInfo[]> {
+  const sql = getSql();
+  return sql<TaskInfo[]>`
+    select ${sql.unsafe(ACTIVITE)} from tasks t
+    where t.status in ('ready', 'running', 'waiting') order by t.created_at limit 50`;
 }

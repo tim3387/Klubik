@@ -1,17 +1,20 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { profil } from "@/lib/agents/profiles";
+import Avatar from "./Avatar";
 
 interface Props {
   id: string;
   kind: "crm_update" | "message_draft";
   title: string;
-  agent: string;
+  agentId: string;
   when: string;
   payload: Record<string, any>;
 }
 
-export default function ActionCard({ id, kind, title, agent, when, payload }: Props) {
+export default function ActionCard({ id, kind, title, agentId, when, payload }: Props) {
+  const agent = profil(agentId);
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
@@ -41,7 +44,9 @@ export default function ActionCard({ id, kind, title, agent, when, payload }: Pr
     <div className="card">
       <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
         <span className={`chip ${kind === "crm_update" ? "orange" : "blue"}`}>{kind === "crm_update" ? "Mise à jour CRM" : "Brouillon de message"}</span>
-        <span className="small muted">par {agent} · {when}</span>
+        <span className="small muted" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+          {agent && <Avatar agent={agent} size={22} decorative />}par {agent?.nom ?? agentId} · {when}
+        </span>
       </div>
       <h3 style={{ fontSize: 16, marginTop: 10 }}>{title}</h3>
 

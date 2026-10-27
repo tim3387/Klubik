@@ -2,15 +2,15 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { AgentProfile } from "@/lib/agents/definitions";
+import { activite } from "@/lib/agents/activity";
+import { profil, type AgentProfile } from "@/lib/agents/profiles";
 import Avatar from "./Avatar";
 import Markdown from "./Markdown";
 import { quand } from "./format";
 
 interface Msg { id: number; role: "user" | "agent" | "event"; agent_id: string | null; content: string; created_at: string; attachments?: string[] | null; meta?: Record<string, unknown> }
 interface Pending { key: string; preview: string; id?: string; error?: string }
-interface Activity { id: string; agent_id: string; status: string; title: string; steps: number; error: string | null }
-const NOMS: Record<string, string> = { kung: "Kung", popi: "Popi", jojo: "Jojo", bililou: "Bililou" };
+interface Activity { id: string; agent_id: string; status: string; title: string; steps: number; error: string | null; last_tools?: string[] | null; waiting_for?: string[] | null }
 const QUICK: { kind: string; label: string }[] = [
   { kind: "point", label: "Point du jour" }, { kind: "relances", label: "Relances" }, { kind: "prioritaires", label: "À contacter" },
   { kind: "qualite", label: "Qualité" }, { kind: "chercher", label: "Chercher un club" },
@@ -176,10 +176,7 @@ export default function Chat(props: {
     }
   }
 
-  // Libellés fidèles à l'état réel : « en file » tant qu'aucune étape n'a démarré (ex. clé API absente).
-  const ETAT: Record<string, string> = { ready: "en file d'attente", running: "travaille", waiting: "attend ses collègues" };
-  const etat = (a: Activity) => (a.status === "ready" && a.steps > 0 ? "travaille" : ETAT[a.status] ?? a.status);
-  const working = activity.map((a) => `${NOMS[a.agent_id] ?? a.agent_id} ${etat(a)}`);
+  // Activité fidèle à l'état réel (lib/agents/activity.ts) : « en file » tant qu'aucune étape n'a démarré.
   const enCours = activity.some((a) => a.status !== "ready" || a.steps > 0);
 
   return (
@@ -188,7 +185,7 @@ export default function Chat(props: {
         <Link href="/" className="icon-btn" aria-label="Retour">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
         </Link>
-        <Avatar agent={profile} size={40} />
+        <Avatar agent={profile} size={42} priority decorative />
         <div className="grow">
           <div className="name">{profile.nom}</div>
           <div className="role">{busy ? (enCours ? "en train de travailler…" : "demande en file d'attente") : `${profile.role} · ${profile.animal}`}</div>
@@ -220,7 +217,7 @@ export default function Chat(props: {
         {!props.apiReady && <div className="banner warn">{profile.nom} ne peut pas encore répondre : la clé API Claude n'est pas configurée sur le serveur. Tes messages seront traités dès qu'elle le sera.</div>}
         {messages.length === 0 && (
           <div className="hero-agent">
-            <Avatar agent={profile} size={84} />
+            <div className="hero-stage"><Avatar agent={profile} forme="entier" size={176} priority /></div>
             <h2>{profile.nom}</h2>
             <div className="muted small">{profile.role} · {profile.animal}</div>
             <p className="muted" style={{ margin: "4px 0 0", fontSize: 14 }}>{profile.description}</p>
@@ -244,15 +241,33 @@ export default function Chat(props: {
             </div>
           )
           : m.role === "agent" ? (
-            <div key={m.id} className="bubble agent">
-              {m.agent_id && m.agent_id !== profile.id && <div className="small muted" style={{ fontWeight: 700 }}>{NOMS[m.agent_id] ?? m.agent_id}</div>}
-              <div className="md"><Markdown text={m.content} /></div>
+            <div key={m.id} className="msg-agent">
+              <Avatar agent={profil(m.agent_id ?? "") ?? profile} size={30} decorative />
+              <div className="bubble agent">
+                {m.agent_id && m.agent_id !== profile.id && <div className="small muted" style={{ fontWeight: 700 }}>{profil(m.agent_id)?.nom ?? m.agent_id}</div>}
+                <div className="md"><Markdown text={m.content} /></div>
+              </div>
             </div>
           )
-          : <div key={m.id} className="event">{m.content}</div>,
+          : (
+            <div key={m.id} className="event">
+              {m.agent_id && profil(m.agent_id) && <Avatar agent={profil(m.agent_id)!} size={18} decorative />}
+              <span>{m.content}</span>
+            </div>
+          ),
         )}
         {busy && (
-          <div className="working"><span className="dot pulse" style={{ color: profile.couleur }} />{working.join(" · ")}</div>
+          <div className="working" aria-live="polite">
+            {activity.map((a) => {
+              const p = profil(a.agent_id);
+              return (
+                <div key={a.id} className="working-row">
+                  {p && <span className={`ring${a.status === "waiting" ? "" : " on"}`}><Avatar agent={p} size={26} decorative /></span>}
+                  <span>{activite({ ...a, last_tools: a.last_tools ?? [], waiting_for: a.waiting_for ?? [] })}</span>
+                </div>
+              );
+            })}
+          </div>
         )}
         {busy && <div className="muted small" style={{ alignSelf: "flex-start" }}>Tu peux fermer l'app : la demande est enregistrée sur le serveur.</div>}
         {error && <div className="banner err">{error}</div>}
@@ -290,7 +305,7 @@ export default function Chat(props: {
           ref={area}
           rows={1}
           value={text}
-          placeholder={busy ? "Réponse en préparation…" : `Écrire à ${profile.nom}…`}
+          placeholder={busy ? "En cours…" : `Écrire à ${profile.nom}…`}
           disabled={busy}
           onChange={(e) => {
             setText(e.target.value);

@@ -3,68 +3,9 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 
-export type AgentId = "kung" | "popi" | "jojo" | "bililou";
-export const AGENT_IDS: AgentId[] = ["kung", "popi", "jojo", "bililou"];
-
-export interface AgentProfile {
-  id: AgentId;
-  nom: string;
-  animal: string;
-  role: string;
-  description: string;
-  personnalite: string[];
-  couleur: string; // couleur d'accent de la carte (en attendant les avatars officiels)
-  avatar: string | null; // chemin public de l'avatar officiel, à renseigner plus tard
-  suggestions: string[];
-}
-
-export const PROFILES: Record<AgentId, AgentProfile> = {
-  kung: {
-    id: "kung", nom: "Kung", animal: "Panda", role: "Manager général",
-    description: "Ton interlocuteur principal. Il pilote la prospection, répartit le travail et te propose les priorités.",
-    personnalite: ["calme", "stratégique", "organisé", "exigeant", "proactif"],
-    couleur: "#0B51FD", avatar: null,
-    suggestions: [
-      "Qu'est-ce qu'on fait aujourd'hui ?",
-      "Identifie les 5 clubs les plus intéressants à contacter, fais chercher des infos par Jojo et prépare les messages avec Bililou.",
-      "Prépare les relances des clubs qui n'ont pas répondu.",
-      "Qu'est-ce qu'on pourrait améliorer dans notre prospection ?",
-    ],
-  },
-  popi: {
-    id: "popi", nom: "Popi", animal: "Lapin", role: "CRM Manager",
-    description: "Il tient le fichier de prospection : fiches clubs, statuts, échanges, relances, doublons.",
-    personnalite: ["rapide", "précis", "organisé", "méthodique", "rigoureux"],
-    couleur: "#16A34A", avatar: null,
-    suggestions: [
-      "Fais-moi le point sur la prospection.",
-      "Quels clubs dois-je relancer cette semaine ?",
-      "J'ai envoyé un DM Instagram à ALC Longvic aujourd'hui.",
-      "Y a-t-il des doublons ou des incohérences dans le fichier ?",
-    ],
-  },
-  jojo: {
-    id: "jojo", nom: "Jojo", animal: "Panda", role: "Club Intelligence",
-    description: "Il enquête sur les clubs (projets, résultats, dirigeants, actualités) et trouve des accroches sourcées.",
-    personnalite: ["curieux", "observateur", "analytique", "persévérant"],
-    couleur: "#7C3AED", avatar: null,
-    suggestions: [
-      "Trouve ce qui pourrait me permettre d'approcher intelligemment Annecy CSAV.",
-      "Quelles sont les actualités récentes du CS Bourgoin-Jallieu handball ?",
-    ],
-  },
-  bililou: {
-    id: "bililou", nom: "Bililou", animal: "Bouvier bernois", role: "Copywriter",
-    description: "Il rédige tes emails, DM, SMS, relances et réponses aux clubs — humains et personnalisés.",
-    personnalite: ["chaleureux", "empathique", "sociable", "créatif", "persuasif"],
-    couleur: "#EA580C", avatar: null,
-    suggestions: [
-      "Prépare un premier DM Instagram pour Annecy CSAV.",
-      "Le président m'a répondu : « Nous avons déjà quelqu'un pour la communication. » Propose une réponse.",
-      "Je t'envoie la capture de la réponse Instagram du club : analyse-la et propose une réponse.",
-    ],
-  },
-};
+// Identité visible des agents (prénom, rôle, description, avatar) : source unique dans profiles.ts.
+export { AGENT_IDS, PROFILES, type AgentId, type AgentProfile } from "./profiles";
+import type { AgentId } from "./profiles";
 
 function connaissance(fichier: string): string {
   try {
