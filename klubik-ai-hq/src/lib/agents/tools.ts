@@ -298,25 +298,37 @@ export const TOOLS: Record<string, Def> = {
 export const DELEGATE_TOOL = {
   name: "deleguer",
   description:
-    "Confie une tâche à un agent spécialisé (popi = CRM, jojo = recherche web sur un club, bililou = rédaction de brouillons). L'agent ne voit pas la conversation : la consigne doit être autonome (objectif, club(s) avec ID, données utiles, contraintes, format de retour). Plusieurs délégations dans le même tour s'exécutent en parallèle.",
-  schema: z.object({ agent: z.enum(["popi", "jojo", "bililou"]), consigne: z.string().min(10) }),
+    "Confie une tâche à un agent spécialisé (popi = CRM, jojo = recherche web sur un club, bililou = rédaction de brouillons). L'agent ne voit pas la conversation : la consigne doit être autonome (objectif, club(s) avec ID, données utiles, contraintes, format de retour). Si Timothé a joint des captures d'écran utiles à la tâche (ex. réponse Instagram d'un club), transmets-les avec `captures`. Plusieurs délégations dans le même tour s'exécutent en parallèle.",
+  schema: z.object({
+    agent: z.enum(["popi", "jojo", "bililou"]),
+    consigne: z.string().min(10),
+    captures: z.array(z.string().min(4)).max(5).optional(),
+  }),
   json: {
     type: "object",
-    properties: { agent: { type: "string", enum: ["popi", "jojo", "bililou"] }, consigne: { type: "string" } },
+    properties: {
+      agent: { type: "string", enum: ["popi", "jojo", "bililou"] },
+      consigne: { type: "string" },
+      captures: { type: "array", items: { type: "string" }, description: "Identifiants des captures à transmettre (ex. « a1b2c3d4 », tels qu'indiqués dans le message de Timothé)" },
+    },
     required: ["agent", "consigne"],
     additionalProperties: false,
   },
 };
 
 /** Définitions d'outils envoyées à l'API pour un agent (ordre stable = cache efficace). */
-export function toolDefinitions(names: string[], web: boolean): Anthropic.Beta.BetaToolUnion[] {
+export function toolDefinitions(names: string[], web: boolean, recentWeb = true): Anthropic.Beta.BetaToolUnion[] {
   const defs: Anthropic.Beta.BetaToolUnion[] = names.map((n) => {
     const d = n === "deleguer" ? DELEGATE_TOOL : { ...TOOLS[n], name: n };
     return { name: n, description: d.description, input_schema: d.json as Anthropic.Beta.BetaTool.InputSchema, eager_input_streaming: true };
   });
-  if (web) {
+  if (web && recentWeb) {
     defs.push({ type: "web_search_20260209", name: "web_search", max_uses: 8, user_location: { type: "approximate", country: "FR", timezone: "Europe/Paris" } });
     defs.push({ type: "web_fetch_20260209", name: "web_fetch", max_uses: 8 });
+  } else if (web) {
+    // Modèles sans filtrage dynamique (ex. Haiku) : versions de base des outils web.
+    defs.push({ type: "web_search_20250305", name: "web_search", max_uses: 8, user_location: { type: "approximate", country: "FR", timezone: "Europe/Paris" } });
+    defs.push({ type: "web_fetch_20250910", name: "web_fetch", max_uses: 8 });
   }
   return defs;
 }

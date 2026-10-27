@@ -3,12 +3,14 @@ import Avatar from "@/components/Avatar";
 import { quand, STATUT_TACHE } from "@/components/format";
 import { AGENT_IDS, PROFILES } from "@/lib/agents/definitions";
 import { fr, toDate, todayUtc } from "@/lib/crm/rules";
+import { getSql } from "@/lib/db";
 import { crmSummary, missions, monthCost, pendingActions, recentConversations } from "@/lib/queries";
+import { getSettings } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
 export default async function Accueil() {
-  const [crm, actions, mis, convs, cout] = await Promise.all([crmSummary(), pendingActions(5), missions(20), recentConversations(5), monthCost()]);
+  const [crm, actions, mis, convs, cout, settings] = await Promise.all([crmSummary(), pendingActions(5), missions(20), recentConversations(5), monthCost(), getSettings(getSql())]);
   const enCours = mis.filter((m) => m.open > 0);
   const heure = Number(new Intl.DateTimeFormat("fr-FR", { hour: "numeric", hour12: false, timeZone: "Europe/Paris" }).format(new Date()));
   const salut = heure < 18 ? "Bonjour" : "Bonsoir";
@@ -22,6 +24,8 @@ export default async function Accueil() {
       <p className="subtitle">{new Intl.DateTimeFormat("fr-FR", { weekday: "long", day: "numeric", month: "long", timeZone: "Europe/Paris" }).format(new Date())} · ton équipe est prête.</p>
 
       {!process.env.ANTHROPIC_API_KEY && <div className="banner warn">Les agents sont inactifs : la clé API Claude n'est pas encore configurée sur le serveur.</div>}
+      {cout >= settings.monthlyBudget && <div className="banner err">Plafond mensuel atteint ({cout.toFixed(2)} $ / {settings.monthlyBudget} $) : les agents sont en pause jusqu'au mois prochain. <Link href="/reglages">Ajuster le plafond</Link></div>}
+      {cout < settings.monthlyBudget && cout >= 0.8 * settings.monthlyBudget && <div className="banner warn">{Math.round((cout / settings.monthlyBudget) * 100)} % du plafond mensuel utilisé ({cout.toFixed(2)} $ / {settings.monthlyBudget} $).</div>}
       {!crm && <div className="banner info">Le CRM n'est pas encore importé. <Link href="/reglages">Importer le fichier de prospection</Link></div>}
 
       {crm && (
@@ -120,7 +124,7 @@ export default async function Accueil() {
       )}
 
       <p className="muted small" style={{ marginTop: 28, textAlign: "center" }}>
-        Consommation IA ce mois-ci : {cout.toFixed(2)} $ · CRM au {fr(todayUtc())}
+        Consommation IA ce mois-ci : {cout.toFixed(2)} $ / {settings.monthlyBudget} $ · CRM au {fr(todayUtc())}
       </p>
     </main>
   );

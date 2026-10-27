@@ -1,5 +1,9 @@
 # Klubik AI — V1
 
+> **Après la bascule vers Klubik AI HQ** (application cloud, dossier `klubik-ai-hq/`), le CRM officiel est celui
+> de l'application. N'utilise plus cette V1 pour écrire dans le fichier Excel : les deux versions divergeraient.
+> Pour vérifier l'absence de divergence : Klubik AI HQ → Réglages → « Comparer un fichier Excel avec la base ».
+
 Quatre agents Claude Code — les personnages internes de Klubik AI — qui travaillent sur **votre**
 fichier de prospection :
 

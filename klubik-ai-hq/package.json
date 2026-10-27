@@ -10,10 +10,12 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "db:migrate": "node --experimental-strip-types scripts/migrate-db.ts",
-    "auth:hash": "node --experimental-strip-types scripts/hash-password.ts"
+    "auth:hash": "node --experimental-strip-types scripts/hash-password.ts",
+    "backup:decrypt": "node --experimental-strip-types scripts/backup-decrypt.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.3.0",
+    "aws4fetch": "^1.0.20",
     "exceljs": "^4.4.0",
     "jszip": "^3.10.2",
     "next": "^15.5.28",

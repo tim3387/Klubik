@@ -3,7 +3,7 @@ import { getSql } from "./db";
 import { loadClubs, loadSettings, crmCount } from "./crm/repo";
 import { stats, relances, todayUtc } from "./crm/rules";
 
-export interface ChatMessage { id: number; role: "user" | "agent" | "event"; agent_id: string | null; content: string; created_at: string }
+export interface ChatMessage { id: number; role: "user" | "agent" | "event"; agent_id: string | null; content: string; created_at: string; attachments: string[] | null; meta: Record<string, unknown> }
 export interface TaskInfo { id: string; agent_id: string; status: string; title: string; steps: number; error: string | null }
 
 export async function crmSummary() {
@@ -44,11 +44,15 @@ export async function missions(limit = 50) {
 
 export async function missionDetail(id: string) {
   const sql = getSql();
-  const tasks = await sql<{ id: string; parent_id: string | null; agent_id: string; title: string; status: string; result: string | null; error: string | null; steps: number; cost_usd: string; created_at: string; finished_at: string | null; conversation_id: string | null }[]>`
-    select id, parent_id, agent_id, title, status, result, error, steps, cost_usd::text, created_at, finished_at, conversation_id
+  const tasks = await sql<{ id: string; parent_id: string | null; agent_id: string; title: string; status: string; result: string | null; error: string | null; steps: number; cost_usd: string; created_at: string; finished_at: string | null; conversation_id: string | null; model: string | null }[]>`
+    select id, parent_id, agent_id, title, status, result, error, steps, cost_usd::text, created_at, finished_at, conversation_id, model
     from tasks where root_id = ${id} order by created_at`;
   const actions = await sql<{ id: string; kind: string; title: string; status: string }[]>`select id, kind, title, status from actions where root_id = ${id} order by created_at`;
-  return { tasks, actions };
+  const usage = await sql<{ model: string; calls: number; input: number; output: number; cache_read: number; searches: number; cost: string }[]>`
+    select u.model, count(*)::int as calls, sum(u.input_tokens)::int as input, sum(u.output_tokens)::int as output,
+           sum(u.cache_read)::int as cache_read, sum(u.web_searches)::int as searches, sum(u.cost_usd)::text as cost
+    from usage_log u join tasks t on t.id = u.task_id where t.root_id = ${id} group by u.model order by sum(u.cost_usd) desc`;
+  return { tasks, actions, usage };
 }
 
 export async function recentConversations(limit = 8) {
@@ -65,8 +69,10 @@ export async function agentConversations(agentId: string, limit = 30) {
 
 export async function conversationMessages(conversationId: string, after = 0): Promise<ChatMessage[]> {
   return getSql()<ChatMessage[]>`
-    select id::int, role, agent_id, content, created_at from chat_messages
-    where conversation_id = ${conversationId} and id > ${after} order by id limit 300`;
+    select m.id::int, m.role, m.agent_id, m.content, m.created_at, m.meta,
+           (select array_agg(a.id::text order by a.created_at) from attachments a where a.message_id = m.id) as attachments
+    from chat_messages m
+    where m.conversation_id = ${conversationId} and m.id > ${after} order by m.id limit 300`;
 }
 
 export async function conversationActivity(conversationId: string): Promise<TaskInfo[]> {

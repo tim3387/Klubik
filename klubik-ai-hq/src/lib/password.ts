@@ -18,19 +18,3 @@ export function verifyPassword(password: string, stored: string): boolean {
   const got = scryptSync(password, Buffer.from(salt, "base64"), expected.length, { N: Number(n), r: Number(r), p: Number(p) });
   return got.length === expected.length && timingSafeEqual(got, expected);
 }
-
-// Limitation des tentatives (instance unique) : 5 échecs → blocage 15 minutes.
-const tentatives = new Map<string, { n: number; until: number }>();
-export function loginBlocked(key: string): boolean {
-  const t = tentatives.get(key);
-  return !!t && t.until > Date.now();
-}
-export function loginFailed(key: string) {
-  const t = tentatives.get(key) ?? { n: 0, until: 0 };
-  t.n += 1;
-  if (t.n >= 5) { t.until = Date.now() + 15 * 60000; t.n = 0; }
-  tentatives.set(key, t);
-}
-export function loginSucceeded(key: string) {
-  tentatives.delete(key);
-}

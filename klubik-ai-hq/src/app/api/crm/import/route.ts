@@ -5,6 +5,7 @@ import { guard } from "@/lib/session";
 import { parseWorkbook } from "@/lib/crm/xlsx-import";
 import { crmCount, importWorkbook, verifyImport } from "@/lib/crm/repo";
 import { stats, todayUtc } from "@/lib/crm/rules";
+import { runBackup } from "@/lib/backup";
 
 export const maxDuration = 120;
 
@@ -42,5 +43,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: (e as Error).message }, { status: 409 });
   }
   const verification = await verifyImport(sql, wb);
-  return NextResponse.json({ ok: verification.ok, import: report, verification });
+  // Première sauvegarde immédiate de la base qui devient la source officielle.
+  let sauvegarde: string;
+  try {
+    const b = await runBackup(sql, "après import");
+    sauvegarde = `n°${b.id}, copie externe : ${b.offsite}${b.error ? ` (${b.error})` : ""}`;
+  } catch (e) {
+    sauvegarde = `non réalisée : ${(e as Error).message}`;
+  }
+  return NextResponse.json({ ok: verification.ok, import: report, verification, sauvegarde });
 }

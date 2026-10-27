@@ -30,7 +30,7 @@ export default function CrmImport() {
       const d = await r.json();
       if (!r.ok) { setErr(d.error ?? "Import impossible."); return; }
       if (mode === "preview") setApercu(d.apercu);
-      else if (d.ok) setDone(`Import terminé et vérifié : ${d.verification.clubs} clubs relus dans la base, chaque colonne identique au fichier.`);
+      else if (d.ok) setDone(`Import terminé et vérifié : ${d.verification.clubs} clubs relus dans la base, chaque colonne identique au fichier. Sauvegarde : ${d.sauvegarde}.`);
       else setErr(`Import effectué mais la vérification a trouvé des écarts : ${d.verification.ecarts.join(", ")}`);
     } catch {
       setErr("Connexion perdue pendant l'envoi. Recharge la page pour vérifier l'état du CRM avant de réessayer.");

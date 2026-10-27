@@ -1,5 +1,6 @@
 # Klubik AI HQ — hébergement Render (Blueprint). Le site vitrine reste sur Netlify, rien à voir avec ce fichier.
 # Coût : offre Starter (7 $/mois, toujours allumée : les missions continuent quand ton iPhone est verrouillé).
+# Testé dans les mêmes limites (512 Mo, 0,5 CPU) : pic mesuré 247 Mo.
 # Les secrets ne sont JAMAIS écrits ici : Render les demande à la création (sync: false) ou les génère lui-même.
 services:
   - type: web
@@ -26,11 +27,23 @@ services:
         generateValue: true
       - key: SETUP_TOKEN # code à usage unique pour choisir ton mot de passe sur /setup
         generateValue: true
+      - key: BACKUP_KEY # clé de chiffrement des sauvegardes, générée par Render : À COPIER AUSSI dans ton trousseau
+        generateValue: true
+      # Stockage externe des sauvegardes (Backblaze B2 conseillé, 10 Go gratuits). Valeurs affichées par B2.
+      - key: BACKUP_S3_ENDPOINT # ex. https://s3.<région>.backblazeb2.com (champ « Endpoint » du bucket)
+        sync: false
+      - key: BACKUP_S3_REGION # la partie <région> de l'endpoint
+        sync: false
+      - key: BACKUP_S3_BUCKET
+        sync: false
+      - key: BACKUP_S3_KEY_ID # keyID de la clé d'application (sans droit de suppression)
+        sync: false
+      - key: BACKUP_S3_SECRET # applicationKey
+        sync: false
+      # Valeurs de départ : modifiables ensuite dans Réglages (sans redéploiement).
       - key: MONTHLY_BUDGET_USD
         value: "30"
       - key: MISSION_BUDGET_USD
         value: "3"
-      - key: AGENT_MODEL
-        value: claude-opus-5-5
       - key: WORKER_CONCURRENCY
         value: "3"

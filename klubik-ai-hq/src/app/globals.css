@@ -134,7 +134,21 @@ h1, h2, h3 { color: var(--ink); line-height: 1.2; margin: 0; }
 .bubble.agent { align-self: flex-start; background: var(--white); border: 1px solid var(--border); border-bottom-left-radius: 6px; box-shadow: var(--shadow); }
 .event { align-self: center; max-width: 92%; font-size: 12.5px; color: var(--muted); background: #eef1f6; border-radius: 999px; padding: 5px 12px; text-align: center; }
 .working { align-self: flex-start; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); padding: 4px 4px; }
-.composer { position: sticky; bottom: calc(var(--tabbar) + var(--safe-bottom)); background: rgba(248, 249, 252, 0.95); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--border); padding: 10px 12px; display: flex; gap: 8px; align-items: flex-end; }
+.composer-wrap { position: sticky; bottom: calc(var(--tabbar) + var(--safe-bottom)); background: rgba(248, 249, 252, 0.95); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--border); }
+.composer { padding: 10px 12px; display: flex; gap: 6px; align-items: flex-end; }
+.tool-btn { width: 40px; height: 44px; border: none; background: transparent; color: var(--muted); display: grid; place-items: center; cursor: pointer; flex: none; border-radius: 12px; }
+.tool-btn.on { color: var(--warning); background: var(--warning-soft); }
+.tool-btn:disabled { opacity: 0.35; }
+.quick-row { display: flex; gap: 8px; overflow-x: auto; padding: 10px 12px 0; scrollbar-width: none; }
+.quick-row .chip { border: none; padding: 7px 12px; font-size: 13px; cursor: pointer; }
+.attach-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 10px 12px 0; }
+.thumb { position: relative; width: 56px; height: 56px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); background: var(--white); }
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb.err { border-color: var(--danger); }
+.thumb button { position: absolute; top: 2px; right: 2px; width: 20px; height: 20px; border-radius: 50%; border: none; background: rgba(15, 23, 42, 0.7); color: var(--white); font-size: 14px; line-height: 20px; padding: 0; cursor: pointer; }
+.thumb-state { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(255, 255, 255, 0.6); font-weight: 800; color: var(--ink); }
+.thumbs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+.thumbs img { width: 92px; height: 92px; object-fit: cover; border-radius: 10px; display: block; }
 .composer textarea { flex: 1; resize: none; border: 1px solid var(--border); border-radius: 20px; padding: 10px 14px; font-size: 16px; max-height: 160px; outline: none; background: var(--white); color: var(--ink); font-family: inherit; }
 .composer textarea:focus { border-color: var(--blue); }
 .send { width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--blue); color: var(--white); display: grid; place-items: center; cursor: pointer; flex: none; }

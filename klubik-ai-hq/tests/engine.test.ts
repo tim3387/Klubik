@@ -76,10 +76,17 @@ describe.skipIf(!dispo)("moteur des missions (faux modèle, vraie base)", () => 
 
   it("Kung délègue à Popi et Jojo en parallèle, attend leurs résultats puis répond dans la conversation", async () => {
     const calls: string[] = [];
+    const vus: Record<string, { model: string; effort: unknown; fallbacks: boolean }> = {};
     const llm = {
       async create(p: Params) {
+        const r = await script(p);
+        return { ...r, model: p.model } as Reply; // l'API renvoie le modèle réellement utilisé
+      },
+    };
+    const script = async (p: Params): Promise<Reply> => {
         const a = agentOf(p), t = turn(p);
         calls.push(`${a}${t}`);
+        vus[a] = { model: p.model, effort: (p as { output_config?: { effort?: string } }).output_config?.effort, fallbacks: "fallbacks" in p };
         if (a === "kung" && t === 0)
           return reply("tool_use", [text("Je lance l'équipe."), toolUse("deleguer", { agent: "popi", consigne: "Prépare une note de test." }), toolUse("deleguer", { agent: "jojo", consigne: "Cherche des infos sur le club." })]);
         if (a === "kung") {
@@ -99,7 +106,6 @@ describe.skipIf(!dispo)("moteur des missions (faux modèle, vraie base)", () => 
         }
         if (a === "jojo" && t === 0) return reply("pause_turn", [text("Recherche en cours…")], { server_tool_use: { web_search_requests: 3, web_fetch_requests: 0 } as never });
         return reply("end_turn", [text("Jojo : 3 accroches sourcées.")]);
-      },
     };
     const { conv, taskId } = await conversation("kung", "Prépare le club X");
     await drain(llm);
@@ -107,14 +113,21 @@ describe.skipIf(!dispo)("moteur des missions (faux modèle, vraie base)", () => 
     const tasks = await sql<{ agent_id: string; status: string; parent_id: string | null }[]>`select agent_id, status, parent_id from tasks where root_id = ${taskId}`;
     expect(tasks.map((t) => `${t.agent_id}:${t.status}`).sort()).toEqual(["jojo:done", "kung:done", "popi:done"]);
     const msgs = await sql<{ role: string; content: string }[]>`select role, content from chat_messages where conversation_id = ${conv} order by id`;
-    expect(msgs.at(-1)).toMatchObject({ role: "agent", content: "Synthèse de Kung : tout est prêt." });
+    expect(msgs.filter((m) => m.role === "agent").at(-1)?.content).toBe("Synthèse de Kung : tout est prêt.");
+    // Modèles par défaut : Sonnet 5.5 (Kung, Jojo), Haiku 5.5 (Popi, sans repli serveur qu'il n'accepte pas).
+    expect(vus.kung).toEqual({ model: "claude-sonnet-5-5", effort: "medium", fallbacks: true });
+    expect(vus.jojo).toEqual({ model: "claude-sonnet-5-5", effort: "medium", fallbacks: true });
+    expect(vus.popi).toEqual({ model: "claude-haiku-5-5", effort: "low", fallbacks: false });
+    // Coût réel affiché à la fin : 4 appels Sonnet (1000 in / 200 out) + 2 Haiku + 3 recherches.
+    const attendu = 4 * (1000 * 2 + 200 * 10) / 1e6 + 2 * (1000 * 0.1 + 200 * 0.5) / 1e6 + 0.03;
+    expect(msgs.at(-1)?.content).toBe(`Coût de la mission : ${attendu.toFixed(3)} $ · Sonnet 5.5 ×4, Haiku 5.5 ×2 · 3 recherches web`);
     expect(msgs.filter((m) => m.role === "event").map((m) => m.content).join("\n")).toMatch(/Kung → Popi[\s\S]*mise à jour du CRM/);
     const [act] = await sql<{ status: string; kind: string }[]>`select status, kind from actions where root_id = ${taskId}`;
     expect(act).toMatchObject({ kind: "crm_update", status: "pending" });
     const [u] = await sql<{ n: number; s: number; cost: string }[]>`select count(*)::int n, sum(web_searches)::int s, sum(cost_usd)::text cost from usage_log`;
     expect(u.n).toBe(6);
     expect(u.s).toBe(3);
-    expect(Number(u.cost)).toBeCloseTo(6 * (1000 * 4 + 200 * 20) / 1e6 + 0.03, 6);
+    expect(Number(u.cost)).toBeCloseTo(attendu, 6);
     // Rien n'a été écrit dans le CRM tant que Timothé n'a pas validé.
     expect(String((await M.repo.getClub(sql, clubNote.id))!.data["Notes"] ?? "")).not.toContain("Note de test moteur");
   });
@@ -224,8 +237,8 @@ describe.skipIf(!dispo)("moteur des missions (faux modèle, vraie base)", () => 
   });
 
   it("plafond par mission : la mission s'arrête avant tout appel et Timothé est prévenu", async () => {
-    const old = M.runner.LIMITS.missionBudget;
-    M.runner.LIMITS.missionBudget = 0;
+    const { saveSettings } = await import("@/lib/settings");
+    expect((await saveSettings(sql, { missionBudget: 0 })).ok).toBe(true); // réglé depuis l'app, effet immédiat
     try {
       const llm = { async create(): Promise<Reply> { throw new Error("ne doit pas être appelé"); } };
       const { taskId, conv } = await conversation("kung", "Mission coûteuse");
@@ -236,8 +249,53 @@ describe.skipIf(!dispo)("moteur des missions (faux modèle, vraie base)", () => 
       const [m] = await sql<{ content: string }[]>`select content from chat_messages where conversation_id = ${conv} order by id desc limit 1`;
       expect(m.content).toContain("Plafond par mission");
     } finally {
-      M.runner.LIMITS.missionBudget = old;
+      await saveSettings(sql, { missionBudget: 3 });
     }
+  });
+
+  it("capture d'écran : envoyée au modèle, transmise par Kung à Bililou ; identifiant inconnu refusé", async () => {
+    // Petite image PNG réelle (1×1) enregistrée comme le ferait l'iPhone.
+    const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==", "base64");
+    const [conv] = await sql<{ id: string }[]>`insert into conversations (agent_id, title) values ('kung', 'capture') returning id`;
+    const [m] = await sql<{ id: string }[]>`insert into chat_messages (conversation_id, role, content) values (${conv.id}, 'user', 'Le club m''a répondu, regarde') returning id`;
+    const [att] = await sql<{ id: string }[]>`insert into attachments (conversation_id, message_id, media_type, size, sha256, bytes)
+      values (${conv.id}, ${m.id}, 'image/png', ${png.length}, 'x', ${png}) returning id::text`;
+    const taskId = await M.runner.createRootTask(sql, { agentId: "kung", conversationId: conv.id, text: "Le club m'a répondu, regarde", deep: true });
+    const vus: Record<string, Params> = {};
+    const images = (p: Params) => JSON.stringify(p.messages).match(/"type":"base64","media_type":"image\/png","data":"iVBOR/g)?.length ?? 0;
+    const llm = {
+      async create(p: Params) {
+        const a = agentOf(p), t = turn(p);
+        vus[`${a}${t}`] = p;
+        if (a === "kung" && t === 0) return reply("tool_use", [
+          toolUse("deleguer", { agent: "bililou", consigne: "Analyse la réponse du club et propose une réponse.", captures: [att.id.slice(0, 8)] }),
+          toolUse("deleguer", { agent: "popi", consigne: "Enregistre la réponse visible sur la capture.", captures: ["deadbeef"] }),
+        ]);
+        if (a === "kung") {
+          expect(lastUser(p)).toContain("Captures introuvables : deadbeef");
+          return reply("end_turn", [text("Voici l'analyse.")]);
+        }
+        return reply("end_turn", [text("Analyse : refus poli.")]);
+      },
+    };
+    await drain(llm);
+    expect(vus.kung0.model).toBe("claude-opus-5-5"); // réflexion approfondie demandée
+    expect((vus.kung0 as { output_config?: { effort?: string } }).output_config?.effort).toBe("high");
+    expect(images(vus.kung0)).toBe(1);
+    expect(JSON.stringify(vus.kung0.messages)).toContain(`#${att.id.slice(0, 8)}`);
+    expect(images(vus.bililou0)).toBe(1); // Bililou voit bien la capture
+    expect(vus.bililou0.model).toBe("claude-sonnet-5-5"); // le mode approfondi ne concerne que Kung
+    expect(vus.popi0).toBeUndefined(); // délégation refusée : capture inconnue
+    // La transcription stockée ne contient qu'une référence, pas l'image (pas de copies en base).
+    const [t] = await sql<{ transcript: unknown }[]>`select transcript from tasks where id = ${taskId}`;
+    expect(JSON.stringify(t.transcript)).not.toContain("iVBOR");
+    expect(JSON.stringify(t.transcript)).toContain(att.id);
+    // Capture purgée (durée de conservation dépassée) : remplacée par une mention, pas d'erreur.
+    const { purgeOld, hydrate } = await import("@/lib/attachments");
+    await sql`update attachments set created_at = now() - interval '400 days' where id = ${att.id}`;
+    expect(await purgeOld(sql, 180)).toBe(1);
+    const h = await hydrate(sql, t.transcript as never);
+    expect(JSON.stringify(h)).toContain("expirée");
   });
 
   it("export Excel : le fichier d'origine est reconstruit avec les valeurs à jour de la base", async () => {

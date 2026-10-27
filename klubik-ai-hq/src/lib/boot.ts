@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { getSql } from "./db";
 import { startWorker } from "./engine/worker";
+import { startMaintenance } from "./maintenance";
 
 export async function boot() {
   if (!process.env.DATABASE_URL) {
@@ -16,5 +17,8 @@ export async function boot() {
   } catch (e) {
     console.error("[démarrage] application du schéma impossible :", e instanceof Error ? e.message : e);
   }
-  if (process.env.WORKER_ENABLED !== "false") startWorker();
+  if (process.env.WORKER_ENABLED !== "false") {
+    startWorker();
+    startMaintenance();
+  }
 }

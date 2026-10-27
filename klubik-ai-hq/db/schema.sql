@@ -165,3 +165,71 @@ create table if not exists app_auth (
   updated_at     timestamptz not null default now()
 );
 alter table app_auth enable row level security;
+
+-- ─────────────────────────────── V1.1 : sécurité, réglages, captures, sauvegardes ───────────────────────────────
+
+-- Génération de session : l'incrémenter déconnecte toutes les sessions existantes.
+alter table app_auth add column if not exists session_gen integer not null default 1;
+
+-- Appareils de confiance (un par navigateur / app installée où Timothé s'est connecté).
+create table if not exists auth_devices (
+  id          uuid primary key default gen_random_uuid(),
+  label       text not null,
+  created_at  timestamptz not null default now(),
+  last_seen   timestamptz not null default now(),
+  revoked_at  timestamptz
+);
+alter table auth_devices enable row level security;
+
+-- Limitation des tentatives de connexion (persistée : survit aux redémarrages).
+create table if not exists auth_throttle (
+  key            text primary key,          -- ip:…, device:…, global:new, setup:…
+  failures       integer not null default 0,
+  window_start   timestamptz not null default now(),
+  blocks         integer not null default 0, -- nombre de blocages successifs (durée croissante)
+  blocked_until  timestamptz
+);
+alter table auth_throttle enable row level security;
+
+-- Réglages modifiables depuis l'app (plafonds de dépense, modèles par agent…).
+create table if not exists app_settings (
+  key         text primary key,
+  value       jsonb not null,
+  updated_at  timestamptz not null default now()
+);
+alter table app_settings enable row level security;
+
+-- Modèle utilisé par une tâche (choisi à la création : réglage de l'agent ou « réflexion approfondie »).
+alter table tasks add column if not exists model text;
+
+-- Captures d'écran jointes aux messages (redimensionnées et sans métadonnées côté iPhone).
+create table if not exists attachments (
+  id               uuid primary key default gen_random_uuid(),
+  conversation_id  uuid references conversations(id) on delete cascade,
+  message_id       bigint references chat_messages(id) on delete set null,
+  media_type       text not null check (media_type in ('image/jpeg', 'image/png', 'image/webp', 'image/gif')),
+  size             integer not null,
+  sha256           text not null,
+  bytes            bytea,                     -- purgé après la durée de conservation (métadonnées gardées)
+  created_at       timestamptz not null default now()
+);
+create index if not exists attachments_message_idx on attachments (message_id);
+alter table attachments enable row level security;
+
+-- Sauvegardes chiffrées (AES-256-GCM). Copie en base pour restaurer vite ; copie externe (S3) contre la perte de la base.
+create table if not exists crm_backups (
+  id                   bigserial primary key,
+  created_at           timestamptz not null default now(),
+  reason               text not null,
+  size                 integer not null,
+  sha256               text not null,          -- empreinte du contenu en clair (contrôle à la restauration)
+  counts               jsonb not null,         -- lignes par table
+  key_fingerprint      text not null,          -- identifie la clé de chiffrement utilisée
+  data                 bytea,                  -- contenu chiffré (purgé au-delà de la rétention en base)
+  offsite_key          text,                   -- nom de l'objet dans le stockage externe
+  offsite_verified_at  timestamptz,            -- relu et déchiffré avec succès après envoi
+  offsite_error        text
+);
+create index if not exists crm_backups_created_idx on crm_backups (created_at desc);
+alter table crm_backups enable row level security;
+alter table tasks add column if not exists deep boolean not null default false;  -- « réflexion approfondie » demandée

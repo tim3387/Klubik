@@ -1,7 +1,7 @@
-// Authentification : signature des sessions, mots de passe, blocage après échecs. Aucune base nécessaire.
+// Authentification : signature des sessions et des appareils, mots de passe. Aucune base nécessaire.
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { createSessionToken, verifySessionToken } from "@/lib/auth";
-import { hashPassword, loginBlocked, loginFailed, loginSucceeded, verifyPassword } from "@/lib/password";
+import { createDeviceToken, createSessionToken, verifyDeviceToken, verifySession, verifySessionToken } from "@/lib/auth";
+import { hashPassword, verifyPassword } from "@/lib/password";
 
 describe("session signée", () => {
   beforeEach(() => {
@@ -33,6 +33,15 @@ describe("session signée", () => {
     expect(await verifySessionToken(t)).toBeNull();
   });
 
+  it("porte l'appareil et la génération ; un jeton d'appareil n'est pas une session (et inversement)", async () => {
+    const t = await createSessionToken("timothe@example.test", "dev-1", 7);
+    expect(await verifySession(t)).toEqual({ email: "timothe@example.test", device: "dev-1", gen: 7 });
+    const d = await createDeviceToken("dev-1");
+    expect(await verifyDeviceToken(d)).toBe("dev-1");
+    expect(await verifySession(d)).toBeNull();
+    expect(await verifyDeviceToken(t)).toBeNull();
+  });
+
   it("refuse de fonctionner avec un secret trop court", async () => {
     process.env.SESSION_SECRET = "court";
     await expect(createSessionToken("timothe@example.test")).rejects.toThrow(/SESSION_SECRET/);
@@ -51,13 +60,5 @@ describe("mots de passe", () => {
 
   it("impose 12 caractères minimum", () => {
     expect(() => hashPassword("trop-court")).toThrow();
-  });
-
-  it("bloque après 5 échecs, débloque après une réussite", () => {
-    const ip = `test-${Math.random()}`;
-    for (let i = 0; i < 5; i++) loginFailed(ip);
-    expect(loginBlocked(ip)).toBe(true);
-    loginSucceeded(ip);
-    expect(loginBlocked(ip)).toBe(false);
   });
 });

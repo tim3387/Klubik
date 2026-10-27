@@ -5,6 +5,7 @@ import Markdown from "@/components/Markdown";
 import { quand, STATUT_TACHE } from "@/components/format";
 import { PROFILES } from "@/lib/agents/definitions";
 import { missionDetail } from "@/lib/queries";
+import { MODELES } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +20,7 @@ const ACTION: Record<string, { label: string; cls: string }> = {
 export default async function Mission({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/.test(id)) notFound();
-  const { tasks, actions } = await missionDetail(id);
+  const { tasks, actions, usage } = await missionDetail(id);
   const root = tasks.find((t) => t.id === id);
   if (!root) notFound();
   const cost = tasks.reduce((s, t) => s + Number(t.cost_usd), 0);
@@ -41,7 +42,7 @@ export default async function Mission({ params }: { params: Promise<{ id: string
                   {a && <Avatar agent={a} size={32} />}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontWeight: 750, color: "var(--ink)" }}>{a?.nom ?? t.agent_id}{t.parent_id ? " · délégué par Kung" : ""}</div>
-                    <div className="small muted">{t.steps} étape{t.steps > 1 ? "s" : ""} · {Number(t.cost_usd).toFixed(3)} $ · {quand(t.created_at)}</div>
+                    <div className="small muted">{t.steps} étape{t.steps > 1 ? "s" : ""} · {Number(t.cost_usd).toFixed(3)} ${t.model ? ` · ${MODELES[t.model as keyof typeof MODELES]?.label ?? t.model}` : ""} · {quand(t.created_at)}</div>
                   </div>
                   <span className={`chip ${st?.cls ?? "gray"}`}>{["ready", "running", "waiting"].includes(t.status) && <span className="dot pulse" />}{st?.label ?? t.status}</span>
                 </div>
@@ -58,6 +59,21 @@ export default async function Mission({ params }: { params: Promise<{ id: string
           })}
         </div>
       </section>
+
+      {usage.length > 0 && (
+        <section className="section">
+          <div className="section-head"><h2>Coût réel</h2></div>
+          <table className="diff card" style={{ marginTop: 0 }}><tbody>
+            {usage.map((u) => (
+              <tr key={u.model}>
+                <td>{MODELES[u.model as keyof typeof MODELES]?.label ?? u.model}</td>
+                <td>{u.calls} appel{u.calls > 1 ? "s" : ""} · {(u.input + u.cache_read).toLocaleString("fr-FR")} tokens lus ({u.cache_read.toLocaleString("fr-FR")} en cache) · {u.output.toLocaleString("fr-FR")} écrits{u.searches ? ` · ${u.searches} recherches` : ""} · <b>{Number(u.cost).toFixed(3)} $</b></td>
+              </tr>
+            ))}
+          </tbody></table>
+          <p className="small muted" style={{ margin: "6px 0 0" }}>Tokens réellement facturés (renvoyés par l'API) × tarifs publics.</p>
+        </section>
+      )}
 
       <section className="section">
         <div className="section-head"><h2>Actions proposées</h2><Link href="/actions">Valider</Link></div>

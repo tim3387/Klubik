@@ -7,6 +7,8 @@ import type { Sql, Tx } from "../db";
 import { AGENT_IDS, PROFILES, runtimes, type AgentId } from "../agents/definitions";
 import { DELEGATE_TOOL, TOOLS, toolDefinitions } from "../agents/tools";
 import { todayUtc, fr } from "../crm/rules";
+import { hydrate, refs, resolveCaptures, short } from "../attachments";
+import { effortFor, getSettings, MODELES, recentWebTools, supportsFallback } from "../settings";
 import { costOf } from "./cost";
 import { isRetryable, type LlmClient } from "./llm";
 
@@ -28,15 +30,17 @@ export interface TaskRow {
   pending_results: Pending[];
   steps: number;
   attempts: number;
+  model: string | null;
+  deep: boolean;
 }
 
 export const LIMITS = {
   maxSteps: Number(process.env.MAX_STEPS_PER_TASK ?? 30),
   maxAttempts: 5,
-  monthlyBudget: Number(process.env.MONTHLY_BUDGET_USD ?? 30),
-  missionBudget: Number(process.env.MISSION_BUDGET_USD ?? 3),
-  model: process.env.AGENT_MODEL ?? "claude-opus-5-5",
+  // Captures renvoyées au modèle : celles des N derniers messages qui en contiennent (au-delà, mention textuelle).
+  imagesHistory: 3,
 };
+const nomModele = (m: string) => MODELES[m as keyof typeof MODELES]?.label ?? m;
 
 const nomAgent = (id: string) => PROFILES[id as AgentId]?.nom ?? id;
 
@@ -46,22 +50,37 @@ async function postEvent(tx: Tx | Sql, conversationId: string | null, agentId: s
 }
 
 /** Crée la tâche racine d'une demande de Timothé dans une conversation. */
-export async function createRootTask(sql: Sql, args: { agentId: AgentId; conversationId: string; text: string }) {
-  const history = await sql<{ role: string; content: string }[]>`
-    select role, content from chat_messages where conversation_id = ${args.conversationId} and role in ('user', 'agent')
-    order by id desc limit 20`;
+export async function createRootTask(sql: Sql, args: { agentId: AgentId; conversationId: string; text: string; deep?: boolean }) {
+  const history = await sql<{ id: number; role: string; content: string; attachments: string[] | null }[]>`
+    select m.id::int, m.role, m.content,
+           (select array_agg(a.id::text order by a.created_at) from attachments a where a.message_id = m.id) as attachments
+    from chat_messages m where m.conversation_id = ${args.conversationId} and m.role in ('user', 'agent')
+    order by m.id desc limit 20`;
+  history.reverse();
+  // Seules les captures des derniers messages sont renvoyées au modèle (coût maîtrisé).
+  const withImages = history.filter((h) => h.role === "user" && h.attachments?.length).slice(-LIMITS.imagesHistory).map((h) => h.id);
   const transcript: Msg[] = [];
-  for (const h of history.reverse()) {
+  history.forEach((h, i) => {
     const role = h.role === "user" ? "user" : "assistant";
-    if (!transcript.length && role === "assistant") continue; // le premier message doit venir de l'utilisateur
-    transcript.push({ role, content: h.content });
-  }
-  // Le message courant a déjà été inséré : on remplace sa version par une version datée.
-  if (transcript.length && transcript[transcript.length - 1].role === "user") transcript.pop();
-  transcript.push({ role: "user", content: `[Contexte : nous sommes le ${fr(todayUtc())}.]\n\n${args.text}` });
+    if (!transcript.length && role === "assistant") return; // le premier message doit venir de l'utilisateur
+    const last = i === history.length - 1;
+    let text = last ? `[Contexte : nous sommes le ${fr(todayUtc())}.]\n\n${args.text}` : h.content;
+    if (role === "user" && h.attachments?.length) {
+      const liste = h.attachments.map((a) => `#${short(a)}`).join(", ");
+      if (withImages.includes(h.id)) {
+        text = `[Captures d'écran jointes par Timothé : ${liste}]\n\n${text}`;
+        transcript.push({ role, content: [...refs(h.attachments), { type: "text", text }] as never });
+        return;
+      }
+      text = `[Captures jointes précédemment (${liste}), non renvoyées]\n\n${text}`;
+    }
+    transcript.push({ role, content: text });
+  });
+  const settings = await getSettings(sql);
+  const model = args.deep ? settings.deepModel : settings.models[args.agentId];
   const [t] = await sql<{ id: string }[]>`
-    insert into tasks (agent_id, conversation_id, title, input, status, transcript)
-    values (${args.agentId}, ${args.conversationId}, ${args.text.slice(0, 120)}, ${args.text}, 'ready', ${sql.json(transcript as never)})
+    insert into tasks (agent_id, conversation_id, title, input, status, transcript, model, deep)
+    values (${args.agentId}, ${args.conversationId}, ${args.text.slice(0, 120)}, ${args.text}, 'ready', ${sql.json(transcript as never)}, ${model}, ${!!args.deep})
     returning id`;
   await sql`update tasks set root_id = id where id = ${t.id}`;
   return t.id;
@@ -77,17 +96,18 @@ export async function claimNext(sql: Sql): Promise<TaskRow | null> {
       where (status = 'ready' and not_before <= now()) or (status = 'running' and locked_until < now())
       order by created_at limit 1 for update skip locked
     )
-    returning id, root_id, parent_id, parent_tool_use_id, conversation_id, agent_id, title, input, status, transcript, pending_results, steps, attempts`;
+    returning id, root_id, parent_id, parent_tool_use_id, conversation_id, agent_id, title, input, status, transcript, pending_results, steps, attempts, model, deep`;
   return rows[0] ?? null;
 }
 
 async function budgetDepasse(sql: Sql, rootId: string): Promise<string | null> {
+  const { monthlyBudget, missionBudget } = await getSettings(sql);
   const [m] = await sql<{ total: string }[]>`select coalesce(sum(cost_usd), 0) as total from usage_log where created_at >= date_trunc('month', now())`;
-  if (Number(m.total) >= LIMITS.monthlyBudget)
-    return `Plafond mensuel atteint (${Number(m.total).toFixed(2)} $ / ${LIMITS.monthlyBudget} $). Augmente MONTHLY_BUDGET_USD si tu veux continuer.`;
+  if (Number(m.total) >= monthlyBudget)
+    return `Plafond mensuel atteint (${Number(m.total).toFixed(2)} $ / ${monthlyBudget} $). Tu peux le relever dans Réglages.`;
   const [r] = await sql<{ total: string }[]>`select coalesce(sum(cost_usd), 0) as total from tasks where root_id = ${rootId}`;
-  if (Number(r.total) >= LIMITS.missionBudget)
-    return `Plafond par mission atteint (${Number(r.total).toFixed(2)} $ / ${LIMITS.missionBudget} $). Mission arrêtée par sécurité.`;
+  if (Number(r.total) >= missionBudget)
+    return `Plafond par mission atteint (${Number(r.total).toFixed(2)} $ / ${missionBudget} $). Mission arrêtée par sécurité (réglable dans Réglages).`;
   return null;
 }
 
@@ -109,19 +129,20 @@ export async function runStep(sql: Sql, llm: LlmClient, task: TaskRow): Promise<
   if (budget) return fail(sql, task, budget);
 
   const transcript: Msg[] = task.transcript.length ? task.transcript : [{ role: "user", content: task.input }];
+  const model = task.model ?? (await getSettings(sql)).models[task.agent_id];
   let response: Anthropic.Beta.BetaMessage;
   try {
     response = await llm.create({
-      model: LIMITS.model,
+      model,
       max_tokens: 32000,
       system: [{ type: "text", text: rt.system, cache_control: { type: "ephemeral" } }],
-      tools: toolDefinitions(rt.tools, rt.web),
-      messages: transcript,
+      tools: toolDefinitions(rt.tools, rt.web, recentWebTools(model)),
+      messages: await hydrate(sql, transcript), // les captures ne sont chargées qu'ici
       cache_control: { type: "ephemeral" },
       thinking: { type: "adaptive" },
-      output_config: { effort: rt.effort },
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
+      output_config: { effort: effortFor(task.agent_id, model, task.deep) },
+      // Repli automatique si le modèle refuse (sécurité) ; non disponible sur Haiku.
+      ...(supportsFallback(model) ? { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const } : {}),
     });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
@@ -135,7 +156,7 @@ export async function runStep(sql: Sql, llm: LlmClient, task: TaskRow): Promise<
     return fail(sql, task, `Erreur de l'API Claude : ${msg}`);
   }
 
-  const usage = costOf(response.model ?? LIMITS.model, response.usage);
+  const usage = costOf(response.model ?? model, response.usage); // modèle réellement utilisé (repli compris)
   transcript.push({ role: "assistant", content: response.content as Anthropic.Beta.BetaContentBlockParam[] });
   const texte = response.content.filter((b): b is Anthropic.Beta.BetaTextBlock => b.type === "text").map((b) => b.text).join("\n").trim();
 
@@ -174,11 +195,20 @@ export async function runStep(sql: Sql, llm: LlmClient, task: TaskRow): Promise<
               pending.push({ type: "tool_result", tool_use_id: b.id, is_error: true, content: `Entrée invalide : ${parsed.error.issues.map((i) => i.message).join(", ")}` });
               continue;
             }
-            const { agent, consigne } = parsed.data;
+            const { agent, consigne, captures = [] } = parsed.data;
             const childInput = `[Contexte : nous sommes le ${fr(todayUtc())}. Consigne de Kung (Timothé ne voit pas ce brief, il verra la synthèse de Kung).]\n\n${consigne}`;
+            const cap = await resolveCaptures(tx, task.conversation_id, captures);
+            if (cap.inconnues.length) {
+              pending.push({ type: "tool_result", tool_use_id: b.id, is_error: true, content: `Captures introuvables : ${cap.inconnues.join(", ")}. Utilise les identifiants indiqués dans le message de Timothé (ex. a1b2c3d4).` });
+              continue;
+            }
+            const childTranscript: Msg[] = cap.ids.length
+              ? [{ role: "user", content: [...refs(cap.ids), { type: "text", text: `[Captures d'écran transmises par Kung : ${cap.ids.map((x) => `#${short(x)}`).join(", ")}]\n\n${childInput}` }] as never }]
+              : [];
+            const childModel = (await getSettings(tx)).models[agent];
             const [child] = await tx<{ id: string }[]>`
-              insert into tasks (root_id, parent_id, parent_tool_use_id, conversation_id, agent_id, title, input, status)
-              values (${rootId}, ${task.id}, ${b.id}, ${task.conversation_id}, ${agent}, ${consigne.slice(0, 120)}, ${childInput}, 'ready')
+              insert into tasks (root_id, parent_id, parent_tool_use_id, conversation_id, agent_id, title, input, status, transcript, model)
+              values (${rootId}, ${task.id}, ${b.id}, ${task.conversation_id}, ${agent}, ${consigne.slice(0, 120)}, ${childInput}, 'ready', ${tx.json(childTranscript as never)}, ${childModel})
               returning id`;
             pending.push({ pending_child: child.id, tool_use_id: b.id });
             enfants++;
@@ -233,6 +263,17 @@ async function onFinished(tx: Tx, task: TaskRow, result: string | null, error: s
     if (task.conversation_id) {
       if (result) await tx`insert into chat_messages (conversation_id, role, agent_id, content, task_id) values (${task.conversation_id}, 'agent', ${task.agent_id}, ${result}, ${task.id})`;
       else await postEvent(tx, task.conversation_id, task.agent_id, `⚠ ${nomAgent(task.agent_id)} n'a pas pu terminer : ${error}`, task.id);
+      // Coût réel de la mission (tokens facturés × tarifs publics), toutes délégations comprises.
+      const lignes = await tx<{ model: string; calls: number; cost: string; searches: number }[]>`
+        select u.model, count(*)::int as calls, sum(u.cost_usd)::text as cost, sum(u.web_searches)::int as searches
+        from usage_log u join tasks t on t.id = u.task_id where t.root_id = ${task.id} group by u.model order by 3 desc`;
+      if (lignes.length) {
+        const total = lignes.reduce((x, l) => x + Number(l.cost), 0);
+        const recherches = lignes.reduce((x, l) => x + l.searches, 0);
+        const detail = lignes.map((l) => `${nomModele(l.model)} ×${l.calls}`).join(", ");
+        await postEvent(tx, task.conversation_id, task.agent_id,
+          `Coût de la mission : ${total.toFixed(3)} $ · ${detail}${recherches ? ` · ${recherches} recherche${recherches > 1 ? "s" : ""} web` : ""}`, task.id);
+      }
       await tx`update conversations set updated_at = now() where id = ${task.conversation_id}`;
     }
     return;

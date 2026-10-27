@@ -2,18 +2,21 @@
 import { timingSafeEqual } from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { getSql } from "@/lib/db";
-import { hashPassword, loginBlocked, loginFailed } from "@/lib/password";
+import { hashPassword } from "@/lib/password";
+import { blockedFor, clientIp, recordFailure, RULES } from "@/lib/throttle";
 
 export async function POST(req: NextRequest) {
-  if (loginBlocked("setup")) return NextResponse.json({ error: "Trop de tentatives. Réessaie dans 15 minutes." }, { status: 429 });
+  const sql = getSql();
+  const key = `setup:${clientIp(req.headers)}`;
+  const min = await blockedFor(sql, key);
+  if (min > 0) return NextResponse.json({ error: `Trop de tentatives. Réessaie dans ${min} min.` }, { status: 429 });
   const { token, password } = (await req.json().catch(() => ({}))) as { token?: string; password?: string };
   const expected = process.env.SETUP_TOKEN ?? "";
-  const sql = getSql();
   const [existing] = await sql`select 1 from app_auth where id = 1`;
   if (existing || process.env.OWNER_PASSWORD_HASH) return NextResponse.json({ error: "Le mot de passe est déjà défini." }, { status: 409 });
   const ok = expected.length >= 16 && !!token && token.length === expected.length && timingSafeEqual(Buffer.from(token), Buffer.from(expected));
   if (!ok) {
-    loginFailed("setup");
+    await recordFailure(sql, key, RULES.setup);
     return NextResponse.json({ error: "Code de configuration invalide." }, { status: 401 });
   }
   let hash: string;
