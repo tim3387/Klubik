@@ -1,5 +1,7 @@
 // Stockage externe compatible S3 (Backblaze B2 recommandé : 10 Go gratuits ; aussi Cloudflare R2, Scaleway…).
 // La clé d'accès conseillée n'a PAS le droit de supprimer : un serveur compromis ne peut pas effacer les sauvegardes.
+import http from "node:http";
+import https from "node:https";
 import { AwsClient } from "aws4fetch";
 
 export interface S3Config { endpoint: string; region: string; bucket: string; accessKeyId: string; secretAccessKey: string; prefix: string }
@@ -25,10 +27,30 @@ async function check(r: Response, what: string) {
   return r;
 }
 
+/**
+ * Envoi d'un objet. On n'utilise PAS fetch : dans le serveur Next.js, fetch est remplacé par une version qui
+ * transmet le contenu par morceaux sans Content-Length, ce que Backblaze B2 refuse (HTTP 411). La requête est
+ * signée par aws4fetch puis envoyée avec le module HTTP de Node, taille annoncée.
+ */
 export async function putObject(c: S3Config, key: string, body: Buffer): Promise<void> {
-  await check(await client(c).fetch(url(c, key), {
+  const signed = await client(c).sign(url(c, key), {
     method: "PUT", body: new Uint8Array(body), headers: { "content-type": "application/octet-stream" },
-  }), "Envoi vers le stockage externe");
+  });
+  const headers: Record<string, string> = {};
+  signed.headers.forEach((v, k) => { headers[k] = v; });
+  headers["content-length"] = String(body.length);
+  const target = new URL(signed.url);
+  const res = await new Promise<{ status: number; text: string }>((resolve, reject) => {
+    const req = (target.protocol === "https:" ? https : http).request(target, { method: "PUT", headers }, (r) => {
+      const parts: Buffer[] = [];
+      r.on("data", (d: Buffer) => parts.push(d));
+      r.on("end", () => resolve({ status: r.statusCode ?? 0, text: Buffer.concat(parts).toString("utf8") }));
+    });
+    req.on("error", reject);
+    req.setTimeout(120_000, () => req.destroy(new Error("délai dépassé")));
+    req.end(body);
+  });
+  if (res.status < 200 || res.status >= 300) throw new Error(`Envoi vers le stockage externe : HTTP ${res.status} ${res.text.slice(0, 200)}`);
 }
 
 export async function getObject(c: S3Config, key: string): Promise<Buffer> {

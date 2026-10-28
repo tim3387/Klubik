@@ -124,7 +124,7 @@ Les secrets se saisissent **uniquement** dans les tableaux de bord Supabase, Bac
 
 ```bash
 npm run typecheck
-npm test   # sans variables : tests unitaires d'authentification uniquement
+npm test   # sans variables : tests unitaires (authentification, envoi externe) uniquement
 # Tests complets (bases jetables, ENTIÈREMENT vidées) :
 # KLUBIK_TEST_DB=… KLUBIK_TEST_DB2=… KLUBIK_TEST_S3=http://localhost:5055 (ex. moto_server)
 # KLUBIK_XLSX=…/klubik-prospection-master-v9.xlsx KLUBIK_REF=…/ref npm test
@@ -136,6 +136,7 @@ npm test   # sans variables : tests unitaires d'authentification uniquement
 | `engine` | Délégation parallèle, modèles par agent, coût réel, captures transmises, reprise, plafonds, validation, export Excel. |
 | `security` | Vraies routes : blocage par IP, attaque répartie, appareils de confiance, révocation, mot de passe. |
 | `backup` | Chiffrement, copie externe vérifiée, planification, restauration du CRM, reconstruction d'une base perdue, script de secours. |
+| `s3-upload` | Envoi vers le stockage externe avec taille annoncée (Backblaze refuse l'envoi par morceaux : HTTP 411), même sous le fetch modifié de Next.js. |
 | `auth` | Unités de session et de mot de passe. |
 
 Les agents reprennent les prompts et les règles de `klubik-ai/` (la V1 sous Claude Code). Les connaissances partagées se trouvent dans `knowledge/`.
