@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "NODE_OPTIONS=--max-old-space-size=2048 next build",
+    "start": "NODE_OPTIONS=--max-old-space-size=256 next start",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "db:migrate": "node --experimental-strip-types scripts/migrate-db.ts",

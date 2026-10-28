@@ -9,14 +9,15 @@ services:
     plan: starter
     region: frankfurt # données hébergées en UE ; non modifiable après création
     rootDir: klubik-ai-hq
+    # Limites de mémoire Node définies DANS les scripts (package.json), pas en variable d'environnement :
+    # une variable NODE_OPTIONS s'appliquerait aussi à la construction et la ferait échouer.
+    #   build : 2048 Mo (besoin mesuré < 512 Mo) · serveur : 256 Mo (offre Starter, 512 Mo au total)
     buildCommand: npm ci && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
         value: "22"
-      - key: NODE_OPTIONS
-        value: --max-old-space-size=256 # garde le serveur sous les 512 Mo de l'offre Starter
       - key: DATABASE_URL # chaîne « Session pooler » de Supabase
         sync: false
       - key: ANTHROPIC_API_KEY # clé de la console Anthropic (peut être ajoutée plus tard)
