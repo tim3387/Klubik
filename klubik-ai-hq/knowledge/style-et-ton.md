@@ -21,47 +21,50 @@ retours (statuts du CRM).
 Choisir celle qui colle au fait trouvé. **S'inspirer des exemples, ne jamais les recopier** : la tournure doit
 changer d'un club à l'autre (les clubs se parlent, et Instagram repère les messages répétés). Les crochets
 indiquent ce qui vient du dossier de Jojo ou de la fiche ; sans fait sourcé, choisir une autre approche.
+Mise en forme : « Bonjour, » seul sur la première ligne, le message, puis « Timothé » seul sur la dernière
+ligne (retours à la ligne réels dans le texte du brouillon). Ne pas répéter le même mot dans un message
+(ex. « plaisir » deux fois).
 
 **Ancien club de Timothé** (uniquement les clubs listés dans l'offre Klubik ; pas de saison sauf si Timothé
 l'a donnée) :
-> Bonjour, C'est Timothé, j'ai joué à [club]. Je suis retombé sur votre compte et ça m'a rappelé de bons
-> souvenirs. Aujourd'hui je fais la com' de clubs de hand avec Klubik. Qui s'occupe de vos visuels en ce
-> moment ? Ça me ferait plaisir d'en parler avec lui ou elle. Timothé
+> Bonjour,
+> C'est Timothé, j'ai joué à [club]. Je suis retombé sur votre compte et ça m'a rappelé de bons souvenirs. Aujourd'hui je fais la com' de clubs de hand avec Klubik. Qui s'occupe de vos visuels en ce moment ? Ça me ferait plaisir d'en parler avec lui ou elle.
+> Timothé
 
 **Un post précis** :
-> Bonjour, Votre affiche pour [match ou événement] m'a arrêté en scrollant, surtout [détail précis]. Je suis
-> Timothé, je crée des visuels pour des clubs de hand. Petite curiosité : c'est fait en interne ou par
-> quelqu'un d'extérieur ? Timothé
+> Bonjour,
+> Votre affiche pour [match ou événement] m'a arrêté en scrollant, surtout [détail précis]. Je suis Timothé, je crée des visuels pour des clubs de hand. Petite curiosité : c'est fait en interne ou par quelqu'un d'extérieur ?
+> Timothé
 
 **Félicitations, sans demande** :
-> Bonjour, Bravo pour [résultat précis] ! Je suis Timothé, handballeur et fondateur de Klubik : je fais des
-> visuels pour clubs amateurs. Si un jour vous voulez un coup de main pour mettre ça en valeur sur vos
-> réseaux, je suis là. Bonne saison ! Timothé
+> Bonjour,
+> Bravo pour [résultat précis] ! Je suis Timothé, handballeur et fondateur de Klubik : je fais des visuels pour clubs amateurs. Si un jour vous voulez un coup de main pour mettre ça en valeur sur vos réseaux, je suis là. Bonne saison !
+> Timothé
 
 **Les partenaires** :
-> Bonjour, Je vois que [club] a [fait sur ses partenaires]. Je suis Timothé, de Klubik : je crée des visuels
-> qui mettent les partenaires en avant, sur les réseaux comme sur les maillots. Comment vous les valorisez
-> aujourd'hui ? Timothé
+> Bonjour,
+> Je vois que [club] a [fait sur ses partenaires]. Je suis Timothé, de Klubik : je crée des visuels qui mettent les partenaires en avant, sur les réseaux comme sur les maillots. Comment vous les valorisez aujourd'hui ?
+> Timothé
 
 **Le temps du bénévole** :
-> Bonjour, J'ai vu que vous publiez [fait sur leurs publications]. J'ai joué des années en club, je sais le
-> temps que ça demande à la personne qui s'en occupe. Avec Klubik, je prépare des modèles Canva que le club
-> modifie en quelques minutes. Ça vous dirait que je vous montre ? Timothé
+> Bonjour,
+> J'ai vu que vous publiez [fait sur leurs publications]. J'ai joué des années en club, je sais le temps que ça demande à la personne qui s'en occupe. Avec Klubik, je prépare des modèles Canva que le club modifie en quelques minutes. Ça vous dirait que je vous montre ?
+> Timothé
 
 **Franc** :
-> Bonjour, Je ne vais pas tourner autour du pot : je suis Timothé, handballeur, et je crée des visuels pour
-> des clubs amateurs avec Klubik. En voyant [fait précis sur leur compte], je me suis dit que je pourrais
-> vous faire gagner du temps sur [type de visuel]. Je vous montre à quoi ça pourrait ressembler ? Timothé
+> Bonjour,
+> Je ne vais pas tourner autour du pot : je suis Timothé, handballeur, et je crée des visuels pour des clubs amateurs avec Klubik. En voyant [fait précis sur leur compte], je me suis dit que je pourrais vous faire gagner du temps sur [type de visuel]. Je vous montre à quoi ça pourrait ressembler ?
+> Timothé
 
 **La référence (le club d'abord)** :
-> Bonjour, [Fait sur le club] m'a donné envie de vous écrire. Je suis Timothé, handballeur, et j'ai
-> accompagné la JA Isle Handball sur ses visuels (le résultat est sur @klubik.pro). Ce genre de travail
-> pourrait-il vous être utile ? Si oui, qui serait la bonne personne pour en parler ? Timothé
+> Bonjour,
+> [Fait sur le club] m'a donné envie de vous écrire. Je suis Timothé, handballeur, et j'ai accompagné la JA Isle Handball sur ses visuels (le résultat est sur @klubik.pro). Ce genre de travail pourrait-il vous être utile ? Si oui, qui serait la bonne personne pour en parler ?
+> Timothé
 
 **Une idée à montrer** : seulement si l'idée concrète existe. Bililou la décrit dans les faits utilisés,
 sous la forme « Idée à valider : … », pour que Timothé la valide avant d'envoyer. Sinon, une autre approche.
-> Bonjour, Je suis Timothé, de Klubik. En regardant votre compte, j'ai eu une idée pour [vos affiches de
-> match / vos annonces de résultats]. Je peux vous la montrer en image, sans engagement. Je vous l'envoie ?
+> Bonjour,
+> Je suis Timothé, de Klubik. En regardant votre compte, j'ai eu une idée pour [vos affiches de match / vos annonces de résultats]. Je peux vous la montrer en image, sans engagement. Je vous l'envoie ?
 > Timothé
 
 ## Rejeté par Timothé (premier message)
