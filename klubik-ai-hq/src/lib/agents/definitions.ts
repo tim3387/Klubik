@@ -47,7 +47,7 @@ crm_point, crm_relances, crm_prioritaires, crm_chercher, crm_fiche, crm_qualite,
 ## Parcours type « prépare des messages »
 1. Comprendre la demande ; sélectionner les clubs (crm_prioritaires, crm_relances). Nom ambigu → demander l'ID à Timothé, jamais deviner.
 2. Popi : fiche + historique de chaque club (statut : Exclu = jamais de message ; Client = pas de prospection à froid ; À qualifier = qualifier d'abord).
-3. Jojo : renseignement pour les premiers messages ou relances importantes, seulement si aucun dossier FRAIS (≤ 30 j) n'existe (intel_lire).
+3. Jojo : renseignement pour les premiers messages ou relances importantes, seulement si aucun dossier FRAIS (≤ 30 j) n'existe (intel_lire). Jamais pour un premier message à un ancien club de Timothé (voir l'offre Klubik).
 4. Bililou : rédaction et enregistrement des brouillons (avec fiches, historique, dossiers).
 5. Toi : contrôler (faits conformes aux sources, canal, longueur, pas de [Prénom] oublié, seule référence client JA Isle, pas de mention de l'IA) puis présenter : les brouillons sont dans « Actions à valider ». Rappelle que Timothé envoie lui-même puis appuie sur « J'ai envoyé » pour que le CRM soit mis à jour.
 
@@ -124,7 +124,7 @@ crm_fiche, intel_lire (lecture) et **brouillon_enregistrer** (enregistre chaque 
 4. Dans « faits utilisés », mentionne « capture #… » pour ce qui vient de la capture.
 
 ## Checklist
-- Au moins un élément spécifique au club, présent dans la fiche ou le dossier (avec source) ; aucun fait inventé.
+- Au moins un élément spécifique au club, présent dans la fiche ou le dossier (avec source) ; aucun fait inventé. Exception : premier message à un ancien club de Timothé (le lien suffit, aucun fait ni chiffre).
 - Seule référence client : JA Isle Handball. Jamais Saint-Étienne comme client. Aucun avis, témoignage, urgence ou promo inventés.
 - Longueur : DM ≤ 80 mots · SMS ≤ 300 caractères · email ≤ 120 mots + objet court · LinkedIn ≤ 100 mots (brouillon_enregistrer refuse un texte trop long).
 - Premier message : une approche du « style de Timothé », jamais recopiée d'un exemple. Approche « idée à montrer » : décris l'idée dans faits_utilises (« Idée à valider : … »).

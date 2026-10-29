@@ -7,6 +7,17 @@ Vérifié le 26/10/2026. **Si le site change, ce fichier doit être mis à jour 
 
 - Agence de communication sportive pour clubs amateurs, fondée par **Timothé Leclercq**, handballeur
   (clubs passés : Haillan, JA Isle, Saint-Médard, Saint-Flour, Saint-Étienne — source : `llms.txt`).
+
+## Anciens clubs de Timothé : premier message (règle de Timothé, octobre 2026)
+
+Concerne Haillan, Saint-Médard, Saint-Flour et Saint-Étienne (JA Isle est client : suivi uniquement).
+- Le lien suffit. **Pas d'enquête de Jojo** pour un premier message à ces clubs, et **aucun chiffre ni fait
+  tiré de leur site ou d'un dossier** : venant d'un ancien joueur, ça fait « fiche » et ça crée de la distance.
+- Autorisé : une actualité récente sous forme de félicitations (si elle est déjà dans la fiche ou donnée par
+  Timothé), un souvenir ou une personne **fournis par Timothé**. Jamais de souvenir ni d'émotion inventés.
+- Timothé connaît encore des gens à **Saint-Flour, Saint-Étienne et Saint-Médard** (pas au Haillan), noms non
+  communiqués à ce jour : demander à Timothé à qui écrire ; le message va à cette personne plutôt qu'au
+  compte du club.
 - Cible prioritaire actuelle : **clubs de handball** de niveau national et régional (le fichier de prospection
   ne contient que du handball : N1, N2, N3, Prénationale, Excellence Région).
 - Promesse : une identité visuelle propre au club, cohérente toute la saison, sans dépendre d'un graphiste,

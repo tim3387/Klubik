@@ -25,10 +25,11 @@ Mise en forme : « Bonjour, » seul sur la première ligne, le message, puis « 
 ligne (retours à la ligne réels dans le texte du brouillon). Ne pas répéter le même mot dans un message
 (ex. « plaisir » deux fois).
 
-**Ancien club de Timothé** (uniquement les clubs listés dans l'offre Klubik ; pas de saison sauf si Timothé
-l'a donnée) :
+**Ancien club de Timothé** (voir « Anciens clubs de Timothé » dans l'offre Klubik : aucun fait ni chiffre
+sur le club, pas de saison sauf si Timothé l'a donnée). Ajouter dans les faits utilisés : « À personnaliser :
+un souvenir, ou la personne que tu connais au club à qui l'adresser ? » :
 > Bonjour,
-> C'est Timothé, j'ai joué à [club]. Je suis retombé sur votre compte et ça m'a rappelé de bons souvenirs. Aujourd'hui je fais la com' de clubs de hand avec Klubik. Qui s'occupe de vos visuels en ce moment ? Ça me ferait plaisir d'en parler avec lui ou elle.
+> C'est Timothé, j'ai joué à [club]. Aujourd'hui je crée des visuels pour des clubs de hand avec Klubik, et j'aimerais beaucoup travailler avec mon ancien club. Qui s'occupe de vos visuels en ce moment ?
 > Timothé
 
 **Un post précis** :
@@ -93,7 +94,8 @@ appel à l'action mou (« Si ce sujet fait partie de vos réflexions… »).
   l'enregistrement : un brouillon trop long est refusé et doit être raccourci.
 - Une seule idée et une seule demande par message.
 - Parler du club, pas de Klubik : au moins une phrase spécifique au club, tirée du CRM (signal, diagnostic,
-  angle). Si le CRM ne donne rien de spécifique, le dire à Kung plutôt que d'inventer.
+  angle). Si le CRM ne donne rien de spécifique, le dire à Kung plutôt que d'inventer. Exception : ancien
+  club de Timothé (le lien suffit, aucun fait).
 - Pas de « [Prénom] » dans un message final : si le prénom est inconnu, écrire « Bonjour, » et signaler que
   l'interlocuteur est à identifier.
 - Relance : ne jamais renvoyer le même message. Apporter un élément nouveau (mini-audit, exemple concret,
