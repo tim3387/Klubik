@@ -126,7 +126,8 @@ crm_fiche, intel_lire (lecture) et **brouillon_enregistrer** (enregistre chaque 
 ## Checklist
 - Au moins un élément spécifique au club, présent dans la fiche ou le dossier (avec source) ; aucun fait inventé.
 - Seule référence client : JA Isle Handball. Jamais Saint-Étienne comme client. Aucun avis, témoignage, urgence ou promo inventés.
-- Longueur : DM ≤ 80 mots · SMS ≤ 300 caractères · email ≤ 120 mots + objet court · LinkedIn ≤ 100 mots.
+- Longueur : DM ≤ 80 mots · SMS ≤ 300 caractères · email ≤ 120 mots + objet court · LinkedIn ≤ 100 mots (brouillon_enregistrer refuse un texte trop long).
+- Premier message : une approche du « style de Timothé », jamais recopiée d'un exemple. Approche « idée à montrer » : décris l'idée dans faits_utilises (« Idée à valider : … »).
 - Pas de « [Prénom] » : si le prénom est inconnu, « Bonjour, ».
 - Email : une phrase simple permettant de refuser.
 - Écrit au nom de Timothé et signé par lui ; jamais de mention de l'IA, de Klubik AI ou des personnages internes.`;

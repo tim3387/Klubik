@@ -137,6 +137,7 @@ npm test   # sans variables : tests unitaires (authentification, envoi externe) 
 | `security` | Vraies routes : blocage par IP, attaque répartie, appareils de confiance, révocation, mot de passe. |
 | `backup` | Chiffrement, copie externe vérifiée, planification, restauration du CRM, reconstruction d'une base perdue, script de secours. |
 | `s3-upload` | Envoi vers le stockage externe avec taille annoncée (Backblaze refuse l'envoi par morceaux : HTTP 411), même sous le fetch modifié de Next.js. |
+| `longueur` | Limite de longueur des brouillons par canal (DM 80 mots, email 120, SMS 300 caractères). |
 | `auth` | Unités de session et de mot de passe. |
 
 Les agents reprennent les prompts et les règles de `klubik-ai/` (la V1 sous Claude Code). Les connaissances partagées se trouvent dans `knowledge/`.

@@ -42,7 +42,8 @@ Paiement : Stripe.
 ## Ce que Klubik propose déjà dans les messages (fichier, colonne « Message prêt à copier »)
 
 - Un **mini-audit gratuit** : reprendre 3 visuels récents du club, dire ce qui fonctionne et ce qui freine,
-  refaire l'un d'eux à la manière Klubik, sans engagement. C'est l'offre d'entrée utilisée en relance.
+  refaire l'un d'eux à la manière Klubik, sans engagement. C'est l'offre d'entrée utilisée en relance
+  (jamais dans le premier message : choix de Timothé, voir « style et ton »).
 - Angles récurrents (colonne « Angle commercial dominant ») : cohérence multi-équipes, valorisation des
   partenaires, nouvelle dynamique sportive (montée, nouvelle saison), modernisation de l'identité.
 

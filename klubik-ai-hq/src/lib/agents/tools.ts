@@ -8,6 +8,7 @@ import * as R from "../crm/rules";
 import { clubJournal, getClub, loadClubs, loadSettings } from "../crm/repo";
 import { fraicheur, validerDossier } from "../intel";
 import type { AgentId } from "./definitions";
+import { depassement } from "./longueur";
 
 export interface ToolContext {
   tx: Tx;
@@ -284,6 +285,8 @@ export const TOOLS: Record<string, Def> = {
       if (!c) return `ÉCHEC : aucun club avec l'ID ${i.club_id}.`;
       if (c.data["Statut"] === "Exclu") return `ÉCHEC : ${c.data["Club"]} est « Exclu » (jamais de message). Brouillon non enregistré.`;
       if (/\[Pr[ée]nom\]/i.test(i.texte)) return "ÉCHEC : le texte contient « [Prénom] ». Utilise « Bonjour, » si le prénom est inconnu.";
+      const tropLong = depassement(i.canal, i.texte);
+      if (tropLong) return tropLong;
       const titre = `${c.data["Club"]} — ${i.type_message} (${i.canal})`;
       const [a] = await ctx.tx<{ id: string }[]>`
         insert into actions (task_id, root_id, conversation_id, agent_id, kind, status, club_id, title, payload)
