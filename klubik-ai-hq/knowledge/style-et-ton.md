@@ -13,6 +13,10 @@ retours (statuts du CRM).
 2. **Un seul fait** sur le club, vérifié et sourcé, qui amène la demande. Jamais de liste de chiffres.
 3. **Ton chaleureux et simple** : un handballeur qui écrit à un club, pas une agence.
 4. **Une seule demande** : une vraie question ou une proposition de montrer. Ou aucune demande (félicitations).
+   Formule de fin appréciée par Timothé : « Est-ce que vous seriez ouverts à en discuter ? » (« ouverts » au
+   compte d'un club ; à une personne, accorder si son genre est connu, sinon « Est-ce que ça vous dirait d'en
+   discuter ? »). Seulement si le sujet vient d'être posé (sinon « en » ne renvoie à rien), et pas dans tous
+   les messages : c'est une option parmi les autres fins.
 5. **Vouvoiement** en premier contact, toujours, même pour un ancien club de Timothé.
 6. Signature courte : « Timothé » (DM) ou « Timothé Leclercq / Klubik · klubik.pro » (email).
 
