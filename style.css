@@ -132,9 +132,8 @@ img, svg { display: block; }
   /* ─ Liquid Glass ─ */
   border-radius: 100px;
   position: relative;
+  isolation: isolate;
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
   box-shadow:
     0 4px 24px rgba(0, 0, 0, 0.08),
     inset 0  1px 0 rgba(255, 255, 255, 0.9),
@@ -143,6 +142,18 @@ img, svg { display: block; }
     inset -1px 0 0 rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.35);
   transition: background .35s, box-shadow .35s var(--ease);
+}
+/* Le flou est posé sur un calque derrière la barre, pas sur la barre elle-même :
+   un backdrop-filter sur .nav-inner enfermerait le menu mobile (position fixed)
+   dans les 64px de la barre au lieu de le laisser couvrir tout l'écran. */
+.nav-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
 }
 #navbar.scrolled .nav-inner {
   background: rgba(255, 255, 255, 0.18);
@@ -1781,22 +1792,6 @@ img, svg { display: block; }
   box-shadow: var(--shadow-md);
   transform: translateY(-4px);
 }
-.pcard-visual {
-  display: block;
-  width: 100%;
-  height: 280px;
-  background: var(--surface);
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  overflow: hidden;
-}
-.pcard-visual img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
 .pcard-info { padding: 20px 24px 24px; }
 .pcard-tag {
   display: inline-block;
@@ -1827,8 +1822,53 @@ img, svg { display: block; }
 .pcard-title-btn:hover { color: var(--blue); }
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
+}
+
+/* Bandeau courbé : les visuels défilent sur l'intérieur d'un cylindre.
+   Le JS crée les tuiles, le CSS ne fait que poser le cadre. */
+.portfolio-band {
+  --band-height: 520px;
+  position: relative;
+  height: var(--band-height);
+  margin: 8px 0 40px;
+  overflow: hidden;
+}
+.portfolio-band-stage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+  /* Fondu sur les deux bords */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.portfolio-band-stage.ready { opacity: 1; }
+.portfolio-band-tile {
+  position: absolute;
+  transform-style: preserve-3d;
+}
+.portfolio-band-slice {
+  position: absolute;
+  top: 0;
+  overflow: hidden;
+  background: var(--border);
+}
+.portfolio-band-slice:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+.portfolio-band-slice:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.portfolio-band-slice img {
+  position: absolute;
+  top: 0;
+  max-width: none;
+  object-fit: cover;
+}
+/* Hors écran : pause pour économiser la batterie */
+.portfolio-band-stage.paused .portfolio-band-tile { animation-play-state: paused; }
+/* Mouvement réduit : le bandeau reste affiché mais immobile */
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-band-tile { animation-play-state: paused !important; }
 }
 .portfolio .section-head { margin-bottom: 28px; }
 .portfolio-placeholder {
@@ -2058,6 +2098,9 @@ img, svg { display: block; }
 .testi-head h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 12px; color: var(--black); }
 .testi-head p { font-size: 1rem; color: var(--muted); max-width: 520px; margin: 0 auto; }
 .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+/* Un seul avis : carte centrée au lieu d'une grille de 3 */
+.testi-grid--single { grid-template-columns: minmax(0, 520px); justify-content: center; }
+.testi-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 40px; }
 .testi-card {
   position: relative;
   overflow: hidden;
@@ -2352,7 +2395,8 @@ img, svg { display: block; }
 
 @media (max-width: 1024px) {
   .testi-grid { grid-template-columns: 1fr 1fr; }
-  .portfolio-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
+  .portfolio-grid { grid-template-columns: 1fr 1fr; }
+  .portfolio-band { --band-height: 460px; }
   .hero { grid-template-columns: 1fr; gap: 56px; padding-top: 130px; text-align: center; }
   .hero-sub { margin: 0 auto 40px; }
   .hero-actions { justify-content: center; }
@@ -2390,6 +2434,7 @@ img, svg { display: block; }
 @media (max-width: 768px) {
   .testi-grid { grid-template-columns: 1fr; }
   .portfolio-note { white-space: normal; width: auto; max-width: 100%; }
+  .portfolio-band { --band-height: 400px; margin-bottom: 0; }
   .nav-links { display: none; }
   .nav-links.open {
     display: flex;
@@ -2440,6 +2485,8 @@ img, svg { display: block; }
 }
 
 @media (max-width: 480px) {
+  .portfolio-grid { grid-template-columns: 1fr; }
+
   /* Hero compact iPhone */
   .hero { padding-top: 96px; padding-bottom: 40px; gap: 32px; }
   .hero-title { font-size: 2.2rem; letter-spacing: -0.03em; }

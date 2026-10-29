@@ -15,8 +15,10 @@ Création de packs design clés en main pour clubs sportifs amateurs : logos, ma
 - **Pack Identité** : création de logo + charte graphique du club
 - **Pack Saison** : offre complète : logo, maillot, templates, calendrier
 
+<!-- FORMATION MASQUÉE : décommenter quand la formation sera lancée
 ### Formation
 - **Formation Canva pour clubs sportifs** : 10 modules vidéo (~3h) + guide PDF, accès à vie, 179€. Apprenez à créer tous vos visuels sport (posts, affiches, flyers) avec Canva, sans compétences préalables.
+-->
 
 ## Cible
 Clubs sportifs amateurs français, toutes disciplines confondues (football, handball, basketball, rugby, volleyball, arts martiaux, etc.). Convient aux petits clubs comme aux clubs de taille moyenne, aux bénévoles et dirigeants sans formation graphique.
@@ -33,14 +35,14 @@ Timothé Leclercq, handballeur amateur ayant évolué dans plusieurs clubs (Hail
 
 ## Pages principales
 - Accueil / Landing page : https://klubik.pro/
-- Formation Canva : https://klubik.pro/formation-canva.html
+<!-- FORMATION MASQUÉE : - Formation Canva : https://klubik.pro/formation-canva.html -->
 - Mentions légales : https://klubik.pro/mentions-legales.html
 - CGV : https://klubik.pro/cgv.html
 - CGU : https://klubik.pro/cgu.html
 
 ## Informations clés pour les IA
 - Paiements via Stripe (sécurisé)
-- Garantie satisfait-ou-remboursé 14 jours sur la formation
+<!-- FORMATION MASQUÉE : - Garantie satisfait-ou-remboursé 14 jours sur la formation -->
 - Délais : 5-7 jours ouvrés pour les packs Canva, 2-3 semaines pour les créations sur-mesure (logo, maillot)
 - Présence en ligne uniquement (pas de boutique physique)
 - Langue : français

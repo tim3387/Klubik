@@ -454,6 +454,147 @@ if (window.matchMedia('(hover: hover)').matches) {
   });
 })();
 
+// ─── Bandeau portfolio courbé ────────────────────────
+// Les visuels défilent de droite à gauche sur l'intérieur d'un cylindre :
+// à plat au centre, courbés vers soi sur les bords, en fondu aux extrémités.
+// Une boîte CSS ne peut pas se courber : chaque visuel est donc découpé en
+// fines bandes verticales, chacune tournée de quelques degrés. C'est le CSS
+// (une animation par visuel) qui fait tourner le tout ; le JS calcule les
+// tailles et change d'image quand un visuel repasse hors de l'écran.
+(function () {
+  const band = document.getElementById('portfolioBand');
+  const source = document.getElementById('portfolioBandImages');
+  if (!band || !source) return;
+
+  // Réglages
+  const SLICES = 16;          // bandes par visuel (moins = arêtes visibles)
+  const CAMERA = 1.6;         // distance de la caméra, en rayons du cylindre
+  const SPEED = 4;            // secondes pour avancer d'un visuel
+  const TILE_HEIGHT = 0.55;   // hauteur d'un visuel / hauteur du bandeau
+  const MAX_WIDTH = 0.55;     // largeur max d'un visuel / largeur du bandeau
+  const ASPECT = 900 / 1125;  // format des visuels (largeur / hauteur)
+  const GAP = 0.08;           // espace entre visuels / hauteur d'un visuel
+  const CURVE = 60;           // courbure atteinte au bord de l'écran, en degrés
+
+  const images = [...source.content.querySelectorAll('img')].map(img => img.getAttribute('src'));
+  if (!images.length) return;
+
+  const bend = CURVE * Math.PI / 180;
+  const toDeg = rad => rad * 180 / Math.PI;
+  const round = n => +n.toFixed(4);
+  // Rayon du cylindre (en part de la largeur) pour que le bord de l'écran tombe à `bend`
+  const arc = (CAMERA - 1 + Math.cos(bend)) / (2 * CAMERA * Math.sin(bend));
+
+  const keyframes = document.createElement('style');
+  document.head.appendChild(keyframes);
+  let stage = null;
+  let current = '';
+  let visible = false;
+
+  function build() {
+    const width = band.clientWidth;
+    const height = band.clientHeight;
+    const h = Math.min(TILE_HEIGHT * height, MAX_WIDTH * width / ASPECT);
+    const radius = round(width * arc);
+    if (!(h > 0) || !(radius > 0)) return;
+
+    const unit = toDeg(h / radius);                 // arc couvert par une hauteur de visuel
+    const pitch = (ASPECT + GAP) * unit;            // arc entre deux visuels
+    const limit = toDeg(bend) + ASPECT * unit / 2;  // au-delà, le visuel est hors écran
+    const columns = Math.min(60, Math.max(2, Math.ceil(2 * limit / pitch)));
+    const sweep = round(columns * pitch / 2);
+
+    // Même taille qu'avant : inutile de tout reconstruire
+    const key = columns + '|' + Math.round(h) + '|' + Math.round(radius);
+    if (key === current) return;
+    current = key;
+
+    // Place une boîte sur le cylindre : on avance jusqu'à l'axe, on tourne, on revient
+    const turn = deg => `translateZ(${radius}px) rotateY(${round(deg)}deg) translateZ(-${radius}px)`;
+    // Masqué quand il est entièrement hors écran, là où il reboucle
+    const hide = round((sweep - Math.min(sweep, limit)) / (2 * sweep) * 100);
+    keyframes.textContent =
+      `@keyframes portfolio-orbit{` +
+      `from{transform:${turn(-sweep)}}to{transform:${turn(sweep)}}` +
+      `0%,${hide}%,${100 - hide}%,100%{visibility:hidden}` +
+      `${hide + 0.001}%,${100 - hide - 0.001}%{visibility:visible}}`;
+
+    const share = ASPECT / SLICES;
+    const tileWidth = ASPECT * h;
+    const duration = columns * SPEED;
+
+    const next = document.createElement('div');
+    next.className = 'portfolio-band-stage';
+    next.style.perspective = `${round(radius * CAMERA)}px`;
+
+    for (let t = 0; t < columns; t++) {
+      // Numérote les visuels dans leur ordre d'arrivée à l'écran
+      const first = columns - 1 - t;
+      const tile = document.createElement('div');
+      tile.className = 'portfolio-band-tile';
+      Object.assign(tile.style, {
+        left: `calc(50% - ${tileWidth / 2}px)`,
+        top: `calc(50% - ${h / 2}px)`,
+        width: `${tileWidth}px`,
+        height: `${h}px`,
+        // Le délai négatif place chaque visuel à sa position sur l'arc
+        animation: `portfolio-orbit ${duration}s linear ${-t * SPEED}s infinite`,
+      });
+
+      for (let k = 0; k < SLICES; k++) {
+        const slice = document.createElement('div');
+        slice.className = 'portfolio-band-slice';
+        Object.assign(slice.style, {
+          left: `${(ASPECT - share) / 2 * h}px`,
+          // 1px de plus pour qu'aucun fil ne s'ouvre entre deux bandes
+          width: `${share * h + (k === SLICES - 1 ? 0 : 1)}px`,
+          height: `${h}px`,
+          transform: turn((ASPECT / 2 - (k + 0.5) * share) * unit),
+        });
+        const img = document.createElement('img');
+        img.alt = '';
+        img.draggable = false;
+        img.src = images[first % images.length];
+        Object.assign(img.style, { left: `${-k * share * h}px`, width: `${tileWidth}px`, height: `${h}px` });
+        slice.appendChild(img);
+        tile.appendChild(slice);
+      }
+
+      // À chaque tour (hors écran), le visuel prend l'image suivante de la liste
+      tile.addEventListener('animationiteration', e => {
+        const lap = Math.round(e.elapsedTime / duration);
+        const src = images[(lap * columns + first) % images.length];
+        tile.querySelectorAll('img').forEach(img => { img.src = src; });
+      });
+      next.appendChild(tile);
+    }
+
+    if (stage) stage.remove();
+    band.appendChild(next);
+    stage = next;
+    stage.classList.toggle('paused', !visible);
+    requestAnimationFrame(() => next.classList.add('ready'));
+  }
+
+  // Construit le bandeau à l'approche de la section (ne ralentit pas le chargement
+  // de la page), puis le met en pause quand il sort de l'écran
+  let started = false;
+  new IntersectionObserver(entries => {
+    visible = entries[0].isIntersecting;
+    if (visible && !started) {
+      started = true;
+      images.forEach(src => { new Image().src = src; });
+      build();
+      let timer;
+      new ResizeObserver(() => {
+        clearTimeout(timer);
+        timer = setTimeout(build, 150);
+      }).observe(band);
+    }
+    if (stage) stage.classList.toggle('paused', !visible);
+  }, { rootMargin: '300px 0px' }).observe(band);
+})();
+
 // ─── Modale portfolio (lightbox) ─────────────────────
 (function () {
   const overlay = document.getElementById('portfolioModalOverlay');

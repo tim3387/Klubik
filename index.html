@@ -54,7 +54,8 @@
         <li><a href="#services">Services</a></li>
         <li><a href="#portfolio">Portfolio</a></li>
         <li><a href="#packs">Packs</a></li>
-        <li><a href="formation-canva.html" class="nav-formation">Formation</a></li>
+        <!-- FORMATION MASQUÉE : retirer "hidden" quand la formation sera lancée -->
+        <li hidden><a href="formation-canva.html" class="nav-formation">Formation</a></li>
         <li><a href="#contact" class="nav-cta">Démarrer un projet</a></li>
       </ul>
       <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
@@ -425,11 +426,46 @@
         <p class="section-sub">Un aperçu du niveau de finition possible pour vos visuels de communication.</p>
       </div>
       <p class="portfolio-note">Visuels réalisés à titre d'exemple pour illustrer nos packs et notre qualité de service.</p>
+    </div>
+
+    <!-- Bandeau courbé : construit par script.js à partir du <template> ci-dessous.
+         Pour ajouter ou retirer un visuel, il suffit de modifier la liste d'images. -->
+    <div class="portfolio-band" id="portfolioBand" aria-hidden="true"></div>
+    <template id="portfolioBandImages">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-affiche.webp" alt="">
+      <img src="assets/images/portfolio/ja-isle/portfolio-jaisle-coupedefrance.webp" alt="">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-jourdematch.webp" alt="">
+      <img src="assets/images/portfolio/st-etienne/portfolio-stetienne-bienvenue.webp" alt="">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-effectif.webp" alt="">
+      <img src="assets/images/portfolio/ja-isle/portfolio-jaisle-match.webp" alt="">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-mitemps.webp" alt="">
+      <img src="assets/images/portfolio/st-etienne/portfolio-stetienne-match.webp" alt="">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-programme-weekend.webp" alt="">
+      <img src="assets/images/portfolio/ja-isle/portfolio-jaisle-groupe.webp" alt="">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-resultats.webp" alt="">
+      <img src="assets/images/portfolio/st-etienne/portfolio-stetienne-mitemps.webp" alt="">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-calendrier.webp" alt="">
+      <img src="assets/images/portfolio/ja-isle/portfolio-jaisle-calendrier.webp" alt="">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-findumatch.webp" alt="">
+      <img src="assets/images/portfolio/st-etienne/portfolio-stetienne-victoire.webp" alt="">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-programme-mois.webp" alt="">
+      <img src="assets/images/portfolio/ja-isle/portfolio-jaisle-programme.webp" alt="">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-partenaire.webp" alt="">
+      <img src="assets/images/portfolio/st-etienne/portfolio-stetienne-planning.webp" alt="">
+      <img src="assets/images/portfolio/ja-isle/portfolio-jaisle-anniversaire.webp" alt="">
+      <img src="assets/images/portfolio/st-etienne/portfolio-stetienne-partenaire.webp" alt="">
+    </template>
+
+    <div class="container">
       <div class="portfolio-grid">
         <div class="pcard reveal-item">
-          <button type="button" class="pcard-visual" data-portfolio-open="jaisle" aria-label="Voir les 6 visuels du projet JA Isle Handball">
-            <img src="assets/images/portfolio/ja-isle/portfolio-jaisle-coupedefrance.webp" alt="Affiche 'Jour de match' Coupe de France réalisée pour JA Isle Handball, exemple Pack Terrain" width="900" height="1125" loading="lazy">
-          </button>
+          <div class="pcard-info">
+            <span class="pcard-tag">Pack Klubik</span>
+            <button type="button" class="pcard-title-btn" data-portfolio-open="stgilles">Saint Gilles HBC →</button>
+            <p>Affiches match, effectif, mi-temps, résultats, calendrier, programme du week-end et merci partenaire : 10 visuels livrés au club.</p>
+          </div>
+        </div>
+        <div class="pcard reveal-item">
           <div class="pcard-info">
             <span class="pcard-tag">Pack Terrain</span>
             <button type="button" class="pcard-title-btn" data-portfolio-open="jaisle">JA Isle Handball →</button>
@@ -437,9 +473,6 @@
           </div>
         </div>
         <div class="pcard reveal-item">
-          <button type="button" class="pcard-visual" data-portfolio-open="stetienne" aria-label="Voir les 6 visuels du projet Saint-Étienne Handball">
-            <img src="assets/images/portfolio/st-etienne/portfolio-stetienne-bienvenue.webp" alt="Affiche 'Bienvenue nouveau joueur', création fictive imaginée pour Saint-Étienne Handball, exemple Pack Klubik" width="900" height="1125" loading="lazy">
-          </button>
           <div class="pcard-info">
             <span class="pcard-tag">Pack Klubik</span>
             <button type="button" class="pcard-title-btn" data-portfolio-open="stetienne">Saint-Étienne Handball →</button>
@@ -447,9 +480,6 @@
           </div>
         </div>
         <div class="pcard reveal-item">
-          <button type="button" class="pcard-visual" data-portfolio-open="composition" aria-label="Voir les 5 templates gratuits en entier">
-            <img src="assets/images/portfolio/templates-gratuits/2.png" alt="Template gratuit 'Jour de match' à personnaliser avec vos logos et votre date" width="1080" height="1350" loading="lazy">
-          </button>
           <div class="pcard-info">
             <span class="pcard-tag">Templates gratuits</span>
             <button type="button" class="pcard-title-btn" data-portfolio-open="composition">Templates gratuits →</button>
@@ -760,8 +790,9 @@
     </div>
   </section>
 
-  <!-- ─── Bannière Formation Canva ─── -->
-  <div class="container">
+  <!-- ─── Bannière Formation Canva ───
+       FORMATION MASQUÉE : retirer "hidden" quand la formation sera lancée -->
+  <div class="container" hidden>
     <div class="formation-banner reveal-item">
       <div class="formation-banner-left">
         <span class="formation-banner-tag">🎓 Formation en ligne</span>
@@ -862,71 +893,39 @@
   </section>
 
   <!-- ══════════════ TÉMOIGNAGES ══════════════
-       Retirer l'attribut "hidden" dès que tu as de vrais témoignages.
+       Pour ajouter un avis : dupliquer un bloc .testi-card.
+       Retirer la classe "testi-grid--single" dès qu'il y a 2 avis ou plus.
   ══════════════════════════════════════════════ -->
-  <section id="avis" class="testi" hidden>
+  <section id="avis" class="testi">
     <div class="container">
       <div class="testi-head">
         <span class="eyebrow">Ils nous font confiance</span>
         <h2>Ce que les clubs disent de Klubik.</h2>
         <p>Des bénévoles et dirigeants qui ont décidé de donner une image professionnelle à leur club.</p>
-        <a href="https://fr.trustpilot.com/evaluate/klubik.pro" target="_blank" rel="noopener nofollow" class="btn-ghost" style="margin-top:24px;display:inline-flex;">
-          ★ Laisser un avis sur Trustpilot
-        </a>
       </div>
-      <div class="testi-grid" hidden>
+      <div class="testi-grid testi-grid--single">
 
         <div class="testi-card reveal-item">
           <span class="testi-quote" aria-hidden="true">"</span>
-          <div class="testi-stars" aria-label="5 étoiles sur 5">
+          <div class="testi-stars" role="img" aria-label="5 étoiles sur 5">
             <span class="testi-star">★</span><span class="testi-star">★</span>
             <span class="testi-star">★</span><span class="testi-star">★</span>
             <span class="testi-star">★</span>
           </div>
-          <p class="testi-text">À remplacer par un vrai avis client.</p>
+          <p class="testi-text">Je recommande à 100% ! Entre rapidité efficacité et talentueux ! 👏🏼👏🏼</p>
           <div class="testi-author">
-            <div class="testi-avatar" aria-hidden="true">P</div>
+            <div class="testi-avatar" aria-hidden="true">G</div>
             <div>
-              <p class="testi-name">Prénom Nom</p>
-              <p class="testi-club">Rôle · Nom du club</p>
+              <p class="testi-name">Gauthier Gardenat</p>
+              <p class="testi-club">Saint Gilles HBC · Avis Trustpilot</p>
             </div>
           </div>
         </div>
 
-        <div class="testi-card reveal-item">
-          <span class="testi-quote" aria-hidden="true">"</span>
-          <div class="testi-stars" aria-label="5 étoiles sur 5">
-            <span class="testi-star">★</span><span class="testi-star">★</span>
-            <span class="testi-star">★</span><span class="testi-star">★</span>
-            <span class="testi-star">★</span>
-          </div>
-          <p class="testi-text">À remplacer par un vrai avis client.</p>
-          <div class="testi-author">
-            <div class="testi-avatar" aria-hidden="true">P</div>
-            <div>
-              <p class="testi-name">Prénom Nom</p>
-              <p class="testi-club">Rôle · Nom du club</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="testi-card reveal-item">
-          <span class="testi-quote" aria-hidden="true">"</span>
-          <div class="testi-stars" aria-label="5 étoiles sur 5">
-            <span class="testi-star">★</span><span class="testi-star">★</span>
-            <span class="testi-star">★</span><span class="testi-star">★</span>
-            <span class="testi-star">★</span>
-          </div>
-          <p class="testi-text">À remplacer par un vrai avis client.</p>
-          <div class="testi-author">
-            <div class="testi-avatar" aria-hidden="true">P</div>
-            <div>
-              <p class="testi-name">Prénom Nom</p>
-              <p class="testi-club">Rôle · Nom du club</p>
-            </div>
-          </div>
-        </div>
-
+      </div>
+      <div class="testi-links">
+        <a href="https://fr.trustpilot.com/review/klubik.pro" target="_blank" rel="noopener nofollow" class="btn-ghost">Voir les avis sur Trustpilot</a>
+        <a href="https://fr.trustpilot.com/evaluate/klubik.pro" target="_blank" rel="noopener nofollow" class="btn-ghost">★ Laisser un avis sur Trustpilot</a>
       </div>
     </div>
   </section>
@@ -1044,6 +1043,27 @@
       <img src="assets/images/portfolio/templates-gratuits/3.png" alt="Template gratuit 'Bienvenue' pour l'arrivée d'un nouveau joueur, avec logo à personnaliser" width="1080" height="1350" loading="lazy">
       <img src="assets/images/portfolio/templates-gratuits/4.png" alt="Template gratuit 'Calendrier des matchs du mois' à personnaliser" width="1080" height="1350" loading="lazy">
       <img src="assets/images/portfolio/templates-gratuits/5.png" alt="Template gratuit 'Matchs de la semaine' avec logos à personnaliser" width="1080" height="1350" loading="lazy">
+    </div>
+  </template>
+
+  <template id="portfolio-modal-stgilles">
+    <div class="portfolio-modal-header">
+      <h3>Saint Gilles HBC : Pack Klubik</h3>
+      <button type="button" class="portfolio-modal-close" aria-label="Fermer la fenêtre">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="portfolio-modal-grid">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-affiche.webp" alt="Affiche de match Championnat régional Saint Gilles HBC contre Saint-Pierre" width="900" height="1125" loading="lazy">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-jourdematch.webp" alt="Affiche 'Jour de match' avec trois joueurs, Saint Gilles HBC" width="900" height="1125" loading="lazy">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-effectif.webp" alt="Présentation de l'effectif de la saison avec numéros et noms des joueurs, Saint Gilles HBC" width="900" height="1125" loading="lazy">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-mitemps.webp" alt="Affiche 'Mi-temps' avec le score, Saint Gilles HBC" width="900" height="1125" loading="lazy">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-findumatch.webp" alt="Affiche 'Fin du match' avec le score final, Saint Gilles HBC" width="900" height="1125" loading="lazy">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-programme-weekend.webp" alt="Programme du week-end de toutes les équipes, Saint Gilles HBC" width="900" height="1125" loading="lazy">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-resultats.webp" alt="Résultats du week-end de toutes les équipes, Saint Gilles HBC" width="900" height="1125" loading="lazy">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-calendrier.webp" alt="Calendrier mensuel des matchs seniors masculins, Saint Gilles HBC" width="900" height="1125" loading="lazy">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-programme-mois.webp" alt="Programme des matchs du mois avec photos des joueurs, Saint Gilles HBC" width="900" height="1125" loading="lazy">
+      <img src="assets/images/portfolio/st-gilles/portfolio-stgilles-partenaire.webp" alt="Affiche 'Merci à notre partenaire', Saint Gilles HBC" width="900" height="1125" loading="lazy">
     </div>
   </template>
 
